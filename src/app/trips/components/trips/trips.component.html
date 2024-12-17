@@ -1,0 +1,15 @@
+<div class="trips">
+  <div>
+    <p-card [header]="trip.name" class="trip mb-4" *ngFor="let trip of trips" (click)="openTrip(trip)">
+      <p class="m-0">
+        {{ trip.description }}
+      </p>
+    </p-card>
+  </div>
+
+  <div class="mt-4">
+    <button pButton pRipple severity="primary" size="large" class="block w-full" routerLink="/trips/add">
+      <span pButtonLabel>New trip</span>
+    </button>
+  </div>
+</div>
