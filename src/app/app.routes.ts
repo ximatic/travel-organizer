@@ -1,7 +1,6 @@
 import { Routes } from '@angular/router';
 
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { TripsComponent } from './trips/components/trips/trips.component';
 
 export const routes: Routes = [
   {
@@ -17,8 +16,8 @@ export const routes: Routes = [
     path: 'trips',
     loadChildren: () => import('./trips/trips.routes').then((m) => m.tripsRoutes),
   },
-  // {
-  //   path: '**',
-  //   redirectTo: 'dashboard',
-  // },
+  {
+    path: '**',
+    redirectTo: 'dashboard',
+  },
 ];

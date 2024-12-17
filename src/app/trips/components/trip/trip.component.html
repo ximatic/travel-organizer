@@ -1,16 +1,10 @@
 <div class="trip">
-  <div class="mb-4">
-    <p-card>
-      <ng-template pTemplate="title">
-        <div class="flex items-center gap-2 w-full">
-          <span class="grow">{{ trip.name }}</span>
-          <p-button icon="pi pi-sliders-v" severity="secondary" text class="flex-none" />
-        </div>
+  <div class="mb-4" *ngIf="trip">
+    <app-trip-panel [trip]="trip">
+      <ng-template #headerIcon>
+        <p-button icon="pi pi-sliders-v" severity="secondary" text class="flex-none" routerLink="/trips/update/{{ trip.id }}" />
       </ng-template>
-      <p class="m-0">
-        {{ trip.description }}
-      </p>
-    </p-card>
+    </app-trip-panel>
   </div>
 
   <div>

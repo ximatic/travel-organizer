@@ -1,11 +1,19 @@
 <div class="trips">
-  <div>
-    <p-card [header]="trip.name" class="trip mb-4" *ngFor="let trip of trips" (click)="openTrip(trip)">
-      <p class="m-0">
-        {{ trip.description }}
-      </p>
-    </p-card>
+  <div *ngIf="trips && trips.length > 0; else noTrips">
+    <app-trip-panel [trip]="trip" *ngFor="let trip of trips" (click)="openTrip(trip)" class="block mb-4">
+      <ng-template #headerIcon>
+        <p-button icon="pi pi-trash" severity="secondary" text class="flex-none" (onClick)="removeTrip($event, trip)" />
+      </ng-template>
+    </app-trip-panel>
   </div>
+
+  <ng-template #noTrips>
+    <div>
+      <p-panel>
+        <p class="m-0">No added trips. Please use <strong>New trip</strong> button to add new one.</p>
+      </p-panel>
+    </div>
+  </ng-template>
 
   <div class="mt-4">
     <button pButton pRipple severity="primary" size="large" class="block w-full" routerLink="/trips/add">

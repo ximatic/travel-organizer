@@ -1,25 +1,38 @@
 <div class="trip">
   <p-panel class="trip__panel">
-    <ng-template pTemplate="header">
+    <ng-template pTemplate="header" *ngIf="!trip">
       <div class="flex grid justify-items-center w-full">
         <span class="grow font-bold">Add trip</span>
       </div>
     </ng-template>
+    <ng-template pTemplate="header" *ngIf="trip">
+      <div class="flex grid justify-items-center w-full">
+        <span class="grow font-bold">Update trip</span>
+      </div>
+    </ng-template>
 
-    <form [formGroup]="tripForm">
-      <div class="mb-3">
+    <div [formGroup]="tripForm">
+      <div class="mb-2">
         <p-floatlabel variant="on">
-          <input pInputText id="name" type="text" formControlName="name" class="w-full" />
+          <input
+            pInputText
+            id="name"
+            type="text"
+            formControlName="name"
+            class="w-full"
+            [ngClass]="{ 'ng-invalid': nameControl?.invalid, 'ng-dirty': nameControl?.dirty }"
+          />
           <label for="name">Name*</label>
         </p-floatlabel>
+        <small *ngIf="nameControl?.invalid && nameControl?.dirty" class="ml-1 trip__form-error">Name is required</small>
       </div>
-      <div class="mb-3">
+      <div class="mb-2">
         <p-floatlabel variant="on">
-          <input pInputText id="location" type="text" formControlName="name" class="w-full" />
+          <input pInputText id="location" type="text" formControlName="location" class="w-full" />
           <label for="location">Location</label>
         </p-floatlabel>
       </div>
-      <div class="mb-3">
+      <div class="mb-2">
         <p-floatlabel variant="on">
           <textarea pTextarea id="description" rows="5" formControlName="description" class="w-full"></textarea>
           <label for="description">Description</label>
@@ -29,7 +42,7 @@
         <p-floatlabel variant="on">
           <p-datepicker
             id="date"
-            formControlName="startDate"
+            formControlName="date"
             selectionMode="range"
             [readonlyInput]="true"
             showIcon
@@ -40,11 +53,17 @@
       </div>
 
       <div class="mt-2">
-        <button pButton pRipple severity="primary" [disabled]="tripForm.invalid" class="block w-full" (click)="addTrip()">
-          <span pButtonLabel>Add</span>
+        <button pButton pRipple severity="primary" [disabled]="tripForm.invalid" class="block w-full" (click)="submitTrip()">
+          <span pButtonLabel *ngIf="!trip">Add</span>
+          <span pButtonLabel *ngIf="trip">Update</span>
         </button>
       </div>
-    </form>
+      <div class="mt-2">
+        <button pButton pRipple severity="secondary" *ngIf="trip" class="block w-full" routerLink="/trips/{{ trip.id }}">
+          <span pButtonLabel>Back</span>
+        </button>
+      </div>
+    </div>
   </p-panel>
 
   <div class="mt-4">

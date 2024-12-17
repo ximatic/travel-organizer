@@ -14,6 +14,10 @@ export const tripsRoutes: Routes = [
     component: TripAddComponent,
   },
   {
+    path: 'update/:id',
+    component: TripAddComponent,
+  },
+  {
     path: ':id',
     component: TripComponent,
   },

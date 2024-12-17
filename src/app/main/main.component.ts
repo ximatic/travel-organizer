@@ -14,8 +14,8 @@ import { ToolbarModule } from 'primeng/toolbar';
   imports: [RouterModule, ButtonModule, DividerModule, DrawerModule, ToolbarModule],
 })
 export class MainComponent {
-  darkMode: boolean = false;
-  sidebarVisible: boolean = false;
+  darkMode = false;
+  sidebarVisible = false;
 
   toggleSidebar(): void {
     this.sidebarVisible = !this.sidebarVisible;

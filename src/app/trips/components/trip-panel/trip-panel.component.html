@@ -1,0 +1,19 @@
+<p-card>
+  <ng-template pTemplate="title">
+    <div class="flex items-center gap-2 w-full">
+      <span class="grow">{{ trip.name }}</span>
+
+      <ng-container *ngIf="headerIcon" [ngTemplateOutlet]="headerIcon"></ng-container>
+
+      <!-- <p-button icon="pi pi-sliders-v" severity="secondary" text class="flex-none" routerLink="/trips/update/{{ trip.id }}" /> -->
+    </div>
+  </ng-template>
+  <p class="m-0 text-xs">
+    <span *ngIf="trip.location">{{ trip.location }}</span>
+    <span *ngIf="trip.location && trip.startDate && trip.endDate" class="px-1">|</span>
+    <span *ngIf="trip.startDate && trip.endDate">{{ trip.startDate | date }} - {{ trip.endDate | date }}</span>
+  </p>
+  <p class="m-0">
+    {{ trip.description }}
+  </p>
+</p-card>

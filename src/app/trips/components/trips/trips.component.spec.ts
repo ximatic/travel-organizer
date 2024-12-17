@@ -1,7 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { provideRouter, Router } from '@angular/router';
 
 import { Trip } from '../../models/trip.model';
+
+import { DEFAULT_TRIP_1 } from '../../../common/mocks/constants';
 
 import { TripsComponent } from './trips.component';
 
@@ -12,7 +15,7 @@ describe('TripsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TripsComponent],
+      imports: [NoopAnimationsModule, TripsComponent],
       providers: [provideRouter([])],
     }).compileComponents();
 
@@ -29,13 +32,14 @@ describe('TripsComponent', () => {
 
   it('opening trip works', () => {
     const navigateSpy = jest.spyOn(router, 'navigate');
-    const trip: Trip = {
-      id: 'trip-1',
-      name: 'Test trip #1',
-      description: 'test description for the trip',
-    };
 
-    component.openTrip(trip);
-    expect(navigateSpy).toHaveBeenCalledWith([`/trips/${trip.id}`]);
+    component.openTrip(DEFAULT_TRIP_1);
+    expect(navigateSpy).toHaveBeenCalledWith([`/trips/${DEFAULT_TRIP_1.id}`]);
+  });
+
+  it('removing trip works', () => {
+    // TODO - add proper check for removeTrip
+    component.removeTrip(new MouseEvent('click'), DEFAULT_TRIP_1);
+    expect(component).toBeTruthy();
   });
 });

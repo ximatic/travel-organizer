@@ -1,9 +1,9 @@
 .dashboard {
-    &__button {
-        &--add {
-            ::ng-deep button {
-                width: 100% !important;
-            }
-        }
+  &__button {
+    &--add {
+      ::ng-deep button {
+        width: 100% !important;
+      }
     }
+  }
 }
