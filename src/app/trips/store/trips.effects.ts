@@ -5,7 +5,7 @@ import { of } from 'rxjs';
 import { map, exhaustMap, catchError } from 'rxjs/operators';
 
 import { TripsService } from '../services/trips.service';
-import { TripAction, tripActions } from './trips.actions';
+import { ActionPropsId, ActionPropsTrip, TripAction, tripActions } from './trips.actions';
 
 import { Trip, TripError } from '../models/trip.model';
 
@@ -26,7 +26,7 @@ export class TripsEffects {
   loadTrip$ = createEffect(() =>
     this.actions$.pipe(
       ofType(TripAction.LoadTrip),
-      exhaustMap((action: any) =>
+      exhaustMap((action: ActionPropsId) =>
         this.tripsService.loadTrip(action.id).pipe(
           map((trip: Trip) => tripActions.loadTripSuccess({ trip })),
           catchError(() => of(tripActions.loadTripError({ error: "Can't load trip. Please try again later." }))),
@@ -38,7 +38,7 @@ export class TripsEffects {
   createTrip$ = createEffect(() =>
     this.actions$.pipe(
       ofType(TripAction.CreateTrip),
-      exhaustMap((action: any) =>
+      exhaustMap((action: ActionPropsTrip) =>
         this.tripsService.createTrip(action.trip).pipe(
           map((trip: Trip) => tripActions.createTripSuccess({ trip, message: `Trip (${trip.name}) added` })),
           catchError((error: TripError) =>
@@ -52,7 +52,7 @@ export class TripsEffects {
   updateTrip$ = createEffect(() =>
     this.actions$.pipe(
       ofType(TripAction.UpdateTrip),
-      exhaustMap((action: any) =>
+      exhaustMap((action: ActionPropsTrip) =>
         this.tripsService.updateTrip(action.trip).pipe(
           map((trip: Trip) => tripActions.updateTripSuccess({ trip, message: `Trip (${trip.name}) updated` })),
           catchError((error: TripError) =>
@@ -66,7 +66,7 @@ export class TripsEffects {
   removeTrip$ = createEffect(() =>
     this.actions$.pipe(
       ofType(TripAction.RemoveTrip),
-      exhaustMap((action: any) =>
+      exhaustMap((action: ActionPropsTrip) =>
         this.tripsService.removeTrip(action.trip).pipe(
           map((trip: Trip) => tripActions.removeTripSuccess({ trip, message: `Trip (${trip.name}) removed` })),
           catchError((error: TripError) =>

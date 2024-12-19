@@ -45,7 +45,7 @@ export class TripAddComponent implements OnInit, OnDestroy {
 
   // trip
   trip?: Trip | null;
-  isLoading: boolean = true;
+  isLoading = true;
 
   // form
   tripForm!: FormGroup;

@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { ActivatedRoute, provideRouter, Router } from '@angular/router';
+import { ActivatedRoute, provideRouter } from '@angular/router';
 
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { of } from 'rxjs';
@@ -16,7 +17,6 @@ import { TripAddComponent } from './trip-add.component';
 describe('TripAddComponent', () => {
   let component: TripAddComponent;
   let fixture: ComponentFixture<TripAddComponent>;
-  let router: Router;
   let store: MockStore;
   let mockTripSelector: any;
   let mockActionStateSelector: any;
@@ -28,7 +28,6 @@ describe('TripAddComponent', () => {
         providers: [provideRouter([]), provideMockStore({ initialState: DEFAULT_INITIAL_TRIPS_STATE })],
       }).compileComponents();
 
-      router = TestBed.inject(Router);
       store = TestBed.inject(MockStore);
     });
 
@@ -93,7 +92,6 @@ describe('TripAddComponent', () => {
         ],
       }).compileComponents();
 
-      router = TestBed.inject(Router);
       store = TestBed.inject(MockStore);
 
       mockTripSelector = store.overrideSelector(selectTrip, DEFAULT_TRIP_1);

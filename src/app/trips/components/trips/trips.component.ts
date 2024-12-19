@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 
 import { Store } from '@ngrx/store';
@@ -36,14 +36,14 @@ import { TripPanelComponent } from '../trip-panel/trip-panel.component';
   ],
   providers: [MessageService],
 })
-export class TripsComponent implements OnInit {
+export class TripsComponent implements OnInit, OnDestroy {
   // ngrx
   trips$!: Observable<Trip[]>;
   actionState$!: Observable<TripsActionState | undefined>;
 
   // data
   trips: Trip[] = [];
-  isLoading: boolean = true;
+  isLoading = true;
   loadingError?: string;
 
   // other

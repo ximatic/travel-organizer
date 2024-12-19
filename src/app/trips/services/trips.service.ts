@@ -11,8 +11,6 @@ import { Trip, TripError } from '../models/trip.model';
 export class TripsService {
   private storageKey = 'to-trips';
 
-  constructor() {}
-
   createTrip(trip: Trip): Observable<Trip> {
     const newTrip = { ...trip };
     if (!newTrip.id) {

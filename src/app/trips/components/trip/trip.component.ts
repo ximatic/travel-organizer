@@ -42,7 +42,7 @@ export class TripComponent implements OnInit, OnDestroy {
 
   // trip
   trip!: Trip | null;
-  isLoading: boolean = true;
+  isLoading = true;
 
   private subscription = new Subscription();
 
