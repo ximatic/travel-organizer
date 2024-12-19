@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 
+import { delay, Observable, of, throwError } from 'rxjs';
 import * as uuid from 'uuid';
 
-import { Trip } from '../models/trip.model';
+import { Trip, TripError } from '../models/trip.model';
 
 @Injectable({
   providedIn: 'root',
@@ -10,66 +11,85 @@ import { Trip } from '../models/trip.model';
 export class TripsService {
   private storageKey = 'to-trips';
 
-  private trips: Trip[] = [];
+  constructor() {}
 
-  constructor() {
-    this.loadTrips();
-  }
-
-  createTrip(trip: Trip): Trip {
-    if (!trip.id) {
-      trip.id = uuid.v4();
-    }
-    this.trips.push(trip);
-    this.saveTrips();
-
-    return trip;
-  }
-
-  updateTrip(trip: Trip): void {
-    if (!trip.id) {
-      return;
+  createTrip(trip: Trip): Observable<Trip> {
+    const newTrip = { ...trip };
+    if (!newTrip.id) {
+      newTrip.id = uuid.v4();
     }
 
-    const index = this.getTripIndex(trip.id);
+    const trips = this.fetchTrips();
+    trips.push(newTrip);
+    this.saveTrips(trips);
+
+    return of(newTrip);
+  }
+
+  updateTrip(trip: Trip): Observable<Trip> {
+    const updatedTrip = { ...trip };
+    if (!trip.id) {
+      return throwError(() => new TripError('Trip ID is not provided', trip));
+    }
+
+    const trips = this.fetchTrips();
+    const index = this.getTripIndex(trips, updatedTrip.id);
     if (index > -1) {
-      Object.assign(this.trips[index], trip);
-      this.saveTrips();
+      Object.assign(trips[index], updatedTrip);
+      this.saveTrips(trips);
+      return of(updatedTrip);
+    } else {
+      return throwError(() => new TripError("Trip with provided ID doesn't exist", trip));
     }
   }
 
-  deleteTrip(trip: Trip): void {
+  removeTrip(trip: Trip): Observable<Trip> {
     if (!trip.id) {
-      return;
+      return throwError(() => new TripError('Trip ID is not provided', trip));
     }
 
-    const index = this.getTripIndex(trip.id);
+    const trips = this.fetchTrips();
+    const index = this.getTripIndex(trips, trip.id);
     if (index > -1) {
-      this.trips.splice(index, 1);
-      this.saveTrips();
+      trips.splice(index, 1);
+      this.saveTrips(trips);
+      return of(trip);
+    } else {
+      return throwError(() => new TripError("Trip with provided ID doesn't exist", trip));
     }
   }
 
-  loadTrip(id?: string): Trip | null {
-    const index = this.getTripIndex(id);
+  loadTrip(id: string): Observable<Trip> {
+    if (!id) {
+      return throwError(() => new TripError('Trip ID is not provided'));
+    }
+    const trips = this.fetchTrips();
+    const index = this.getTripIndex(trips, id);
     let trip = null;
     if (index > -1) {
-      trip = this.trips[index];
+      trip = trips[index];
+    } else {
+      return throwError(() => new TripError("Trip with provided ID doesn't exist"));
     }
 
-    return trip;
+    // artificial delay to improve UX
+    return of(trip).pipe(delay(1000));
   }
 
-  saveTrips(): void {
-    localStorage.setItem(this.storageKey, JSON.stringify(this.trips));
+  saveTrips(trips: Trip[]): void {
+    localStorage.setItem(this.storageKey, JSON.stringify(trips));
   }
 
-  loadTrips(): Trip[] {
-    this.trips = JSON.parse(localStorage.getItem(this.storageKey) || '[]');
-    return this.trips;
+  loadTrips(): Observable<Trip[]> {
+    // artificial delay to improve UX
+    return of(this.fetchTrips()).pipe(delay(1000));
   }
 
-  private getTripIndex(id?: string): number {
-    return this.trips.findIndex((trip: Trip) => trip.id == id);
+  private getTripIndex(trips: Trip[], id?: string): number {
+    return trips.findIndex((trip: Trip) => trip.id == id);
+  }
+
+  private fetchTrips(): Trip[] {
+    return JSON.parse(localStorage.getItem(this.storageKey) || '[]');
   }
 }

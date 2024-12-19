@@ -1,6 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 
-import { Trip } from '../models/trip.model';
+import { switchMap } from 'rxjs';
+
+import { Trip, TripError } from '../models/trip.model';
 
 import { DEFAULT_TRIP_0, DEFAULT_TRIP_1, DEFAULT_TRIP_2 } from '../../common/mocks/constants';
 
@@ -22,50 +24,161 @@ describe('TripsService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('no trips initially in localStorage', () => {
-    expect(service.loadTrips()).toEqual([]);
+  // loadTrips
+
+  it('no trips initially in localStorage', (done) => {
+    service.loadTrips().subscribe((trips: Trip[]) => {
+      expect(trips).toEqual([]);
+      done();
+    });
   });
 
-  it('creating trip without id works', () => {
-    service.createTrip(DEFAULT_TRIP_0);
-    expect(service.loadTrips()).toEqual([DEFAULT_TRIP_0]);
+  // createTrip
+
+  it('creating trip without id works', (done) => {
+    service.createTrip(DEFAULT_TRIP_0).subscribe((trip: Trip) => {
+      expect(trip.name).toEqual(DEFAULT_TRIP_0.name);
+      done();
+    });
   });
 
-  it('creating trip with id works', () => {
-    service.createTrip(DEFAULT_TRIP_1);
-    expect(service.loadTrips()).toEqual([DEFAULT_TRIP_1]);
+  it('creating trip with id works', (done) => {
+    service
+      .createTrip(DEFAULT_TRIP_1)
+      .pipe(
+        switchMap((trip: Trip) => {
+          expect(trip).toEqual(DEFAULT_TRIP_1);
+          return service.loadTrips();
+        }),
+      )
+      .subscribe((trips: Trip[]) => {
+        expect(trips).toEqual([DEFAULT_TRIP_1]);
+        done();
+      });
   });
 
-  it('updating trip works', () => {
-    service.createTrip(DEFAULT_TRIP_1);
-    const birthday: Trip = {
+  // updateTrip
+
+  it('updating trip works', (done) => {
+    const updatedTrip: Trip = {
       ...DEFAULT_TRIP_1,
       description: DEFAULT_TRIP_2.description,
     };
-    service.updateTrip(birthday);
-    expect(service.loadTrips()).toEqual([birthday]);
+
+    service
+      .createTrip(DEFAULT_TRIP_1)
+      .pipe(switchMap(() => service.updateTrip(updatedTrip)))
+      .pipe(
+        switchMap((trip: Trip) => {
+          expect(trip).toEqual(updatedTrip);
+          return service.loadTrips();
+        }),
+      )
+      .subscribe((trips: Trip[]) => {
+        expect(trips).toEqual([updatedTrip]);
+        done();
+      });
   });
 
-  it("updating trip doesn't work for trip without id", () => {
-    service.createTrip(DEFAULT_TRIP_1);
-    expect(service.updateTrip(DEFAULT_TRIP_0)).toBeUndefined();
-    expect(service.loadTrips()).toEqual([DEFAULT_TRIP_1]);
+  it("updating trip doesn't work for trip without id", (done) => {
+    service
+      .createTrip(DEFAULT_TRIP_1)
+      .pipe(switchMap(() => service.updateTrip(DEFAULT_TRIP_0)))
+      .subscribe({
+        error: (error: TripError) => {
+          expect(error).toEqual(new TripError('Trip ID is not provided', DEFAULT_TRIP_0));
+          done();
+        },
+      });
   });
 
-  it('removing trip works', () => {
-    service.createTrip(DEFAULT_TRIP_1);
-    service.deleteTrip(DEFAULT_TRIP_1);
-    expect(service.loadTrips()).toEqual([]);
+  it("updating trip doesn't work for non existing trip", (done) => {
+    service
+      .createTrip(DEFAULT_TRIP_1)
+      .pipe(switchMap(() => service.updateTrip(DEFAULT_TRIP_2)))
+      .subscribe({
+        error: (error: TripError) => {
+          expect(error).toEqual(new TripError("Trip with provided ID doesn't exist", DEFAULT_TRIP_2));
+          done();
+        },
+      });
   });
 
-  it("removing trip  doesn't work for trip without id", () => {
-    service.createTrip(DEFAULT_TRIP_1);
-    expect(service.deleteTrip(DEFAULT_TRIP_0)).toBeUndefined();
-    expect(service.loadTrips()).toEqual([DEFAULT_TRIP_1]);
+  // removeTrip
+
+  it('removing trip works', (done) => {
+    service
+      .createTrip(DEFAULT_TRIP_1)
+      .pipe(switchMap(() => service.removeTrip(DEFAULT_TRIP_1)))
+      .pipe(
+        switchMap((trip: Trip) => {
+          expect(trip).toEqual(DEFAULT_TRIP_1);
+          return service.loadTrips();
+        }),
+      )
+      .subscribe((trips: Trip[]) => {
+        expect(trips).toEqual([]);
+        done();
+      });
   });
 
-  it('loading invidual trip works', () => {
-    service.createTrip(DEFAULT_TRIP_1);
-    expect(service.loadTrip(DEFAULT_TRIP_1.id)).toEqual(DEFAULT_TRIP_1);
+  it("removing trip doesn't work for trip without id", (done) => {
+    service
+      .createTrip(DEFAULT_TRIP_1)
+      .pipe(switchMap(() => service.removeTrip(DEFAULT_TRIP_0)))
+      .subscribe({
+        error: (error: TripError) => {
+          expect(error).toEqual(new TripError('Trip ID is not provided', DEFAULT_TRIP_0));
+          done();
+        },
+      });
+  });
+
+  it("removing trip doesn't work for non existing trip", (done) => {
+    service
+      .createTrip(DEFAULT_TRIP_1)
+      .pipe(switchMap(() => service.removeTrip(DEFAULT_TRIP_2)))
+      .subscribe({
+        error: (error: TripError) => {
+          expect(error).toEqual(new TripError("Trip with provided ID doesn't exist", DEFAULT_TRIP_2));
+          done();
+        },
+      });
+  });
+
+  // loadTrip
+
+  it('loading trip works', (done) => {
+    service
+      .createTrip(DEFAULT_TRIP_1)
+      .pipe(switchMap(() => service.loadTrip(DEFAULT_TRIP_1.id as string)))
+      .subscribe((trip: Trip) => {
+        expect(trip).toEqual(DEFAULT_TRIP_1);
+        done();
+      });
+  });
+
+  it("loading trip doesn't work for trip without id", (done) => {
+    service
+      .createTrip(DEFAULT_TRIP_1)
+      .pipe(switchMap(() => service.loadTrip('')))
+      .subscribe({
+        error: (error: TripError) => {
+          expect(error).toEqual(new TripError('Trip ID is not provided'));
+          done();
+        },
+      });
+  });
+
+  it("loading trip doesn't work for non existing trip", (done) => {
+    service
+      .createTrip(DEFAULT_TRIP_1)
+      .pipe(switchMap(() => service.loadTrip(DEFAULT_TRIP_2.id as string)))
+      .subscribe({
+        error: (error: TripError) => {
+          expect(error).toEqual(new TripError("Trip with provided ID doesn't exist"));
+          done();
+        },
+      });
   });
 });

@@ -1,3 +1,14 @@
+export class TripError extends Error {
+  constructor(
+    msg: string,
+    public trip?: Trip,
+  ) {
+    super(msg);
+  }
+}
+
+// trip
+
 export interface TripItem {
   id?: string;
   name: string;

@@ -1,13 +1,19 @@
-<div class="main">
-  <p-toolbar>
-    <ng-template #start>
-      <p-button icon="pi pi-bars" text severity="secondary" (click)="toggleSidebar()" />
-    </ng-template>
-    <ng-template #center><span class="pi pi-globe pr-2 main__logo"></span>Travel Organizer</ng-template>
-    <ng-template #end>
-      <p-button icon="pi pi-palette" text severity="secondary" (click)="toggleDarkMode()" />
-    </ng-template>
-  </p-toolbar>
+<div class="main flex flex-col h-screen">
+  <div>
+    <p-toolbar>
+      <ng-template #start>
+        <p-button icon="pi pi-bars" text severity="secondary" (click)="toggleSidebar()" />
+      </ng-template>
+      <ng-template #center><span class="pi pi-globe pr-2 main__logo"></span>Travel Organizer</ng-template>
+      <ng-template #end>
+        <p-button icon="pi pi-palette" text severity="secondary" (click)="toggleDarkMode()" />
+      </ng-template>
+    </p-toolbar>
+  </div>
+
+  <div class="grow p-3">
+    <router-outlet />
+  </div>
 
   <p-drawer [(visible)]="sidebarVisible" header="Menu">
     <div>
@@ -50,8 +56,4 @@
       <p-button icon="pi pi-flag" text severity="secondary" label="PL" />
     </ng-template>
   </p-drawer>
-
-  <div class="p-3">
-    <router-outlet />
-  </div>
 </div>

@@ -1,87 +1,165 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { provideRouter, Router } from '@angular/router';
+import { ActivatedRoute, provideRouter, Router } from '@angular/router';
+
+import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { of } from 'rxjs';
+
+import { DEFAULT_INITIAL_TRIPS_STATE, DEFAULT_TRIP_1, DEFAULT_TRIP_2 } from '../../../common/mocks/constants';
+
+import { TripAction } from '../../store/trips.actions';
+import { selectTrip, selectActionState } from '../../store/trips.selectors';
+import { ActionName, ActionState } from '../../store/trips.state';
 
 import { TripAddComponent } from './trip-add.component';
-import { DEFAULT_TRIP_1, DEFAULT_TRIP_2 } from '../../../common/mocks/constants';
-import { TripsService } from '../../services/trips.service';
 
 describe('TripAddComponent', () => {
   let component: TripAddComponent;
   let fixture: ComponentFixture<TripAddComponent>;
   let router: Router;
-  let tripsService: TripsService;
+  let store: MockStore;
+  let mockTripSelector: any;
+  let mockActionStateSelector: any;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [NoopAnimationsModule, TripAddComponent],
-      providers: [provideRouter([]), TripsService],
-    }).compileComponents();
+  describe('submiting new trip', () => {
+    beforeEach(async () => {
+      await TestBed.configureTestingModule({
+        imports: [NoopAnimationsModule, TripAddComponent],
+        providers: [provideRouter([]), provideMockStore({ initialState: DEFAULT_INITIAL_TRIPS_STATE })],
+      }).compileComponents();
 
-    localStorage.clear();
+      router = TestBed.inject(Router);
+      store = TestBed.inject(MockStore);
+    });
 
-    fixture = TestBed.createComponent(TripAddComponent);
-    component = fixture.componentInstance;
+    beforeEach(() => {
+      fixture = TestBed.createComponent(TripAddComponent);
+      component = fixture.componentInstance;
+    });
 
-    router = TestBed.inject(Router);
-    tripsService = TestBed.inject(TripsService);
+    it('should be created', () => {
+      expect(component).toBeTruthy();
+    });
 
-    fixture.detectChanges();
-  });
+    it('requesting for trip does not works', () => {
+      const dispatchSpy = jest.spyOn(store, 'dispatch');
 
-  it('should be created', () => {
-    expect(component).toBeTruthy();
-  });
+      fixture.detectChanges();
 
-  it("submitTrip doesn't work for an empty form", () => {
-    const navigateSpy = jest.spyOn(router, 'navigate');
-    const createSpy = jest.spyOn(tripsService, 'createTrip');
-    const updateSpy = jest.spyOn(tripsService, 'updateTrip');
+      expect(dispatchSpy).toHaveBeenCalledTimes(0);
+    });
 
-    expect(component.tripForm.invalid).toBeTruthy();
-    fixture.whenStable().then(() => {
+    it("submitTrip doesn't work for an empty form", () => {
+      const dispatchSpy = jest.spyOn(store, 'dispatch');
+
+      fixture.detectChanges();
+
+      expect(component.tripForm.invalid).toBeTruthy();
       expect(component.submitTrip()).toBeUndefined();
-
-      expect(component.tripForm.valid).toBeFalsy();
-      expect(createSpy).toHaveBeenCalledTimes(0);
-      expect(updateSpy).toHaveBeenCalledTimes(0);
-      expect(navigateSpy).toHaveBeenCalledTimes(0);
+      expect(dispatchSpy).toHaveBeenCalledTimes(0);
     });
-  });
 
-  it('submitTrip works for a new trip ', () => {
-    const navigateSpy = jest.spyOn(router, 'navigate');
-    const createSpy = jest.spyOn(tripsService, 'createTrip');
+    it('submitTrip works for a new trip ', () => {
+      const dispatchSpy = jest.spyOn(store, 'dispatch');
 
-    component.tripForm.patchValue({
-      ...DEFAULT_TRIP_1,
-    });
-    fixture.whenStable().then(() => {
-      component.submitTrip();
+      fixture.detectChanges();
 
-      expect(component.tripForm.valid).toBeTruthy();
-      expect(createSpy).toHaveBeenCalledWith({
+      component.tripForm.patchValue({
         ...DEFAULT_TRIP_1,
       });
-      expect(navigateSpy).toHaveBeenCalledWith([`/trips/${DEFAULT_TRIP_1.id}`]);
+
+      expect(component.tripForm.invalid).toBeFalsy();
+      component.submitTrip();
+      expect(dispatchSpy).toHaveBeenCalledWith({
+        type: TripAction.CreateTrip,
+        trip: { name: DEFAULT_TRIP_1.name, location: '', description: '', startDate: undefined, endDate: undefined },
+      });
     });
   });
 
-  it('submitTrip works for an existing trip', () => {
-    const navigateSpy = jest.spyOn(router, 'navigate');
-    const updateSpy = jest.spyOn(tripsService, 'updateTrip');
+  describe('submiting existing trip', () => {
+    beforeEach(async () => {
+      await TestBed.configureTestingModule({
+        imports: [NoopAnimationsModule, TripAddComponent],
+        providers: [
+          provideRouter([]),
+          provideMockStore({ initialState: DEFAULT_INITIAL_TRIPS_STATE }),
+          {
+            provide: ActivatedRoute,
+            useValue: {
+              params: of({ id: DEFAULT_TRIP_1.id }),
+            },
+          },
+        ],
+      }).compileComponents();
 
-    component.trip = DEFAULT_TRIP_2;
-    fixture.detectChanges();
-    fixture.whenStable().then(() => {
-      component.submitTrip();
+      router = TestBed.inject(Router);
+      store = TestBed.inject(MockStore);
 
-      expect(component.tripForm.valid).toBeTruthy();
-      expect(updateSpy).toHaveBeenCalledWith({
-        ...DEFAULT_TRIP_2,
+      mockTripSelector = store.overrideSelector(selectTrip, DEFAULT_TRIP_1);
+      mockActionStateSelector = store.overrideSelector(selectActionState, {
+        name: ActionName.LoadTrip,
+        state: ActionState.Loading,
+      });
+    });
+
+    beforeEach(() => {
+      fixture = TestBed.createComponent(TripAddComponent);
+      component = fixture.componentInstance;
+    });
+
+    it('should be created', () => {
+      expect(component).toBeTruthy();
+    });
+
+    it('requesting for trip works', () => {
+      const dispatchSpy = jest.spyOn(store, 'dispatch');
+
+      fixture.detectChanges();
+
+      expect(dispatchSpy).toHaveBeenCalledWith({ type: TripAction.LoadTrip, id: DEFAULT_TRIP_1.id });
+    });
+
+    it('loading trip works', () => {
+      fixture.detectChanges();
+
+      mockTripSelector.setResult(DEFAULT_TRIP_2);
+      mockActionStateSelector.setResult({
+        name: ActionName.LoadTrip,
+        state: ActionState.Success,
+        trip: DEFAULT_TRIP_2,
+      });
+
+      store.refreshState();
+
+      expect(component.trip).toEqual(DEFAULT_TRIP_2);
+      expect(component.isLoading).toBeFalsy();
+    });
+
+    it('submitTrip works for an existing trip ', () => {
+      const dispatchSpy = jest.spyOn(store, 'dispatch');
+
+      fixture.detectChanges();
+
+      component.trip = DEFAULT_TRIP_1;
+      component.tripForm.patchValue({
+        ...DEFAULT_TRIP_1,
         location: 'Berlin',
       });
-      expect(navigateSpy).toHaveBeenCalledWith([`/trips/${DEFAULT_TRIP_2.id}`]);
+
+      expect(component.tripForm.invalid).toBeFalsy();
+      component.submitTrip();
+      expect(dispatchSpy).toHaveBeenLastCalledWith({
+        type: TripAction.UpdateTrip,
+        trip: {
+          id: DEFAULT_TRIP_1.id,
+          name: DEFAULT_TRIP_1.name,
+          location: 'Berlin',
+          description: '',
+          startDate: undefined,
+          endDate: undefined,
+        },
+      });
     });
   });
 });

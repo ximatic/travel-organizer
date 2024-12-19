@@ -1,28 +1,57 @@
-<div class="trip">
-  <div class="mb-4" *ngIf="trip">
-    <app-trip-panel [trip]="trip">
-      <ng-template #headerIcon>
-        <p-button icon="pi pi-sliders-v" severity="secondary" text class="flex-none" routerLink="/trips/update/{{ trip.id }}" />
-      </ng-template>
-    </app-trip-panel>
+<div class="trip h-full">
+  <div class="grid place-items-center h-full w-full" *ngIf="isLoading; else loadedTrip">
+    <p-progress-spinner />
   </div>
 
-  <div>
-    <p-panel class="trip__panel">
-      <ng-template pTemplate="header">
-        <div class="flex items-center gap-2 w-full">
-          <span class="grow font-bold">Trip items</span>
-          <p-button icon="pi pi-plus" severity="secondary" text class="flex-none" />
-        </div>
-      </ng-template>
+  <ng-template #loadedTrip>
+    <ng-container *ngIf="trip; else noTrip">
+      <div class="mb-4">
+        <app-trip-panel [trip]="trip">
+          <ng-template #headerIcon>
+            <p-button
+              icon="pi pi-sliders-v"
+              severity="secondary"
+              text
+              class="flex-none"
+              routerLink="/trips/update/{{ trip.id }}"
+            />
+          </ng-template>
+        </app-trip-panel>
+      </div>
 
-      <p class="m-0">Lorem ipsum dolor sit amet...</p>
-    </p-panel>
-  </div>
+      <div>
+        <p-panel class="trip__panel">
+          <ng-template pTemplate="header">
+            <div class="flex items-center gap-2 w-full">
+              <span class="grow font-bold">Trip items</span>
+              <p-button icon="pi pi-plus" severity="secondary" text class="flex-none" />
+            </div>
+          </ng-template>
 
-  <div class="mt-4">
-    <button pButton pRipple severity="secondary" size="large" class="block w-full" routerLink="/trips">
-      <span pButtonLabel>All Trips</span>
-    </button>
-  </div>
+          <p class="m-0">Lorem ipsum dolor sit amet...</p>
+        </p-panel>
+      </div>
+    </ng-container>
+
+    <ng-template #noTrip>
+      <div>
+        <p-panel>
+          <div class="grid place-items-center">
+            <p>
+              <span class="pi pi-map trip__logo"></span>
+            </p>
+            <p class="mt-2">Trip not available.</p>
+          </div>
+        </p-panel>
+      </div>
+    </ng-template>
+
+    <div class="mt-4">
+      <button pButton pRipple severity="secondary" size="large" class="block w-full" routerLink="/trips">
+        <span pButtonLabel>All Trips</span>
+      </button>
+    </div>
+  </ng-template>
+
+  <p-toast position="bottom-center" key="toast" />
 </div>

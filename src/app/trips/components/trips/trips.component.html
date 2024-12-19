@@ -1,23 +1,54 @@
-<div class="trips">
-  <div *ngIf="trips && trips.length > 0; else noTrips">
-    <app-trip-panel [trip]="trip" *ngFor="let trip of trips" (click)="openTrip(trip)" class="block mb-4">
-      <ng-template #headerIcon>
-        <p-button icon="pi pi-trash" severity="secondary" text class="flex-none" (onClick)="removeTrip($event, trip)" />
-      </ng-template>
-    </app-trip-panel>
+<div class="trips h-full">
+  <div class="grid place-items-center h-full w-full" *ngIf="isLoading; else loadedTrips">
+    <p-progress-spinner />
   </div>
 
-  <ng-template #noTrips>
-    <div>
-      <p-panel>
-        <p class="m-0">No added trips. Please use <strong>New trip</strong> button to add new one.</p>
-      </p-panel>
+  <ng-template #loadedTrips>
+    <div *ngIf="trips && trips.length > 0; else noTrips">
+      <!-- <app-trip-panel [trip]="trip" *ngFor="let trip of trips" (click)="openTrip(trip)" class="block mb-4">
+        <ng-template #headerIcon>
+          <p-button icon="pi pi-trash" severity="secondary" text class="flex-none" (onClick)="removeTrip($event, trip)" />
+        </ng-template>
+      </app-trip-panel> -->
+
+      <p-card *ngFor="let trip of trips" (click)="openTrip(trip)" class="block mb-4">
+        <ng-template pTemplate="title">
+          <div class="flex items-center gap-2 w-full">
+            <span class="grow">{{ trip.name }}</span>
+            <p-button icon="pi pi-trash" severity="secondary" text class="flex-none" (onClick)="removeTrip($event, trip)" />
+          </div>
+        </ng-template>
+        <p class="m-0 text-xs">
+          <span *ngIf="trip.location">{{ trip.location }}</span>
+          <span *ngIf="trip.location && trip.startDate && trip.endDate" class="px-1">|</span>
+          <span *ngIf="trip.startDate && trip.endDate">{{ trip.startDate | date }} - {{ trip.endDate | date }}</span>
+        </p>
+        <p class="m-0">
+          {{ trip.description }}
+        </p>
+      </p-card>
+    </div>
+
+    <ng-template #noTrips>
+      <div>
+        <p-panel>
+          <div class="grid place-items-center">
+            <p>
+              <span class="pi pi-map trips__logo"></span>
+            </p>
+            <p class="mt-2">No trips available.</p>
+            <p class="mt-2">Please use <strong>New trip</strong> button to add new one.</p>
+          </div>
+        </p-panel>
+      </div>
+    </ng-template>
+
+    <div class="mt-4">
+      <button pButton pRipple severity="primary" size="large" class="block w-full" routerLink="/trips/add">
+        <span pButtonLabel>New trip</span>
+      </button>
     </div>
   </ng-template>
 
-  <div class="mt-4">
-    <button pButton pRipple severity="primary" size="large" class="block w-full" routerLink="/trips/add">
-      <span pButtonLabel>New trip</span>
-    </button>
-  </div>
+  <p-toast position="bottom-center" key="toast" />
 </div>

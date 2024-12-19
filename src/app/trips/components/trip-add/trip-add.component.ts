@@ -3,16 +3,21 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Params, Router, RouterModule } from '@angular/router';
 
-import { Subscription } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { filter, Observable, Subscription } from 'rxjs';
 
+import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { DatePickerModule } from 'primeng/datepicker';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
 import { PanelModule } from 'primeng/panel';
 import { TextareaModule } from 'primeng/textarea';
+import { ToastModule } from 'primeng/toast';
 
-import { TripsService } from '../../services/trips.service';
+import { ActionName, ActionState, TripsActionState, TripsState } from '../../store/trips.state';
+import { selectActionState } from '../../store/trips.selectors';
+import { tripActions } from '../../store/trips.actions';
 import { Trip } from '../../models/trip.model';
 
 @Component({
@@ -30,12 +35,17 @@ import { Trip } from '../../models/trip.model';
     InputTextModule,
     PanelModule,
     TextareaModule,
+    ToastModule,
   ],
-  providers: [TripsService],
+  providers: [MessageService],
 })
 export class TripAddComponent implements OnInit, OnDestroy {
+  // ngrx
+  actionState$!: Observable<TripsActionState | undefined>;
+
   // trip
   trip?: Trip | null;
+  isLoading: boolean = true;
 
   // form
   tripForm!: FormGroup;
@@ -47,18 +57,19 @@ export class TripAddComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     private formBuilder: FormBuilder,
-    private tripsService: TripsService,
-  ) {
-    this.initForm();
-  }
+    private messageService: MessageService,
+    private store: Store<TripsState>,
+  ) {}
 
   // lifecycle methods
 
   ngOnInit(): void {
+    this.init();
     this.subscription.add(
       this.route.params.subscribe((params: Params) => {
-        this.trip = this.tripsService.loadTrip(params['id']);
-        this.fillForm();
+        if (params['id']) {
+          this.store.dispatch(tripActions.loadTrip({ id: params['id'] }));
+        }
       }),
     );
   }
@@ -86,11 +97,99 @@ export class TripAddComponent implements OnInit, OnDestroy {
         ...this.trip,
         ...this.processFormValue(),
       };
-      this.tripsService.updateTrip(trip);
-      this.router.navigate([`/trips/${trip.id}`]);
+      this.store.dispatch(tripActions.updateTrip({ trip }));
     } else {
-      const trip = this.tripsService.createTrip(this.processFormValue());
-      this.router.navigate([`/trips/${trip.id}`]);
+      const trip = this.processFormValue();
+      this.store.dispatch(tripActions.createTrip({ trip }));
+    }
+  }
+
+  // initialization
+
+  private init(): void {
+    this.initForm();
+    this.initState();
+  }
+
+  private initState(): void {
+    this.actionState$ = this.store.select(selectActionState);
+    this.subscription.add(
+      this.actionState$
+        .pipe(filter((actionState: TripsActionState | undefined) => this.filterActionState(actionState)))
+        .subscribe((actionState: TripsActionState | undefined) => this.handleActionState(actionState)),
+    );
+  }
+
+  private filterActionState(actionState: TripsActionState | undefined): boolean {
+    return (
+      actionState?.name === ActionName.LoadTrip ||
+      actionState?.name === ActionName.CreateTrip ||
+      actionState?.name === ActionName.UpdateTrip
+    );
+  }
+
+  private handleActionState(actionState: TripsActionState | undefined): void {
+    if (!actionState) {
+      return;
+    }
+
+    switch (actionState?.name) {
+      case ActionName.LoadTrip:
+        this.handleLoadTrip(actionState);
+        break;
+      case ActionName.CreateTrip:
+        this.handleCreateTrip(actionState);
+        break;
+      case ActionName.UpdateTrip:
+        this.handleUpdateTrip(actionState);
+        break;
+    }
+  }
+
+  private handleLoadTrip(actionState: TripsActionState): void {
+    switch (actionState.state) {
+      case ActionState.Loading:
+        this.isLoading = true;
+        break;
+      case ActionState.Success:
+        if (actionState.trip) {
+          this.trip = actionState.trip;
+          this.fillForm();
+        }
+        this.isLoading = false;
+        break;
+      case ActionState.Error:
+        this.isLoading = false;
+        this.showToast('error', 'Error', actionState?.message);
+        break;
+    }
+  }
+
+  private handleCreateTrip(actionState: TripsActionState): void {
+    switch (actionState.state) {
+      case ActionState.Success:
+        this.showToast('success', 'Success', actionState?.message);
+        if (actionState.trip) {
+          this.router.navigate([`/trips/${actionState.trip.id}`]);
+        }
+        break;
+      case ActionState.Error:
+        this.showToast('error', 'Error', actionState?.message);
+        break;
+    }
+  }
+
+  private handleUpdateTrip(actionState: TripsActionState): void {
+    switch (actionState.state) {
+      case ActionState.Success:
+        this.showToast('success', 'Success', actionState?.message);
+        if (actionState.trip) {
+          this.router.navigate([`/trips/${actionState.trip.id}`]);
+        }
+        break;
+      case ActionState.Error:
+        this.showToast('error', 'Error', actionState?.message);
+        break;
     }
   }
 
@@ -128,5 +227,11 @@ export class TripAddComponent implements OnInit, OnDestroy {
         date: startDate && endDate ? [new Date(startDate), new Date(endDate)] : [],
       });
     }
+  }
+
+  // toasts
+
+  private showToast(severity: string, summary: string, detail?: string) {
+    this.messageService.add({ severity, summary, detail, key: 'toast', life: 3000 });
   }
 }

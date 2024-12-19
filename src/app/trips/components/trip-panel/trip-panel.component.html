@@ -2,10 +2,7 @@
   <ng-template pTemplate="title">
     <div class="flex items-center gap-2 w-full">
       <span class="grow">{{ trip.name }}</span>
-
       <ng-container *ngIf="headerIcon" [ngTemplateOutlet]="headerIcon"></ng-container>
-
-      <!-- <p-button icon="pi pi-sliders-v" severity="secondary" text class="flex-none" routerLink="/trips/update/{{ trip.id }}" /> -->
     </div>
   </ng-template>
   <p class="m-0 text-xs">
