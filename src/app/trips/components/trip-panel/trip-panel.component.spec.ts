@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
 import { provideMockStore } from '@ngrx/store/testing';
 
@@ -14,7 +15,7 @@ describe('TripPanelComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [TripPanelComponent],
-      providers: [provideMockStore({ initialState: DEFAULT_INITIAL_SETTINGS_STATE })],
+      providers: [provideNoopAnimations(), provideMockStore({ initialState: DEFAULT_INITIAL_SETTINGS_STATE })],
     }).compileComponents();
 
     fixture = TestBed.createComponent(TripPanelComponent);

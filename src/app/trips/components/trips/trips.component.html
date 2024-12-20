@@ -5,11 +5,16 @@
 
   <ng-template #loadedTrips>
     <div *ngIf="trips && trips.length > 0; else noTrips">
-      <app-trip-panel [trip]="trip" *ngFor="let trip of trips" (click)="openTrip(trip)" class="block mb-4">
-        <ng-template #headerIcon>
+      <div class="grid auto-rows-fr gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+        <app-trip-panel
+          [trip]="trip"
+          (click)="openTrip(trip)"
+          *ngFor="let trip of trips"
+          class="full-height grow hover:cursor-pointer"
+        >
           <p-button icon="pi pi-trash" severity="secondary" text class="flex-none" (onClick)="removeTrip($event, trip)" />
-        </ng-template>
-      </app-trip-panel>
+        </app-trip-panel>
+      </div>
     </div>
 
     <ng-template #noTrips>

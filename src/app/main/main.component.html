@@ -1,59 +1,83 @@
-<div class="main flex flex-col h-screen">
-  <div>
-    <p-toolbar>
-      <ng-template #start>
-        <p-button icon="pi pi-bars" text severity="secondary" (click)="toggleSidebar()" />
+<div class="flex h-full w-full items-center justify-center">
+  <div class="main flex flex-col h-screen w-full max-w-7xl xl:border-x">
+    <!-- header -->
+    <div>
+      <p-toolbar>
+        <ng-template #start>
+          <p-button icon="pi pi-bars" text severity="secondary" (click)="toggleSidebar()" class="md:hidden" />
+          <span class="hidden md:flex ml-2"><span class="pi pi-globe pr-2 main__logo"></span>Travel Organizer</span>
+        </ng-template>
+        <ng-template #center>
+          <span class="flex md:hidden"><span class="pi pi-globe pr-2 main__logo"></span>Travel Organizer</span>
+        </ng-template>
+        <ng-template #end>
+          <p-button icon="pi pi-palette" text severity="secondary" (click)="toggleDarkMode()" />
+        </ng-template>
+      </p-toolbar>
+    </div>
+
+    <!-- regular menu -->
+
+    <div class="menu hidden md:block px-3">
+      <div class="flex">
+        <div>
+          <p-button icon="pi pi-th-large" text severity="secondary" [link]="true" routerLink="/dashboard" label="Dashboard" />
+        </div>
+        <div>
+          <p-button icon="pi pi-map" text severity="secondary" [link]="true" routerLink="/trips" label="Trips" />
+        </div>
+        <div class="grow flex justify-end">
+          <p-button icon="pi pi-cog" text severity="secondary" [link]="true" routerLink="/settings" label="Settings" />
+        </div>
+      </div>
+    </div>
+
+    <!-- content -->
+    <div class="grow p-3 md:p-5">
+      <router-outlet />
+    </div>
+
+    <!-- mobile menu -->
+    <p-drawer [(visible)]="sidebarVisible" header="Menu" class="md:hidden">
+      <div>
+        <p-button
+          icon="pi pi-th-large"
+          text
+          severity="secondary"
+          [link]="true"
+          routerLink="/dashboard"
+          label="Dashboard"
+          (onClick)="toggleSidebar()"
+        />
+      </div>
+      <div>
+        <p-button
+          icon="pi pi-map"
+          text
+          severity="secondary"
+          [link]="true"
+          routerLink="/trips"
+          label="Trips"
+          (onClick)="toggleSidebar()"
+        />
+      </div>
+      <div>
+        <p-button
+          icon="pi pi-cog"
+          text
+          severity="secondary"
+          [link]="true"
+          routerLink="/settings"
+          label="Settings"
+          (onClick)="toggleSidebar()"
+        />
+      </div>
+
+      <ng-template #footer>
+        <p-divider />
+        <p-button icon="pi pi-flag-fill" text severity="secondary" label="EN" />
+        <p-button icon="pi pi-flag" text severity="secondary" label="PL" />
       </ng-template>
-      <ng-template #center><span class="pi pi-globe pr-2 main__logo"></span>Travel Organizer</ng-template>
-      <ng-template #end>
-        <p-button icon="pi pi-palette" text severity="secondary" (click)="toggleDarkMode()" />
-      </ng-template>
-    </p-toolbar>
+    </p-drawer>
   </div>
-
-  <div class="grow p-3">
-    <router-outlet />
-  </div>
-
-  <p-drawer [(visible)]="sidebarVisible" header="Menu">
-    <div>
-      <p-button
-        icon="pi pi-th-large"
-        text
-        severity="secondary"
-        [link]="true"
-        routerLink="/dashboard"
-        label="Dashboard"
-        (onClick)="toggleSidebar()"
-      />
-    </div>
-    <div>
-      <p-button
-        icon="pi pi-map"
-        text
-        severity="secondary"
-        [link]="true"
-        routerLink="/trips"
-        label="Trips"
-        (onClick)="toggleSidebar()"
-      />
-    </div>
-    <div>
-      <p-button
-        icon="pi pi-cog"
-        text
-        severity="secondary"
-        [link]="true"
-        routerLink="/settings"
-        label="Settings"
-        (onClick)="toggleSidebar()"
-      />
-    </div>
-
-    <ng-template #footer>
-      <p-divider />
-      <p-button icon="pi pi-flag-fill" text severity="secondary" label="EN" />
-      <p-button icon="pi pi-flag" text severity="secondary" label="PL" />
-    </ng-template>
-  </p-drawer>
 </div>

@@ -5,9 +5,9 @@
 
   <ng-template #loadedTrip>
     <ng-container *ngIf="trip; else noTrip">
-      <div class="mb-4">
-        <app-trip-panel [trip]="trip">
-          <ng-template #headerIcon>
+      <div class="grid auto-rows-fr gap-4 grid-cols-1 md:grid-cols-2">
+        <div>
+          <app-trip-panel [trip]="trip">
             <p-button
               icon="pi pi-sliders-v"
               severity="secondary"
@@ -15,21 +15,21 @@
               class="flex-none"
               routerLink="/trips/update/{{ trip.id }}"
             />
-          </ng-template>
-        </app-trip-panel>
-      </div>
+          </app-trip-panel>
+        </div>
 
-      <div>
-        <p-panel class="trip__panel">
-          <ng-template pTemplate="header">
-            <div class="flex items-center gap-2 w-full">
-              <span class="grow font-bold">Trip items</span>
-              <p-button icon="pi pi-plus" severity="secondary" text class="flex-none" />
-            </div>
-          </ng-template>
+        <div>
+          <p-panel class="trip__panel full-height">
+            <ng-template pTemplate="header">
+              <div class="flex items-center gap-2 w-full">
+                <span class="grow font-bold">Trip items</span>
+                <p-button icon="pi pi-plus" severity="secondary" text class="flex-none" />
+              </div>
+            </ng-template>
 
-          <p class="m-0">Lorem ipsum dolor sit amet...</p>
-        </p-panel>
+            <p class="m-0">Lorem ipsum dolor sit amet...</p>
+          </p-panel>
+        </div>
       </div>
     </ng-container>
 

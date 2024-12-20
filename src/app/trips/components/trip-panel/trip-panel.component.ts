@@ -1,10 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component, ContentChild, Input, TemplateRef, OnInit, OnDestroy } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 
 import { Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
 
-import { CardModule } from 'primeng/card';
+import { PanelModule } from 'primeng/panel';
 
 import { Trip } from '../../models/trip.model';
 
@@ -17,7 +17,7 @@ import { SettingsState } from '../../../settings/store/settings.state';
   templateUrl: './trip-panel.component.html',
   styleUrl: './trip-panel.component.scss',
   standalone: true,
-  imports: [CommonModule, CardModule],
+  imports: [CommonModule, PanelModule],
 })
 export class TripPanelComponent implements OnInit, OnDestroy {
   @Input() trip!: Trip;
@@ -27,8 +27,6 @@ export class TripPanelComponent implements OnInit, OnDestroy {
 
   // data
   settings?: Settings;
-
-  @ContentChild('headerIcon') headerIcon?: TemplateRef<Element>;
 
   // other
   private subscription = new Subscription();

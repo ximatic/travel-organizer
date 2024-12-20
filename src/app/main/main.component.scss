@@ -1,5 +1,11 @@
 .main {
+  border-color: var(--p-toolbar-border-color);
+
   &__logo {
     font-size: 1.5rem;
   }
+}
+
+.menu {
+  border-bottom: 1px solid var(--p-toolbar-border-color);
 }

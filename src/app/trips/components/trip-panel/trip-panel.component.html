@@ -1,8 +1,8 @@
-<p-card>
-  <ng-template pTemplate="title">
+<p-panel>
+  <ng-template pTemplate="header">
     <div class="flex items-center gap-2 w-full">
-      <span class="grow">{{ trip.name }}</span>
-      <ng-container *ngIf="headerIcon" [ngTemplateOutlet]="headerIcon"></ng-container>
+      <span class="grow font-bold">{{ trip.name }}</span>
+      <ng-content></ng-content>
     </div>
   </ng-template>
   <p class="m-0 text-xs">
@@ -15,4 +15,4 @@
   <p class="m-0">
     {{ trip.description }}
   </p>
-</p-card>
+</p-panel>

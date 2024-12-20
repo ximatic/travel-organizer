@@ -6,19 +6,28 @@
 @tailwind typography;
 @tailwind utilities;
 
-@import "primeicons/primeicons.css";
+@import 'primeicons/primeicons.css';
 
-html, body {
+html,
+body {
   height: 100%;
 }
 
 body {
-  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
   margin: 0;
   padding: 0;
 }
 
 .p-toolbar {
+  border-top: 0 !important;
+  border-left: 0 !important;
+  border-right: 0 !important;
   border-radius: 0 !important;
 }
 
+.full-height {
+  .p-panel.p-component {
+    height: 100% !important;
+  }
+}
