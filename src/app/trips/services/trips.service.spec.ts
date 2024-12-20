@@ -4,7 +4,7 @@ import { switchMap } from 'rxjs';
 
 import { Trip, TripError } from '../models/trip.model';
 
-import { DEFAULT_TRIP_0, DEFAULT_TRIP_1, DEFAULT_TRIP_2 } from '../../common/mocks/constants';
+import { DEFAULT_TRIP_0, DEFAULT_TRIP_1, DEFAULT_TRIP_2 } from '../../common/mocks/trips.constants';
 
 import { TripsService } from './trips.service';
 

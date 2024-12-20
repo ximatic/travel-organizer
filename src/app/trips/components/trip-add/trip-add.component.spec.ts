@@ -6,7 +6,7 @@ import { ActivatedRoute, provideRouter } from '@angular/router';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { of } from 'rxjs';
 
-import { DEFAULT_INITIAL_TRIPS_STATE, DEFAULT_TRIP_1, DEFAULT_TRIP_2 } from '../../../common/mocks/constants';
+import { DEFAULT_INITIAL_TRIPS_STATE, DEFAULT_TRIP_1, DEFAULT_TRIP_2 } from '../../../common/mocks/trips.constants';
 
 import { TripAction } from '../../store/trips.actions';
 import { selectTrip, selectActionState } from '../../store/trips.selectors';

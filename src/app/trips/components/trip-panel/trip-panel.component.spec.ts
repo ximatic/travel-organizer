@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { provideMockStore } from '@ngrx/store/testing';
 
-import { DEFAULT_TRIP_0 } from '../../../common/mocks/constants';
+import { DEFAULT_TRIP_0 } from '../../../common/mocks/trips.constants';
 import { DEFAULT_INITIAL_SETTINGS_STATE } from '../../../common/mocks/settings.constants';
 
 import { TripPanelComponent } from './trip-panel.component';
