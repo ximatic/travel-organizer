@@ -71,14 +71,6 @@ describe('SettingsComponent', () => {
     expect(component.submitSettings()).toBeUndefined();
   });
 
-  it('requesting for settings works', () => {
-    const dispatchSpy = jest.spyOn(store, 'dispatch');
-
-    fixture.detectChanges();
-
-    expect(dispatchSpy).toHaveBeenCalledWith({ type: SettingsAction.LoadSettings });
-  });
-
   it('updating settings without changes works', () => {
     const dispatchSpy = jest.spyOn(store, 'dispatch');
 

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 
 import { Store } from '@ngrx/store';
@@ -12,10 +12,14 @@ import { PanelModule } from 'primeng/panel';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { ToastModule } from 'primeng/toast';
 
-import { ActionName, ActionState, TripsActionState, TripsState } from '../../store/trips.state';
-import { selectActionState, selectTrips } from '../../store/trips.selectors';
-import { tripActions } from '../../store/trips.actions';
 import { Trip } from '../../models/trip.model';
+import { tripActions } from '../../store/trips.actions';
+import { selectActionState, selectTrips } from '../../store/trips.selectors';
+import { ActionName, ActionState, TripsActionState, TripsState } from '../../store/trips.state';
+
+import { Settings } from '../../../settings/models/settings.model';
+import { selectSettings } from '../../../settings/store/settings.selectors';
+import { SettingsState } from '../../../settings/store/settings.state';
 
 import { TripPanelComponent } from '../trip-panel/trip-panel.component';
 
@@ -36,13 +40,15 @@ import { TripPanelComponent } from '../trip-panel/trip-panel.component';
   ],
   providers: [MessageService],
 })
-export class TripsComponent implements OnInit, OnDestroy {
+export class TripsComponent implements OnInit, AfterViewInit, OnDestroy {
   // ngrx
   trips$!: Observable<Trip[]>;
   actionState$!: Observable<TripsActionState | undefined>;
+  settings$!: Observable<Settings>;
 
   // data
   trips: Trip[] = [];
+  settings?: Settings;
   isLoading = true;
   loadingError?: string;
 
@@ -52,13 +58,17 @@ export class TripsComponent implements OnInit, OnDestroy {
   constructor(
     private router: Router,
     private messageService: MessageService,
-    private store: Store<TripsState>,
+    private storeTrips: Store<TripsState>,
+    private storeSettings: Store<SettingsState>,
   ) {}
 
   // lifecycle methods
 
   ngOnInit(): void {
     this.init();
+  }
+  ngAfterViewInit(): void {
+    this.initState();
   }
 
   ngOnDestroy(): void {
@@ -73,18 +83,17 @@ export class TripsComponent implements OnInit, OnDestroy {
 
   removeTrip(event: Event, trip: Trip): void {
     event.stopPropagation();
-    this.store.dispatch(tripActions.removeTrip({ trip }));
+    this.storeTrips.dispatch(tripActions.removeTrip({ trip }));
   }
 
   // initialization
 
   private init(): void {
-    this.initState();
     this.loadTrips();
   }
 
   private initState(): void {
-    this.trips$ = this.store.select(selectTrips);
+    this.trips$ = this.storeTrips.select(selectTrips);
     this.subscription.add(
       this.trips$.pipe(skip(1)).subscribe((trips: Trip[]) => {
         this.trips = trips;
@@ -92,7 +101,7 @@ export class TripsComponent implements OnInit, OnDestroy {
       }),
     );
 
-    this.actionState$ = this.store.select(selectActionState);
+    this.actionState$ = this.storeTrips.select(selectActionState);
     this.subscription.add(
       this.actionState$
         .pipe(
@@ -100,6 +109,15 @@ export class TripsComponent implements OnInit, OnDestroy {
           filter((actionState: TripsActionState | undefined) => this.filterActionState(actionState)),
         )
         .subscribe((actionState: TripsActionState | undefined) => this.handleActionState(actionState)),
+    );
+
+    // settings
+
+    this.settings$ = this.storeSettings.select(selectSettings);
+    this.subscription.add(
+      this.settings$.subscribe((settings: Settings) => {
+        this.settings = { ...settings };
+      }),
     );
   }
 
@@ -151,7 +169,7 @@ export class TripsComponent implements OnInit, OnDestroy {
   // trips
 
   private loadTrips(): void {
-    this.store.dispatch(tripActions.loadTrips());
+    this.storeTrips.dispatch(tripActions.loadTrips());
   }
 
   // toast

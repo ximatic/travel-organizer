@@ -6,9 +6,12 @@ import { provideRouter, Router } from '@angular/router';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 
 import { DEFAULT_INITIAL_TRIPS_STATE, DEFAULT_TRIP_1, DEFAULT_TRIP_2 } from '../../../common/mocks/constants';
+import { DEFAULT_MOCK_SETTINGS_1, DEFAULT_MOCK_SETTINGS_2 } from '../../../common/mocks/settings.constants';
 
 import { TripAction } from '../../store/trips.actions';
 import { selectTrips } from '../../store/trips.selectors';
+
+import { selectSettings } from '../../../settings/store/settings.selectors';
 
 import { TripsComponent } from './trips.component';
 
@@ -19,6 +22,7 @@ describe('TripsComponent', () => {
   let store: MockStore;
 
   let mockTripsSelector: any;
+  let mockSettingsSelector: any;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -30,6 +34,7 @@ describe('TripsComponent', () => {
     store = TestBed.inject(MockStore);
 
     mockTripsSelector = store.overrideSelector(selectTrips, []);
+    mockSettingsSelector = store.overrideSelector(selectSettings, DEFAULT_MOCK_SETTINGS_1);
   });
 
   beforeEach(() => {
@@ -72,5 +77,14 @@ describe('TripsComponent', () => {
     // TODO - add proper check for removeTrip
     component.removeTrip(new MouseEvent('click'), DEFAULT_TRIP_1);
     expect(component).toBeTruthy();
+  });
+
+  it('receiving Settings via selector works', () => {
+    fixture.detectChanges();
+
+    mockSettingsSelector.setResult(DEFAULT_MOCK_SETTINGS_2);
+    store.refreshState();
+
+    expect(component.settings).toEqual(DEFAULT_MOCK_SETTINGS_2);
   });
 });

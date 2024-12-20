@@ -71,7 +71,6 @@ export class SettingsComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit(): void {
-    this.store.dispatch(settingsActions.loadSettings());
     this.initState();
   }
 
@@ -100,9 +99,7 @@ export class SettingsComponent implements OnInit, AfterViewInit, OnDestroy {
   // initialization
 
   private init(): void {
-    //this.store.dispatch(settingsActions.loadSettings());
     this.initForm();
-    //this.initState();
   }
 
   private initState(): void {
