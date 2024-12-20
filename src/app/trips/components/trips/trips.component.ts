@@ -7,7 +7,6 @@ import { filter, Observable, skip, Subscription } from 'rxjs';
 
 import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
-import { CardModule } from 'primeng/card';
 import { PanelModule } from 'primeng/panel';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { ToastModule } from 'primeng/toast';
@@ -17,10 +16,6 @@ import { tripActions } from '../../store/trips.actions';
 import { selectActionState, selectTrips } from '../../store/trips.selectors';
 import { ActionName, ActionState, TripsActionState, TripsState } from '../../store/trips.state';
 
-import { Settings } from '../../../settings/models/settings.model';
-import { selectSettings } from '../../../settings/store/settings.selectors';
-import { SettingsState } from '../../../settings/store/settings.state';
-
 import { TripPanelComponent } from '../trip-panel/trip-panel.component';
 
 @Component({
@@ -28,27 +23,16 @@ import { TripPanelComponent } from '../trip-panel/trip-panel.component';
   templateUrl: './trips.component.html',
   styleUrl: './trips.component.scss',
   standalone: true,
-  imports: [
-    CommonModule,
-    RouterModule,
-    ButtonModule,
-    CardModule,
-    PanelModule,
-    ProgressSpinnerModule,
-    ToastModule,
-    TripPanelComponent,
-  ],
+  imports: [CommonModule, RouterModule, ButtonModule, PanelModule, ProgressSpinnerModule, ToastModule, TripPanelComponent],
   providers: [MessageService],
 })
 export class TripsComponent implements OnInit, AfterViewInit, OnDestroy {
   // ngrx
   trips$!: Observable<Trip[]>;
   actionState$!: Observable<TripsActionState | undefined>;
-  settings$!: Observable<Settings>;
 
   // data
   trips: Trip[] = [];
-  settings?: Settings;
   isLoading = true;
   loadingError?: string;
 
@@ -59,7 +43,6 @@ export class TripsComponent implements OnInit, AfterViewInit, OnDestroy {
     private router: Router,
     private messageService: MessageService,
     private storeTrips: Store<TripsState>,
-    private storeSettings: Store<SettingsState>,
   ) {}
 
   // lifecycle methods
@@ -109,15 +92,6 @@ export class TripsComponent implements OnInit, AfterViewInit, OnDestroy {
           filter((actionState: TripsActionState | undefined) => this.filterActionState(actionState)),
         )
         .subscribe((actionState: TripsActionState | undefined) => this.handleActionState(actionState)),
-    );
-
-    // settings
-
-    this.settings$ = this.storeSettings.select(selectSettings);
-    this.subscription.add(
-      this.settings$.subscribe((settings: Settings) => {
-        this.settings = { ...settings };
-      }),
     );
   }
 

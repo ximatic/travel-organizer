@@ -3,6 +3,8 @@ import { Injectable } from '@angular/core';
 import { delay, Observable, of, throwError } from 'rxjs';
 import * as uuid from 'uuid';
 
+import { DEFAULT_UX_DELAY } from '../../common/constants/common.constants';
+
 import { Trip, TripError } from '../models/trip.model';
 
 @Injectable({
@@ -71,7 +73,7 @@ export class TripsService {
     }
 
     // artificial delay to improve UX
-    return of(trip).pipe(delay(1000));
+    return of(trip).pipe(delay(DEFAULT_UX_DELAY));
   }
 
   saveTrips(trips: Trip[]): void {
@@ -80,7 +82,7 @@ export class TripsService {
 
   loadTrips(): Observable<Trip[]> {
     // artificial delay to improve UX
-    return of(this.fetchTrips()).pipe(delay(1000));
+    return of(this.fetchTrips()).pipe(delay(DEFAULT_UX_DELAY));
   }
 
   private getTripIndex(trips: Trip[], id?: string): number {

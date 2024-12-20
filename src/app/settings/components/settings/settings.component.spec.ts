@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
@@ -7,6 +7,7 @@ import { Observable, of } from 'rxjs';
 
 import { MessageService } from 'primeng/api';
 
+import { DEFAULT_UX_DELAY } from '../../../common/constants/common.constants';
 import {
   DEFAULT_INITIAL_SETTINGS_STATE,
   DEFAULT_MOCK_SETTINGS_1,
@@ -71,18 +72,23 @@ describe('SettingsComponent', () => {
     expect(component.submitSettings()).toBeUndefined();
   });
 
-  it('updating settings without changes works', () => {
+  it('updating settings without changes works', fakeAsync(() => {
     const dispatchSpy = jest.spyOn(store, 'dispatch');
 
     fixture.detectChanges();
 
     expect(component.settingsForm.valid).toBeTruthy();
     component.submitSettings();
+    expect(component.isSubmitInProgress).toBeTruthy();
+
+    // artificial delay as in component
+    tick(DEFAULT_UX_DELAY);
+
     expect(dispatchSpy).toHaveBeenLastCalledWith({
       type: SettingsAction.UpdateSettings,
       settings: DEFAULT_MOCK_SETTINGS_1,
     });
-  });
+  }));
 
   it('receiving Settings via selector works', () => {
     fixture.detectChanges();

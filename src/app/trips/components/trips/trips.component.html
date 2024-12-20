@@ -5,30 +5,11 @@
 
   <ng-template #loadedTrips>
     <div *ngIf="trips && trips.length > 0; else noTrips">
-      <!-- <app-trip-panel [trip]="trip" *ngFor="let trip of trips" (click)="openTrip(trip)" class="block mb-4">
+      <app-trip-panel [trip]="trip" *ngFor="let trip of trips" (click)="openTrip(trip)" class="block mb-4">
         <ng-template #headerIcon>
           <p-button icon="pi pi-trash" severity="secondary" text class="flex-none" (onClick)="removeTrip($event, trip)" />
         </ng-template>
-      </app-trip-panel> -->
-
-      <p-card *ngFor="let trip of trips" (click)="openTrip(trip)" class="block mb-4">
-        <ng-template pTemplate="title">
-          <div class="flex items-center gap-2 w-full">
-            <span class="grow">{{ trip.name }}</span>
-            <p-button icon="pi pi-trash" severity="secondary" text class="flex-none" (onClick)="removeTrip($event, trip)" />
-          </div>
-        </ng-template>
-        <p class="m-0 text-xs">
-          <span *ngIf="trip.location">{{ trip.location }}</span>
-          <span *ngIf="trip.location && trip.startDate && trip.endDate" class="px-1">|</span>
-          <span *ngIf="trip.startDate && trip.endDate">
-            {{ trip.startDate | date: settings?.dateFormat }} - {{ trip.endDate | date: settings?.dateFormat }}
-          </span>
-        </p>
-        <p class="m-0">
-          {{ trip.description }}
-        </p>
-      </p-card>
+      </app-trip-panel>
     </div>
 
     <ng-template #noTrips>

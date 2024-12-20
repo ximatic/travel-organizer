@@ -4,7 +4,7 @@ import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validator
 import { ActivatedRoute, Params, Router, RouterModule } from '@angular/router';
 
 import { Store } from '@ngrx/store';
-import { filter, Observable, Subscription } from 'rxjs';
+import { delay, filter, Observable, of, Subscription } from 'rxjs';
 
 import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
@@ -14,6 +14,8 @@ import { InputTextModule } from 'primeng/inputtext';
 import { PanelModule } from 'primeng/panel';
 import { TextareaModule } from 'primeng/textarea';
 import { ToastModule } from 'primeng/toast';
+
+import { DEFAULT_UX_DELAY } from '../../../common/constants/common.constants';
 
 import { ActionName, ActionState, TripsActionState, TripsState } from '../../store/trips.state';
 import { selectActionState } from '../../store/trips.selectors';
@@ -45,7 +47,10 @@ export class TripAddComponent implements OnInit, OnDestroy {
 
   // trip
   trip?: Trip | null;
+
+  // state flags
   isLoading = true;
+  isSubmitInProgress = false;
 
   // form
   tripForm!: FormGroup;
@@ -92,16 +97,22 @@ export class TripAddComponent implements OnInit, OnDestroy {
       return;
     }
 
-    if (this.trip) {
-      const trip = {
-        ...this.trip,
-        ...this.processFormValue(),
-      };
-      this.store.dispatch(tripActions.updateTrip({ trip }));
-    } else {
-      const trip = this.processFormValue();
-      this.store.dispatch(tripActions.createTrip({ trip }));
-    }
+    this.isSubmitInProgress = true;
+    // artificial delay to improve UX
+    of({})
+      .pipe(delay(DEFAULT_UX_DELAY))
+      .subscribe(() => {
+        if (this.trip) {
+          const trip = {
+            ...this.trip,
+            ...this.processFormValue(),
+          };
+          this.store.dispatch(tripActions.updateTrip({ trip }));
+        } else {
+          const trip = this.processFormValue();
+          this.store.dispatch(tripActions.createTrip({ trip }));
+        }
+      });
   }
 
   // initialization
@@ -177,6 +188,7 @@ export class TripAddComponent implements OnInit, OnDestroy {
         this.showToast('error', 'Error', actionState?.message);
         break;
     }
+    this.isSubmitInProgress = true;
   }
 
   private handleUpdateTrip(actionState: TripsActionState): void {
@@ -191,6 +203,7 @@ export class TripAddComponent implements OnInit, OnDestroy {
         this.showToast('error', 'Error', actionState?.message);
         break;
     }
+    this.isSubmitInProgress = true;
   }
 
   // form

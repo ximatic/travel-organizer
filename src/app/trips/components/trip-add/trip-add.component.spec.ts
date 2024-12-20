@@ -1,11 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute, provideRouter } from '@angular/router';
 
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { of } from 'rxjs';
 
+import { DEFAULT_UX_DELAY } from '../../../common/constants/common.constants';
 import { DEFAULT_INITIAL_TRIPS_STATE, DEFAULT_TRIP_1, DEFAULT_TRIP_2 } from '../../../common/mocks/trips.constants';
 
 import { TripAction } from '../../store/trips.actions';
@@ -58,7 +59,7 @@ describe('TripAddComponent', () => {
       expect(dispatchSpy).toHaveBeenCalledTimes(0);
     });
 
-    it('submitTrip works for a new trip ', () => {
+    it('submitTrip works for a new trip ', fakeAsync(() => {
       const dispatchSpy = jest.spyOn(store, 'dispatch');
 
       fixture.detectChanges();
@@ -69,11 +70,16 @@ describe('TripAddComponent', () => {
 
       expect(component.tripForm.invalid).toBeFalsy();
       component.submitTrip();
+      expect(component.isSubmitInProgress).toBeTruthy();
+
+      // artificial delay as in component
+      tick(DEFAULT_UX_DELAY);
+
       expect(dispatchSpy).toHaveBeenCalledWith({
         type: TripAction.CreateTrip,
         trip: { name: DEFAULT_TRIP_1.name, location: '', description: '', startDate: undefined, endDate: undefined },
       });
-    });
+    }));
   });
 
   describe('submiting existing trip', () => {
@@ -134,7 +140,7 @@ describe('TripAddComponent', () => {
       expect(component.isLoading).toBeFalsy();
     });
 
-    it('submitTrip works for an existing trip ', () => {
+    it('submitTrip works for an existing trip ', fakeAsync(() => {
       const dispatchSpy = jest.spyOn(store, 'dispatch');
 
       fixture.detectChanges();
@@ -147,6 +153,11 @@ describe('TripAddComponent', () => {
 
       expect(component.tripForm.invalid).toBeFalsy();
       component.submitTrip();
+      expect(component.isSubmitInProgress).toBeTruthy();
+
+      // artificial delay as in component
+      tick(DEFAULT_UX_DELAY);
+
       expect(dispatchSpy).toHaveBeenLastCalledWith({
         type: TripAction.UpdateTrip,
         trip: {
@@ -158,6 +169,6 @@ describe('TripAddComponent', () => {
           endDate: undefined,
         },
       });
-    });
+    }));
   });
 });

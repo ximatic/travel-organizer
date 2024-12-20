@@ -7,7 +7,7 @@
     </ng-template>
 
     <div [formGroup]="settingsForm">
-      <div class="mb-2">
+      <div class="mb-4">
         <p-floatlabel variant="on">
           <p-select
             formControlName="language"
@@ -21,7 +21,7 @@
         </p-floatlabel>
         <small *ngIf="nameControl?.invalid && nameControl?.dirty" class="ml-1 trip__form-error">Name is required</small>
       </div>
-      <div class="mb-2">
+      <div class="mb-3">
         <p-floatlabel variant="on">
           <p-select
             formControlName="dateFormat"
@@ -34,7 +34,7 @@
           <label for="dateFormat">Date Format</label>
         </p-floatlabel>
       </div>
-      <div class="mb-2">
+      <div class="mb-3">
         <p-floatlabel variant="on">
           <p-select
             formControlName="timeFormat"
@@ -47,7 +47,7 @@
           <label for="timeFormat">Time Format</label>
         </p-floatlabel>
       </div>
-      <div class="mb-2">
+      <div class="mb-4">
         <p-floatlabel variant="on">
           <p-select formControlName="theme" [options]="themes" optionLabel="name" optionValue="code" id="theme" class="w-full" />
           <label for="theme">Theme</label>
@@ -59,10 +59,11 @@
           pButton
           pRipple
           severity="primary"
-          [disabled]="settingsForm.invalid"
+          [disabled]="settingsForm.invalid || isSubmitInProgress"
           class="block w-full"
           (click)="submitSettings()"
         >
+          <i class="pi pi-spin pi-spinner" *ngIf="isSubmitInProgress"></i>
           <span pButtonLabel>Update</span>
         </button>
       </div>

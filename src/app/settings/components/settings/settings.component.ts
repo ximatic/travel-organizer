@@ -3,7 +3,7 @@ import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { Store } from '@ngrx/store';
-import { Observable, Subscription } from 'rxjs';
+import { delay, Observable, of, Subscription } from 'rxjs';
 
 import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
@@ -13,6 +13,8 @@ import { InputTextModule } from 'primeng/inputtext';
 import { PanelModule } from 'primeng/panel';
 import { ToastModule } from 'primeng/toast';
 import { SelectModule } from 'primeng/select';
+
+import { DEFAULT_UX_DELAY } from '../../../common/constants/common.constants';
 
 import { SettingsActionState, SettingsActionType, SettiongsActionName } from '../../store/settings.state';
 import { selectSettings, selectSettingsActionState } from '../../store/settings.selectors';
@@ -48,6 +50,9 @@ export class SettingsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // form
   settingsForm!: FormGroup;
+
+  // state flags
+  isSubmitInProgress = false;
 
   // form options
   languages = Object.entries(SettingsLanguage).map(([key, value]) => ({ name: key, code: value }));
@@ -92,8 +97,14 @@ export class SettingsComponent implements OnInit, AfterViewInit, OnDestroy {
       return;
     }
 
-    const settings = this.processFormValue();
-    this.store.dispatch(settingsActions.updateSettings({ settings }));
+    this.isSubmitInProgress = true;
+    // artificial delay to improve UX
+    of({})
+      .pipe(delay(DEFAULT_UX_DELAY))
+      .subscribe(() => {
+        const settings = this.processFormValue();
+        this.store.dispatch(settingsActions.updateSettings({ settings }));
+      });
   }
 
   // initialization
@@ -108,6 +119,7 @@ export class SettingsComponent implements OnInit, AfterViewInit, OnDestroy {
       this.settings$.subscribe((settings: Settings) => {
         this.settings = { ...settings };
         this.fillForm();
+        this.isSubmitInProgress = false;
       }),
     );
 
@@ -155,6 +167,7 @@ export class SettingsComponent implements OnInit, AfterViewInit, OnDestroy {
         this.showToast('error', 'Error', actionState?.message);
         break;
     }
+    this.isSubmitInProgress = false;
   }
 
   // form
