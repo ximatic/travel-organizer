@@ -1,13 +1,17 @@
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 
+import { provideMockStore } from '@ngrx/store/testing';
+
+import { DEFAULT_INITIAL_SETTINGS_STATE } from './common/mocks/settings.constants';
+
 import { AppComponent } from './app.component';
 
 describe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [AppComponent],
-      providers: [provideRouter([])],
+      providers: [provideRouter([]), provideMockStore({ initialState: DEFAULT_INITIAL_SETTINGS_STATE })],
     }).compileComponents();
   });
 

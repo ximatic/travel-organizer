@@ -1,0 +1,73 @@
+<div class="settings">
+  <p-panel class="settings__panel">
+    <ng-template pTemplate="header">
+      <div class="flex grid justify-items-center w-full">
+        <span class="grow font-bold">Settings</span>
+      </div>
+    </ng-template>
+
+    <div [formGroup]="settingsForm">
+      <div class="mb-2">
+        <p-floatlabel variant="on">
+          <p-select
+            formControlName="language"
+            [options]="languages"
+            optionLabel="name"
+            optionValue="code"
+            id="language"
+            class="w-full"
+          />
+          <label for="language">Language</label>
+        </p-floatlabel>
+        <small *ngIf="nameControl?.invalid && nameControl?.dirty" class="ml-1 trip__form-error">Name is required</small>
+      </div>
+      <div class="mb-2">
+        <p-floatlabel variant="on">
+          <p-select
+            formControlName="dateFormat"
+            [options]="dateFormats"
+            optionLabel="name"
+            optionValue="code"
+            id="dateFormat"
+            class="w-full"
+          />
+          <label for="dateFormat">Date Format</label>
+        </p-floatlabel>
+      </div>
+      <div class="mb-2">
+        <p-floatlabel variant="on">
+          <p-select
+            formControlName="timeFormat"
+            [options]="timeFormats"
+            optionLabel="name"
+            optionValue="code"
+            id="timeFormat"
+            class="w-full"
+          />
+          <label for="timeFormat">Time Format</label>
+        </p-floatlabel>
+      </div>
+      <div class="mb-2">
+        <p-floatlabel variant="on">
+          <p-select formControlName="theme" [options]="themes" optionLabel="name" optionValue="code" id="theme" class="w-full" />
+          <label for="theme">Theme</label>
+        </p-floatlabel>
+      </div>
+
+      <div class="mt-2">
+        <button
+          pButton
+          pRipple
+          severity="primary"
+          [disabled]="settingsForm.invalid"
+          class="block w-full"
+          (click)="submitSettings()"
+        >
+          <span pButtonLabel>Update</span>
+        </button>
+      </div>
+    </div>
+  </p-panel>
+
+  <p-toast position="bottom-center" key="toast" />
+</div>
