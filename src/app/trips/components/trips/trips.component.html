@@ -5,7 +5,7 @@
 
   <ng-template #loadedTrips>
     <div *ngIf="trips && trips.length > 0; else noTrips">
-      <div class="grid auto-rows-fr gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+      <div class="grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
         <app-trip-panel
           [trip]="trip"
           (click)="openTrip(trip)"

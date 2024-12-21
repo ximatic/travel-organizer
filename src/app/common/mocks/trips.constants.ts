@@ -1,4 +1,4 @@
-import { Trip } from '../../trips/models/trip.model';
+import { Trip, TripItem } from '../../trips/models/trip.model';
 import { TripsState } from '../../trips/store/trips.state';
 
 // trip mocks
@@ -16,6 +16,7 @@ export const DEFAULT_TRIP_2: Trip = {
   id: 'test-id-2',
   name: 'Test Trip #2',
   description: 'Test Description #2',
+  items: [],
 };
 
 export const DEFAULT_TRIP_3: Trip = {
@@ -32,6 +33,25 @@ export const DEFAULT_TRIP_4: Trip = {
   location: 'Berlin',
   startDate: new Date(),
   endDate: new Date(),
+};
+
+// trip item mocks
+
+export const DEFAULT_TRIP_ITEM_0: TripItem = {
+  name: 'Test Trip Item #0',
+  checked: false,
+};
+
+export const DEFAULT_TRIP_ITEM_1: TripItem = {
+  id: 'test-item-id-1',
+  name: 'Test Trip Item #1',
+  checked: false,
+};
+
+export const DEFAULT_TRIP_ITEM_2: TripItem = {
+  id: 'test-item-id-2',
+  name: 'Test Trip Item #2',
+  checked: false,
 };
 
 // store mocks

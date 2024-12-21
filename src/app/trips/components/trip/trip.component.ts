@@ -18,6 +18,7 @@ import { selectTripsEvent } from '../../store/trips.selectors';
 import { TripsEvent, TripsEventName, TripsEventType, TripsState } from '../../store/trips.state';
 
 import { TripPanelComponent } from '../trip-panel/trip-panel.component';
+import { TripItemsComponent } from '../trip-items/trip-items.component';
 
 @Component({
   selector: 'app-trip',
@@ -32,6 +33,7 @@ import { TripPanelComponent } from '../trip-panel/trip-panel.component';
     PanelModule,
     ProgressSpinnerModule,
     ToastModule,
+    TripItemsComponent,
     TripPanelComponent,
   ],
   providers: [MessageService],
@@ -42,6 +44,8 @@ export class TripComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // trip
   trip!: Trip | null;
+
+  // state flags
   isLoading = true;
 
   private subscription = new Subscription();

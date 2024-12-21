@@ -6,6 +6,9 @@ export enum TripsEventName {
   Create = 'create-trip',
   Update = 'update-trip',
   Remove = 'remove-trip',
+  CreateItem = 'create-trip-item',
+  CheckItem = 'check-trip-item',
+  RemoveItem = 'remove-trip-item',
 }
 
 export enum TripsEventType {

@@ -70,13 +70,6 @@ export class TripAddComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.init();
-    this.subscription.add(
-      this.route.params.subscribe((params: Params) => {
-        if (params['id']) {
-          this.store.dispatch(tripActions.loadTrip({ id: params['id'] }));
-        }
-      }),
-    );
   }
 
   ngOnDestroy(): void {
@@ -120,6 +113,13 @@ export class TripAddComponent implements OnInit, OnDestroy {
   private init(): void {
     this.initForm();
     this.initState();
+    this.subscription.add(
+      this.route.params.subscribe((params: Params) => {
+        if (params['id']) {
+          this.store.dispatch(tripActions.loadTrip({ id: params['id'] }));
+        }
+      }),
+    );
   }
 
   private initState(): void {

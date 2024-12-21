@@ -4,7 +4,14 @@ import { switchMap } from 'rxjs';
 
 import { Trip, TripError } from '../models/trip.model';
 
-import { DEFAULT_TRIP_0, DEFAULT_TRIP_1, DEFAULT_TRIP_2 } from '../../common/mocks/trips.constants';
+import {
+  DEFAULT_TRIP_0,
+  DEFAULT_TRIP_1,
+  DEFAULT_TRIP_2,
+  DEFAULT_TRIP_ITEM_0,
+  DEFAULT_TRIP_ITEM_1,
+  DEFAULT_TRIP_ITEM_2,
+} from '../../common/mocks/trips.constants';
 
 import { TripsService } from './trips.service';
 
@@ -177,6 +184,97 @@ describe('TripsService', () => {
       .subscribe({
         error: (error: TripError) => {
           expect(error).toEqual(new TripError("Trip with provided ID doesn't exist"));
+          done();
+        },
+      });
+  });
+
+  // createTripItem
+
+  it('creating trip item without id works', (done) => {
+    service
+      .createTrip(DEFAULT_TRIP_1)
+      .pipe(switchMap(() => service.createTripItem(DEFAULT_TRIP_1, DEFAULT_TRIP_ITEM_0)))
+      .subscribe((trip: Trip) => {
+        expect(trip.items?.length).toEqual(1);
+        expect(trip.items && trip.items[0]?.name).toEqual(DEFAULT_TRIP_ITEM_0.name);
+        expect(trip.items && trip.items[0]?.checked).toEqual(DEFAULT_TRIP_ITEM_0.checked);
+        done();
+      });
+  });
+
+  it('creating trip item with id works', (done) => {
+    service
+      .createTrip(DEFAULT_TRIP_2)
+      .pipe(switchMap(() => service.createTripItem(DEFAULT_TRIP_2, DEFAULT_TRIP_ITEM_1)))
+      .subscribe((trip: Trip) => {
+        expect(trip.items).toEqual([DEFAULT_TRIP_ITEM_1]);
+        done();
+      });
+  });
+
+  // checkTripItem
+
+  it('toggling trip item works', (done) => {
+    service
+      .createTrip(DEFAULT_TRIP_1)
+      .pipe(switchMap(() => service.createTripItem(DEFAULT_TRIP_1, DEFAULT_TRIP_ITEM_1)))
+      .pipe(switchMap((trip: Trip) => service.checkTripItem(trip, DEFAULT_TRIP_ITEM_1)))
+      .subscribe((trip: Trip) => {
+        expect(trip.items?.length).toEqual(1);
+        expect(trip.items && trip.items[0]?.name).toEqual(DEFAULT_TRIP_ITEM_1.name);
+        expect(trip.items && trip.items[0]?.checked).toEqual(!DEFAULT_TRIP_ITEM_1.checked);
+        done();
+      });
+  });
+
+  it("toggling trip item for non existing trip item doesn't work", (done) => {
+    service
+      .createTrip(DEFAULT_TRIP_1)
+      .pipe(switchMap(() => service.createTripItem(DEFAULT_TRIP_1, DEFAULT_TRIP_ITEM_1)))
+      .pipe(switchMap((trip: Trip) => service.checkTripItem(trip, DEFAULT_TRIP_ITEM_2)))
+      .subscribe({
+        error: (error: TripError) => {
+          expect(error).toEqual(new TripError("Trip Item with provided ID doesn't exist"));
+          done();
+        },
+      });
+  });
+
+  // removeTripItem
+
+  it('removing trip item defined works', (done) => {
+    service
+      .createTrip(DEFAULT_TRIP_1)
+      .pipe(switchMap(() => service.createTripItem(DEFAULT_TRIP_1, DEFAULT_TRIP_ITEM_1)))
+      .pipe(switchMap((trip: Trip) => service.removeTripItem(trip, DEFAULT_TRIP_ITEM_1)))
+      .subscribe((trip: Trip) => {
+        expect(trip.items?.length).toEqual(0);
+        done();
+      });
+  });
+
+  it("removing trip item without id doesn't works", (done) => {
+    service
+      .createTrip(DEFAULT_TRIP_1)
+      .pipe(switchMap(() => service.createTripItem(DEFAULT_TRIP_1, DEFAULT_TRIP_ITEM_1)))
+      .pipe(switchMap((trip: Trip) => service.removeTripItem(trip, DEFAULT_TRIP_ITEM_0)))
+      .subscribe({
+        error: (error: TripError) => {
+          expect(error).toEqual(new TripError('Trip Item ID is not provided'));
+          done();
+        },
+      });
+  });
+
+  it("removing trip item for non existing trip item doesn't work", (done) => {
+    service
+      .createTrip(DEFAULT_TRIP_1)
+      .pipe(switchMap(() => service.createTripItem(DEFAULT_TRIP_1, DEFAULT_TRIP_ITEM_1)))
+      .pipe(switchMap((trip: Trip) => service.removeTripItem(trip, DEFAULT_TRIP_ITEM_2)))
+      .subscribe({
+        error: (error: TripError) => {
+          expect(error).toEqual(new TripError("Trip Item with provided ID doesn't exist"));
           done();
         },
       });

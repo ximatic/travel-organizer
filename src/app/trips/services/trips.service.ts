@@ -5,13 +5,15 @@ import * as uuid from 'uuid';
 
 import { DEFAULT_UX_DELAY } from '../../common/constants/common.constants';
 
-import { Trip, TripError } from '../models/trip.model';
+import { Trip, TripError, TripItem } from '../models/trip.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TripsService {
   private storageKey = 'to-trips';
+
+  // trip
 
   createTrip(trip: Trip): Observable<Trip> {
     const newTrip = { ...trip };
@@ -76,6 +78,58 @@ export class TripsService {
     return of(trip).pipe(delay(DEFAULT_UX_DELAY));
   }
 
+  // trip items
+
+  createTripItem(trip: Trip, tripItem: TripItem): Observable<Trip> {
+    const updatedTrip = { ...trip };
+    const newTripItem = { ...tripItem };
+    if (!newTripItem.id) {
+      newTripItem.id = uuid.v4();
+    }
+
+    if (!updatedTrip.items) {
+      updatedTrip.items = [];
+    } else {
+      updatedTrip.items = [...(trip.items as TripItem[])];
+    }
+    updatedTrip.items.push(newTripItem);
+
+    return this.updateTrip(updatedTrip);
+  }
+
+  checkTripItem(trip: Trip, tripItem: TripItem): Observable<Trip> {
+    const updatedTrip = { ...trip };
+    const updatedTripItem = { ...tripItem };
+
+    updatedTripItem.checked = !updatedTripItem.checked;
+    updatedTrip.items = [...(trip.items as TripItem[])];
+
+    const index = this.getTripItemIndex(updatedTrip.items, tripItem.id);
+    if (index > -1) {
+      updatedTrip.items[index] = updatedTripItem;
+      return this.updateTrip(updatedTrip);
+    } else {
+      return throwError(() => new TripError("Trip Item with provided ID doesn't exist"));
+    }
+  }
+
+  removeTripItem(trip: Trip, tripItem: TripItem): Observable<Trip> {
+    if (!tripItem.id) {
+      return throwError(() => new TripError('Trip Item ID is not provided'));
+    }
+
+    const updatedTrip = { ...trip, items: [...(trip.items as TripItem[])] };
+    const index = this.getTripItemIndex(updatedTrip.items, tripItem.id);
+    if (index > -1) {
+      updatedTrip.items.splice(index, 1);
+      return this.updateTrip(updatedTrip);
+    } else {
+      return throwError(() => new TripError("Trip Item with provided ID doesn't exist"));
+    }
+  }
+
+  // base
+
   saveTrips(trips: Trip[]): void {
     localStorage.setItem(this.storageKey, JSON.stringify(trips));
   }
@@ -83,6 +137,10 @@ export class TripsService {
   loadTrips(): Observable<Trip[]> {
     // artificial delay to improve UX
     return of(this.fetchTrips()).pipe(delay(DEFAULT_UX_DELAY));
+  }
+
+  private getTripItemIndex(tripItems: TripItem[], id?: string): number {
+    return tripItems.findIndex((tripItem: TripItem) => tripItem.id == id);
   }
 
   private getTripIndex(trips: Trip[], id?: string): number {

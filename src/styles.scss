@@ -26,8 +26,10 @@ body {
   border-radius: 0 !important;
 }
 
-.full-height {
-  .p-panel.p-component {
-    height: 100% !important;
+@media (min-width: 768px) {
+  .full-height {
+    .p-panel.p-component {
+      height: 100% !important;
+    }
   }
 }

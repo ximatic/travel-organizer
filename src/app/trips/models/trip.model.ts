@@ -12,6 +12,7 @@ export class TripError extends Error {
 export interface TripItem {
   id?: string;
   name: string;
+  checked: boolean;
   description?: string;
   type?: string; // clothes, electronics, shoes, accessories, etc.
   size?: string;

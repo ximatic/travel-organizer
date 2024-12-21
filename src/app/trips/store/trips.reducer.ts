@@ -1,6 +1,6 @@
 import { createReducer, on } from '@ngrx/store';
 
-import { tripActions } from './trips.actions';
+import { tripActions, tripItemActions } from './trips.actions';
 import { TripsEventName, TripsEventType, TripsState } from './trips.state';
 
 import { Trip } from '../models/trip.model';
@@ -151,6 +151,81 @@ export const tripsReducer = createReducer(
       ...state,
       event: {
         name: TripsEventName.Remove,
+        type: TripsEventType.Error,
+        message: error,
+      },
+    }),
+  ),
+  // create trip item
+  on(
+    tripItemActions.createTripItemSuccess,
+    (state: TripsState, { trip, message }): TripsState => ({
+      ...state,
+      trips: state.trips.map((t: Trip) => (trip.id === t.id ? trip : t)),
+      event: {
+        name: TripsEventName.CreateItem,
+        type: TripsEventType.Success,
+        message: message,
+        trip: trip,
+      },
+    }),
+  ),
+  on(
+    tripItemActions.createTripItemError,
+    (state: TripsState, { error }): TripsState => ({
+      ...state,
+      event: {
+        name: TripsEventName.CreateItem,
+        type: TripsEventType.Error,
+        message: error,
+      },
+    }),
+  ),
+  // check trip item
+  on(
+    tripItemActions.checkTripItemSuccess,
+    (state: TripsState, { trip, message }): TripsState => ({
+      ...state,
+      trips: state.trips.map((t: Trip) => (trip.id === t.id ? trip : t)),
+      event: {
+        name: TripsEventName.CheckItem,
+        type: TripsEventType.Success,
+        message: message,
+        trip: trip,
+      },
+    }),
+  ),
+  on(
+    tripItemActions.checkTripItemError,
+    (state: TripsState, { error }): TripsState => ({
+      ...state,
+      event: {
+        name: TripsEventName.CheckItem,
+        type: TripsEventType.Error,
+        message: error,
+      },
+    }),
+  ),
+  // remove trip item
+  on(
+    tripItemActions.removeTripItemSuccess,
+    (state: TripsState, { trip, message }): TripsState => ({
+      ...state,
+      trips: state.trips.map((t: Trip) => (trip.id === t.id ? trip : t)),
+      event: {
+        name: TripsEventName.RemoveItem,
+        type: TripsEventType.Success,
+        message: message,
+        trip: trip,
+      },
+    }),
+  ),
+  on(
+    tripItemActions.removeTripItemError,
+    (state: TripsState, { error }): TripsState => ({
+      ...state,
+      event: {
+        name: TripsEventName.RemoveItem,
         type: TripsEventType.Error,
         message: error,
       },

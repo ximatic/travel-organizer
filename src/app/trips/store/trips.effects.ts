@@ -5,12 +5,22 @@ import { of } from 'rxjs';
 import { map, exhaustMap, catchError } from 'rxjs/operators';
 
 import { TripsService } from '../services/trips.service';
-import { ActionPropsId, ActionPropsTrip, TripAction, tripActions } from './trips.actions';
+import {
+  ActionPropsId,
+  ActionPropsTrip,
+  ActionPropsTripItem,
+  TripAction,
+  tripActions,
+  TripItemAction,
+  tripItemActions,
+} from './trips.actions';
 
 import { Trip, TripError } from '../models/trip.model';
 
 @Injectable()
 export class TripsEffects {
+  // trip
+
   loadTrips$ = createEffect(() =>
     this.actions$.pipe(
       ofType(TripAction.LoadTrips),
@@ -71,6 +81,68 @@ export class TripsEffects {
           map((trip: Trip) => tripActions.removeTripSuccess({ trip, message: `Trip (${trip.name}) removed` })),
           catchError((error: TripError) =>
             of(tripActions.removeTripError({ error: `Can't remove trip (${error.trip?.name}). Please try again later.` })),
+          ),
+        ),
+      ),
+    ),
+  );
+
+  // trip item
+
+  createTripItem$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(TripItemAction.CreateTripItem),
+      exhaustMap((action: ActionPropsTripItem) =>
+        this.tripsService.createTripItem(action.trip, action.tripItem).pipe(
+          map((trip: Trip) =>
+            tripItemActions.createTripItemSuccess({ trip, message: `Trip Item (${action.tripItem.name}) created` }),
+          ),
+          catchError(() =>
+            of(
+              tripItemActions.createTripItemError({
+                error: `Can't create Trip Item (${action.tripItem.name}). Please try again later.`,
+              }),
+            ),
+          ),
+        ),
+      ),
+    ),
+  );
+
+  checkTripItem$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(TripItemAction.CheckTripItem),
+      exhaustMap((action: ActionPropsTripItem) =>
+        this.tripsService.checkTripItem(action.trip, action.tripItem).pipe(
+          map((trip: Trip) =>
+            tripItemActions.checkTripItemSuccess({ trip, message: `Trip Item (${action.tripItem.name}) toggled` }),
+          ),
+          catchError(() =>
+            of(
+              tripItemActions.checkTripItemError({
+                error: `Can't toggle Trip Item (${action.tripItem.name}). Please try again later.`,
+              }),
+            ),
+          ),
+        ),
+      ),
+    ),
+  );
+
+  removeTripItem$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(TripItemAction.RemoveTripItem),
+      exhaustMap((action: ActionPropsTripItem) =>
+        this.tripsService.removeTripItem(action.trip, action.tripItem).pipe(
+          map((trip: Trip) =>
+            tripItemActions.removeTripItemSuccess({ trip, message: `Trip Item (${action.tripItem.name}) removed` }),
+          ),
+          catchError(() =>
+            of(
+              tripItemActions.removeTripItemError({
+                error: `Can't remove Trip Item (${action.tripItem.name}). Please try again later.`,
+              }),
+            ),
           ),
         ),
       ),

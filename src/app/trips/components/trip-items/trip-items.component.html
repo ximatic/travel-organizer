@@ -1,0 +1,43 @@
+<p-panel class="trip__panel full-height">
+  <ng-template pTemplate="header">
+    <div class="flex items-center gap-2 w-full">
+      <span class="grow font-bold">Trip items</span>
+    </div>
+  </ng-template>
+  <div>
+    <div class="trip__item flex" *ngFor="let item of trip.items">
+      <div>
+        <p-button
+          [icon]="item.checked ? 'pi pi-star-fill' : 'pi pi-star'"
+          severity="contrast"
+          text
+          (onClick)="checkTripItem(item)"
+        />
+      </div>
+      <div class="flex items-center grow">{{ item.name }}</div>
+      <div>
+        <p-button icon="pi pi-times-circle" severity="danger" text (onClick)="removeTripItem(item)" />
+      </div>
+    </div>
+  </div>
+  <p-divider class="mt-4 mb-4" />
+  <div [formGroup]="tripItemForm" class="flex gap-2">
+    <div class="grow">
+      <p-floatlabel variant="on">
+        <input pInputText id="name" pSize="small" type="text" formControlName="name" class="w-full" />
+        <label for="name">Name</label>
+      </p-floatlabel>
+    </div>
+    <div>
+      <p-button
+        icon="pi pi-plus"
+        severity="primary"
+        class="flex-none"
+        [disabled]="tripItemForm.invalid || isSubmitInProgress"
+        (onClick)="submitTripItem()"
+      />
+    </div>
+  </div>
+</p-panel>
+
+<p-toast position="bottom-center" key="toast" />

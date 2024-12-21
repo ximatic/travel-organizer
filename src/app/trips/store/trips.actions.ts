@@ -1,6 +1,6 @@
 import { createAction, props } from '@ngrx/store';
 
-import { Trip } from '../models/trip.model';
+import { Trip, TripItem } from '../models/trip.model';
 
 export enum TripAction {
   Reset = '[TripsAPI] Reset',
@@ -21,12 +21,29 @@ export enum TripAction {
   RemoveTripError = '[TripsAPI] Trip Remove Error',
 }
 
+export enum TripItemAction {
+  CreateTripItem = '[TripsAPI] Trip Item Create',
+  CreateTripItemSuccess = '[TripsAPI] Trip Item Create Success',
+  CreateTripItemError = '[TripsAPI] Trip Item Create Error',
+  CheckTripItem = '[TripsAPI] Trip Item Check',
+  CheckTripItemSuccess = '[TripsAPI] Trip Item Check Success',
+  CheckTripItemError = '[TripsAPI] Trip Item Check Error',
+  RemoveTripItem = '[TripsAPI] Trip Item Remove',
+  RemoveTripItemSuccess = '[TripsAPI] Trip Item Remove Success',
+  RemoveTripItemError = '[TripsAPI] Trip Item Remove Error',
+}
+
 export interface ActionPropsTrips {
   trips: Trip[];
 }
 
 export interface ActionPropsTrip {
   trip: Trip;
+}
+
+export interface ActionPropsTripItem {
+  trip: Trip;
+  tripItem: TripItem;
 }
 
 export interface ActionPropsId {
@@ -59,4 +76,16 @@ export const tripActions = {
   removeTrip: createAction(TripAction.RemoveTrip, props<ActionPropsTrip>()),
   removeTripSuccess: createAction(TripAction.RemoveTripSuccess, props<ActionPropsSuccess>()),
   removeTripError: createAction(TripAction.RemoveTripError, props<ActionPropsError>()),
+};
+
+export const tripItemActions = {
+  createTripItem: createAction(TripItemAction.CreateTripItem, props<ActionPropsTripItem>()),
+  createTripItemSuccess: createAction(TripItemAction.CreateTripItemSuccess, props<ActionPropsSuccess>()),
+  createTripItemError: createAction(TripItemAction.CreateTripItemError, props<ActionPropsError>()),
+  checkTripItem: createAction(TripItemAction.CheckTripItem, props<ActionPropsTripItem>()),
+  checkTripItemSuccess: createAction(TripItemAction.CheckTripItemSuccess, props<ActionPropsSuccess>()),
+  checkTripItemError: createAction(TripItemAction.CheckTripItemError, props<ActionPropsError>()),
+  removeTripItem: createAction(TripItemAction.RemoveTripItem, props<ActionPropsTripItem>()),
+  removeTripItemSuccess: createAction(TripItemAction.RemoveTripItemSuccess, props<ActionPropsSuccess>()),
+  removeTripItemError: createAction(TripItemAction.RemoveTripItemError, props<ActionPropsError>()),
 };
