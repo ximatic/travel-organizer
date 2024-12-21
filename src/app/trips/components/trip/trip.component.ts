@@ -1,9 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, RouterModule } from '@angular/router';
 
 import { Store } from '@ngrx/store';
-import { filter, Observable, Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 
 import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
@@ -12,10 +12,10 @@ import { PanelModule } from 'primeng/panel';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { ToastModule } from 'primeng/toast';
 
-import { ActionName, ActionState, TripsActionState, TripsState } from '../../store/trips.state';
-import { selectActionState } from '../../store/trips.selectors';
-import { tripActions } from '../../store/trips.actions';
 import { Trip } from '../../models/trip.model';
+import { tripActions } from '../../store/trips.actions';
+import { selectTripsEvent } from '../../store/trips.selectors';
+import { TripsEvent, TripsEventName, TripsEventType, TripsState } from '../../store/trips.state';
 
 import { TripPanelComponent } from '../trip-panel/trip-panel.component';
 
@@ -36,9 +36,9 @@ import { TripPanelComponent } from '../trip-panel/trip-panel.component';
   ],
   providers: [MessageService],
 })
-export class TripComponent implements OnInit, OnDestroy {
+export class TripComponent implements OnInit, AfterViewInit, OnDestroy {
   // ngrx
-  actionState$!: Observable<TripsActionState | undefined>;
+  tripsEvent$!: Observable<TripsEvent | undefined>;
 
   // trip
   trip!: Trip | null;
@@ -56,13 +56,10 @@ export class TripComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.init();
-    this.subscription.add(
-      this.route.params.subscribe((params: Params) => {
-        if (params['id']) {
-          this.store.dispatch(tripActions.loadTrip({ id: params['id'] }));
-        }
-      }),
-    );
+  }
+
+  ngAfterViewInit(): void {
+    this.initState();
   }
 
   ngOnDestroy(): void {
@@ -72,48 +69,46 @@ export class TripComponent implements OnInit, OnDestroy {
   // initialization
 
   private init(): void {
-    this.initState();
-  }
-
-  private initState(): void {
-    this.actionState$ = this.store.select(selectActionState);
     this.subscription.add(
-      this.actionState$
-        .pipe(filter((actionState: TripsActionState | undefined) => this.filterActionState(actionState)))
-        .subscribe((actionState: TripsActionState | undefined) => this.handleActionState(actionState)),
+      this.route.params.subscribe((params: Params) => {
+        if (params['id']) {
+          this.store.dispatch(tripActions.loadTrip({ id: params['id'] }));
+        }
+      }),
     );
   }
 
-  private filterActionState(actionState: TripsActionState | undefined): boolean {
-    return actionState?.name === ActionName.LoadTrip;
+  private initState(): void {
+    this.tripsEvent$ = this.store.select(selectTripsEvent);
+    this.subscription.add(this.tripsEvent$.subscribe((event: TripsEvent | undefined) => this.handleTripsEvent(event)));
   }
 
-  private handleActionState(actionState: TripsActionState | undefined): void {
-    if (!actionState) {
+  private handleTripsEvent(event: TripsEvent | undefined): void {
+    if (!event) {
       return;
     }
 
-    switch (actionState?.name) {
-      case ActionName.LoadTrip:
-        this.handleLoadTrip(actionState);
+    switch (event.name) {
+      case TripsEventName.Load:
+        this.handleTripsEventLoad(event);
         break;
     }
   }
 
-  private handleLoadTrip(actionState: TripsActionState): void {
-    switch (actionState.state) {
-      case ActionState.Loading:
+  private handleTripsEventLoad(event: TripsEvent): void {
+    switch (event.type) {
+      case TripsEventType.Loading:
         this.isLoading = true;
         break;
-      case ActionState.Success:
-        if (actionState.trip) {
-          this.trip = actionState.trip;
+      case TripsEventType.Success:
+        if (event.trip) {
+          this.trip = event.trip;
         }
         this.isLoading = false;
         break;
-      case ActionState.Error:
+      case TripsEventType.Error:
         this.isLoading = false;
-        this.showToast('error', 'Error', actionState?.message);
+        this.showToast('error', 'Error', event?.message);
         break;
     }
   }

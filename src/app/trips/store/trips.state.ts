@@ -1,22 +1,22 @@
 import { Trip } from '../models/trip.model';
 
-export enum ActionName {
-  LoadTrips = 'load-trips',
-  LoadTrip = 'load-trip',
-  CreateTrip = 'create-trip',
-  UpdateTrip = 'update-trip',
-  RemoveTrip = 'remove-trip',
+export enum TripsEventName {
+  LoadAll = 'load-trips',
+  Load = 'load-trip',
+  Create = 'create-trip',
+  Update = 'update-trip',
+  Remove = 'remove-trip',
 }
 
-export enum ActionState {
+export enum TripsEventType {
   Loading = 'loading',
   Success = 'success',
   Error = 'error',
 }
 
-export interface TripsActionState {
-  name: ActionName;
-  state: ActionState;
+export interface TripsEvent {
+  name: TripsEventName;
+  type: TripsEventType;
   message?: string;
   trip?: Trip;
 }
@@ -24,5 +24,5 @@ export interface TripsActionState {
 export interface TripsState {
   trips: Trip[];
   trip?: Trip;
-  actionState?: TripsActionState;
+  event?: TripsEvent;
 }

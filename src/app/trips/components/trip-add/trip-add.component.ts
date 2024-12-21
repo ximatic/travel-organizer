@@ -4,7 +4,7 @@ import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validator
 import { ActivatedRoute, Params, Router, RouterModule } from '@angular/router';
 
 import { Store } from '@ngrx/store';
-import { delay, filter, Observable, of, Subscription } from 'rxjs';
+import { delay, Observable, of, Subscription } from 'rxjs';
 
 import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
@@ -17,10 +17,10 @@ import { ToastModule } from 'primeng/toast';
 
 import { DEFAULT_UX_DELAY } from '../../../common/constants/common.constants';
 
-import { ActionName, ActionState, TripsActionState, TripsState } from '../../store/trips.state';
-import { selectActionState } from '../../store/trips.selectors';
-import { tripActions } from '../../store/trips.actions';
 import { Trip } from '../../models/trip.model';
+import { tripActions } from '../../store/trips.actions';
+import { selectTripsEvent } from '../../store/trips.selectors';
+import { TripsEvent, TripsEventName, TripsEventType, TripsState } from '../../store/trips.state';
 
 @Component({
   selector: 'app-trip-add',
@@ -43,7 +43,7 @@ import { Trip } from '../../models/trip.model';
 })
 export class TripAddComponent implements OnInit, OnDestroy {
   // ngrx
-  actionState$!: Observable<TripsActionState | undefined>;
+  tripsEvent$!: Observable<TripsEvent | undefined>;
 
   // trip
   trip?: Trip | null;
@@ -123,87 +123,75 @@ export class TripAddComponent implements OnInit, OnDestroy {
   }
 
   private initState(): void {
-    this.actionState$ = this.store.select(selectActionState);
-    this.subscription.add(
-      this.actionState$
-        .pipe(filter((actionState: TripsActionState | undefined) => this.filterActionState(actionState)))
-        .subscribe((actionState: TripsActionState | undefined) => this.handleActionState(actionState)),
-    );
+    this.tripsEvent$ = this.store.select(selectTripsEvent);
+    this.subscription.add(this.tripsEvent$.subscribe((event: TripsEvent | undefined) => this.handleTripsEvent(event)));
   }
 
-  private filterActionState(actionState: TripsActionState | undefined): boolean {
-    return (
-      actionState?.name === ActionName.LoadTrip ||
-      actionState?.name === ActionName.CreateTrip ||
-      actionState?.name === ActionName.UpdateTrip
-    );
-  }
-
-  private handleActionState(actionState: TripsActionState | undefined): void {
-    if (!actionState) {
+  private handleTripsEvent(event: TripsEvent | undefined): void {
+    if (!event) {
       return;
     }
 
-    switch (actionState?.name) {
-      case ActionName.LoadTrip:
-        this.handleLoadTrip(actionState);
+    switch (event.name) {
+      case TripsEventName.Load:
+        this.handleTripsEventLoad(event);
         break;
-      case ActionName.CreateTrip:
-        this.handleCreateTrip(actionState);
+      case TripsEventName.Create:
+        this.handleTripsEventCreate(event);
         break;
-      case ActionName.UpdateTrip:
-        this.handleUpdateTrip(actionState);
+      case TripsEventName.Update:
+        this.handleTripsEventUpdate(event);
         break;
     }
   }
 
-  private handleLoadTrip(actionState: TripsActionState): void {
-    switch (actionState.state) {
-      case ActionState.Loading:
+  private handleTripsEventLoad(event: TripsEvent): void {
+    switch (event.type) {
+      case TripsEventType.Loading:
         this.isLoading = true;
         break;
-      case ActionState.Success:
-        if (actionState.trip) {
-          this.trip = actionState.trip;
+      case TripsEventType.Success:
+        if (event.trip) {
+          this.trip = event.trip;
           this.fillForm();
         }
         this.isLoading = false;
         break;
-      case ActionState.Error:
+      case TripsEventType.Error:
         this.isLoading = false;
-        this.showToast('error', 'Error', actionState?.message);
+        this.showToast('error', 'Error', event?.message);
         break;
     }
   }
 
-  private handleCreateTrip(actionState: TripsActionState): void {
-    switch (actionState.state) {
-      case ActionState.Success:
-        this.showToast('success', 'Success', actionState?.message);
-        if (actionState.trip) {
-          this.router.navigate([`/trips/${actionState.trip.id}`]);
+  private handleTripsEventCreate(event: TripsEvent): void {
+    switch (event.type) {
+      case TripsEventType.Success:
+        this.showToast('success', 'Success', event?.message);
+        if (event.trip) {
+          this.router.navigate([`/trips/${event.trip.id}`]);
         }
         break;
-      case ActionState.Error:
-        this.showToast('error', 'Error', actionState?.message);
+      case TripsEventType.Error:
+        this.showToast('error', 'Error', event?.message);
         break;
     }
-    this.isSubmitInProgress = true;
+    this.isSubmitInProgress = false;
   }
 
-  private handleUpdateTrip(actionState: TripsActionState): void {
-    switch (actionState.state) {
-      case ActionState.Success:
-        this.showToast('success', 'Success', actionState?.message);
-        if (actionState.trip) {
-          this.router.navigate([`/trips/${actionState.trip.id}`]);
+  private handleTripsEventUpdate(event: TripsEvent): void {
+    switch (event.type) {
+      case TripsEventType.Success:
+        this.showToast('success', 'Success', event?.message);
+        if (event.trip) {
+          this.router.navigate([`/trips/${event.trip.id}`]);
         }
         break;
-      case ActionState.Error:
-        this.showToast('error', 'Error', actionState?.message);
+      case TripsEventType.Error:
+        this.showToast('error', 'Error', event?.message);
         break;
     }
-    this.isSubmitInProgress = true;
+    this.isSubmitInProgress = false;
   }
 
   // form

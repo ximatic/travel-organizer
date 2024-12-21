@@ -3,7 +3,7 @@ import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 
 import { Store } from '@ngrx/store';
-import { filter, Observable, skip, Subscription } from 'rxjs';
+import { Observable, skip, Subscription } from 'rxjs';
 
 import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
@@ -13,8 +13,8 @@ import { ToastModule } from 'primeng/toast';
 
 import { Trip } from '../../models/trip.model';
 import { tripActions } from '../../store/trips.actions';
-import { selectActionState, selectTrips } from '../../store/trips.selectors';
-import { ActionName, ActionState, TripsActionState, TripsState } from '../../store/trips.state';
+import { selectTripsEvent, selectTrips } from '../../store/trips.selectors';
+import { TripsEvent, TripsEventName, TripsEventType, TripsState } from '../../store/trips.state';
 
 import { TripPanelComponent } from '../trip-panel/trip-panel.component';
 
@@ -29,12 +29,11 @@ import { TripPanelComponent } from '../trip-panel/trip-panel.component';
 export class TripsComponent implements OnInit, AfterViewInit, OnDestroy {
   // ngrx
   trips$!: Observable<Trip[]>;
-  actionState$!: Observable<TripsActionState | undefined>;
+  tripsEvent$!: Observable<TripsEvent | undefined>;
 
   // data
   trips: Trip[] = [];
   isLoading = true;
-  loadingError?: string;
 
   // other
   private subscription = new Subscription();
@@ -84,58 +83,49 @@ export class TripsComponent implements OnInit, AfterViewInit, OnDestroy {
       }),
     );
 
-    this.actionState$ = this.storeTrips.select(selectActionState);
+    this.tripsEvent$ = this.storeTrips.select(selectTripsEvent);
     this.subscription.add(
-      this.actionState$
-        .pipe(
-          skip(1),
-          filter((actionState: TripsActionState | undefined) => this.filterActionState(actionState)),
-        )
-        .subscribe((actionState: TripsActionState | undefined) => this.handleActionState(actionState)),
+      this.tripsEvent$.pipe(skip(1)).subscribe((event: TripsEvent | undefined) => this.handleTripsEvent(event)),
     );
   }
 
-  private filterActionState(actionState: TripsActionState | undefined): boolean {
-    return actionState?.name === ActionName.RemoveTrip || actionState?.name === ActionName.LoadTrips;
-  }
-
-  private handleActionState(actionState: TripsActionState | undefined): void {
-    if (!actionState) {
+  private handleTripsEvent(event: TripsEvent | undefined): void {
+    if (!event) {
       return;
     }
 
-    switch (actionState?.name) {
-      case ActionName.LoadTrips:
-        this.handleLoadTrips(actionState);
+    switch (event.name) {
+      case TripsEventName.LoadAll:
+        this.handleTripsEventLoadAll(event);
         break;
-      case ActionName.RemoveTrip:
-        this.handleRemoveTrip(actionState);
+      case TripsEventName.Remove:
+        this.handleTripsEventRemove(event);
         break;
     }
   }
 
-  private handleLoadTrips(actionState: TripsActionState): void {
-    switch (actionState.state) {
-      case ActionState.Loading:
+  private handleTripsEventLoadAll(event: TripsEvent): void {
+    switch (event.type) {
+      case TripsEventType.Loading:
         this.isLoading = true;
         break;
-      case ActionState.Success:
+      case TripsEventType.Success:
         this.isLoading = false;
         break;
-      case ActionState.Error:
+      case TripsEventType.Error:
         this.isLoading = false;
-        this.showToast('error', 'Error', actionState?.message);
+        this.showToast('error', 'Error', event?.message);
         break;
     }
   }
 
-  private handleRemoveTrip(actionState: TripsActionState): void {
-    switch (actionState.state) {
-      case ActionState.Success:
-        this.showToast('success', 'Success', actionState?.message);
+  private handleTripsEventRemove(event: TripsEvent): void {
+    switch (event.type) {
+      case TripsEventType.Success:
+        this.showToast('success', 'Success', event?.message);
         break;
-      case ActionState.Error:
-        this.showToast('error', 'Error', actionState?.message);
+      case TripsEventType.Error:
+        this.showToast('error', 'Error', event?.message);
         break;
     }
   }

@@ -1,16 +1,19 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { ActivatedRoute, provideRouter } from '@angular/router';
 
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { of } from 'rxjs';
 
+import { MessageService } from 'primeng/api';
+
 import { DEFAULT_INITIAL_TRIPS_STATE, DEFAULT_TRIP_1, DEFAULT_TRIP_2 } from '../../../common/mocks/trips.constants';
+import { messageServiceMock } from '../../../common/mocks/services.mocks';
 
 import { TripAction } from '../../store/trips.actions';
-import { selectActionState, selectTrip } from '../../store/trips.selectors';
-import { ActionName, ActionState } from '../../store/trips.state';
+import { selectTripsEvent } from '../../store/trips.selectors';
+import { TripsEventName, TripsEventType } from '../../store/trips.state';
 
 import { TripComponent } from './trip.component';
 
@@ -18,15 +21,16 @@ describe('TripComponent', () => {
   let component: TripComponent;
   let fixture: ComponentFixture<TripComponent>;
   let store: MockStore;
+  let messageService: MessageService;
 
-  let mockTripSelector: any;
-  let mockActionStateSelector: any;
+  let mockTripsEventSelector: any;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [NoopAnimationsModule, TripComponent],
+      imports: [TripComponent],
       providers: [
         provideRouter([]),
+        provideNoopAnimations(),
         provideMockStore({ initialState: DEFAULT_INITIAL_TRIPS_STATE }),
         {
           provide: ActivatedRoute,
@@ -34,15 +38,17 @@ describe('TripComponent', () => {
             params: of({ id: DEFAULT_TRIP_1.id }),
           },
         },
+        MessageService,
       ],
     }).compileComponents();
+    TestBed.overrideProvider(MessageService, { useValue: messageServiceMock });
 
     store = TestBed.inject(MockStore);
+    messageService = TestBed.inject(MessageService);
 
-    mockTripSelector = store.overrideSelector(selectTrip, DEFAULT_TRIP_1);
-    mockActionStateSelector = store.overrideSelector(selectActionState, {
-      name: ActionName.LoadTrip,
-      state: ActionState.Loading,
+    mockTripsEventSelector = store.overrideSelector(selectTripsEvent, {
+      name: TripsEventName.Load,
+      type: TripsEventType.Loading,
     });
   });
 
@@ -64,19 +70,74 @@ describe('TripComponent', () => {
     expect(dispatchSpy).toHaveBeenCalledWith({ type: TripAction.LoadTrip, id: DEFAULT_TRIP_1.id });
   });
 
-  it('loading trip works', () => {
+  // trips event
+
+  it('handling Trips Event with null content works', () => {
+    const messageAddSpy = jest.spyOn(messageService, 'add');
+
     fixture.detectChanges();
 
-    mockTripSelector.setResult(DEFAULT_TRIP_2);
-    mockActionStateSelector.setResult({
-      name: ActionName.LoadTrip,
-      state: ActionState.Success,
+    mockTripsEventSelector.setResult(null);
+
+    store.refreshState();
+
+    expect(messageAddSpy).toHaveBeenCalledTimes(0);
+  });
+
+  it('handling Trips Event with Load Loading works', () => {
+    const messageAddSpy = jest.spyOn(messageService, 'add');
+
+    fixture.detectChanges();
+
+    mockTripsEventSelector.setResult({
+      name: TripsEventName.Load,
+      type: TripsEventType.Loading,
+    });
+
+    store.refreshState();
+
+    expect(component.isLoading).toBeTruthy();
+    expect(messageAddSpy).toHaveBeenCalledTimes(0);
+  });
+
+  it('handling Trips Event with Load Success works', () => {
+    const messageAddSpy = jest.spyOn(messageService, 'add');
+
+    fixture.detectChanges();
+
+    mockTripsEventSelector.setResult({
+      name: TripsEventName.Load,
+      type: TripsEventType.Success,
       trip: DEFAULT_TRIP_2,
     });
 
     store.refreshState();
 
-    expect(component.trip).toEqual(DEFAULT_TRIP_2);
     expect(component.isLoading).toBeFalsy();
+    expect(component.trip).toEqual(DEFAULT_TRIP_2);
+    expect(messageAddSpy).toHaveBeenCalledTimes(0);
+  });
+
+  it('handling Trips Event with Load Error works', () => {
+    const messageAddSpy = jest.spyOn(messageService, 'add');
+
+    fixture.detectChanges();
+
+    mockTripsEventSelector.setResult({
+      name: TripsEventName.Load,
+      type: TripsEventType.Error,
+      message: 'No trip',
+    });
+
+    store.refreshState();
+
+    expect(component.isLoading).toBeFalsy();
+    expect(messageAddSpy).toHaveBeenCalledWith({
+      severity: 'error',
+      summary: 'Error',
+      detail: 'No trip',
+      key: 'toast',
+      life: 3000,
+    });
   });
 });

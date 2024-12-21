@@ -1,35 +1,59 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { ActivatedRoute, provideRouter } from '@angular/router';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
+import { ActivatedRoute, provideRouter, Router } from '@angular/router';
 
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { of } from 'rxjs';
 
 import { DEFAULT_UX_DELAY } from '../../../common/constants/common.constants';
-import { DEFAULT_INITIAL_TRIPS_STATE, DEFAULT_TRIP_1, DEFAULT_TRIP_2 } from '../../../common/mocks/trips.constants';
+import {
+  DEFAULT_INITIAL_TRIPS_STATE,
+  DEFAULT_TRIP_1,
+  DEFAULT_TRIP_2,
+  DEFAULT_TRIP_3,
+  DEFAULT_TRIP_4,
+} from '../../../common/mocks/trips.constants';
+import { messageServiceMock } from '../../../common/mocks/services.mocks';
 
 import { TripAction } from '../../store/trips.actions';
-import { selectTrip, selectActionState } from '../../store/trips.selectors';
-import { ActionName, ActionState } from '../../store/trips.state';
+import { selectTrip, selectTripsEvent } from '../../store/trips.selectors';
+import { TripsEventName, TripsEventType } from '../../store/trips.state';
 
 import { TripAddComponent } from './trip-add.component';
+import { MessageService } from 'primeng/api';
 
 describe('TripAddComponent', () => {
   let component: TripAddComponent;
   let fixture: ComponentFixture<TripAddComponent>;
+  let router: Router;
   let store: MockStore;
+  let messageService: MessageService;
+
   let mockTripSelector: any;
-  let mockActionStateSelector: any;
+  let mockTripsEventSelector: any;
 
   describe('submiting new trip', () => {
     beforeEach(async () => {
       await TestBed.configureTestingModule({
-        imports: [NoopAnimationsModule, TripAddComponent],
-        providers: [provideRouter([]), provideMockStore({ initialState: DEFAULT_INITIAL_TRIPS_STATE })],
+        imports: [TripAddComponent],
+        providers: [
+          provideRouter([]),
+          provideNoopAnimations(),
+          provideMockStore({ initialState: DEFAULT_INITIAL_TRIPS_STATE }),
+          MessageService,
+        ],
       }).compileComponents();
+      TestBed.overrideProvider(MessageService, { useValue: messageServiceMock });
 
+      router = TestBed.inject(Router);
       store = TestBed.inject(MockStore);
+      messageService = TestBed.inject(MessageService);
+
+      mockTripsEventSelector = store.overrideSelector(selectTripsEvent, {
+        name: TripsEventName.Load,
+        type: TripsEventType.Loading,
+      });
     });
 
     beforeEach(() => {
@@ -80,14 +104,78 @@ describe('TripAddComponent', () => {
         trip: { name: DEFAULT_TRIP_1.name, location: '', description: '', startDate: undefined, endDate: undefined },
       });
     }));
+
+    // trips event
+
+    it('handling Trips Event with null content works', () => {
+      const messageAddSpy = jest.spyOn(messageService, 'add');
+
+      fixture.detectChanges();
+
+      mockTripsEventSelector.setResult(null);
+
+      store.refreshState();
+
+      expect(messageAddSpy).toHaveBeenCalledTimes(0);
+    });
+
+    it('handling Trips Event with Create Success works', () => {
+      const navigateSpy = jest.spyOn(router, 'navigate');
+      const messageAddSpy = jest.spyOn(messageService, 'add');
+
+      fixture.detectChanges();
+
+      mockTripsEventSelector.setResult({
+        name: TripsEventName.Create,
+        type: TripsEventType.Success,
+        message: 'Trip created',
+        trip: DEFAULT_TRIP_3,
+      });
+
+      store.refreshState();
+
+      expect(component.isSubmitInProgress).toBeFalsy();
+      expect(messageAddSpy).toHaveBeenCalledWith({
+        severity: 'success',
+        summary: 'Success',
+        detail: 'Trip created',
+        key: 'toast',
+        life: 3000,
+      });
+      expect(navigateSpy).toHaveBeenCalledWith([`/trips/${DEFAULT_TRIP_3.id}`]);
+    });
+
+    it('handling Trips Event with Create Error works', () => {
+      const messageAddSpy = jest.spyOn(messageService, 'add');
+
+      fixture.detectChanges();
+
+      mockTripsEventSelector.setResult({
+        name: TripsEventName.Create,
+        type: TripsEventType.Error,
+        message: 'Trip not created',
+      });
+
+      store.refreshState();
+
+      expect(component.isSubmitInProgress).toBeFalsy();
+      expect(messageAddSpy).toHaveBeenCalledWith({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'Trip not created',
+        key: 'toast',
+        life: 3000,
+      });
+    });
   });
 
   describe('submiting existing trip', () => {
     beforeEach(async () => {
       await TestBed.configureTestingModule({
-        imports: [NoopAnimationsModule, TripAddComponent],
+        imports: [TripAddComponent],
         providers: [
           provideRouter([]),
+          provideNoopAnimations(),
           provideMockStore({ initialState: DEFAULT_INITIAL_TRIPS_STATE }),
           {
             provide: ActivatedRoute,
@@ -95,15 +183,19 @@ describe('TripAddComponent', () => {
               params: of({ id: DEFAULT_TRIP_1.id }),
             },
           },
+          MessageService,
         ],
       }).compileComponents();
+      TestBed.overrideProvider(MessageService, { useValue: messageServiceMock });
 
+      router = TestBed.inject(Router);
       store = TestBed.inject(MockStore);
+      messageService = TestBed.inject(MessageService);
 
       mockTripSelector = store.overrideSelector(selectTrip, DEFAULT_TRIP_1);
-      mockActionStateSelector = store.overrideSelector(selectActionState, {
-        name: ActionName.LoadTrip,
-        state: ActionState.Loading,
+      mockTripsEventSelector = store.overrideSelector(selectTripsEvent, {
+        name: TripsEventName.Load,
+        type: TripsEventType.Loading,
       });
     });
 
@@ -128,9 +220,9 @@ describe('TripAddComponent', () => {
       fixture.detectChanges();
 
       mockTripSelector.setResult(DEFAULT_TRIP_2);
-      mockActionStateSelector.setResult({
-        name: ActionName.LoadTrip,
-        state: ActionState.Success,
+      mockTripsEventSelector.setResult({
+        name: TripsEventName.Load,
+        type: TripsEventType.Success,
         trip: DEFAULT_TRIP_2,
       });
 
@@ -170,5 +262,108 @@ describe('TripAddComponent', () => {
         },
       });
     }));
+
+    // trips event
+
+    it('handling Trips Event with null content works', () => {
+      const messageAddSpy = jest.spyOn(messageService, 'add');
+
+      fixture.detectChanges();
+
+      mockTripsEventSelector.setResult(null);
+
+      store.refreshState();
+
+      expect(messageAddSpy).toHaveBeenCalledTimes(0);
+    });
+
+    it('handling Trips Event with Load Success works', () => {
+      const messageAddSpy = jest.spyOn(messageService, 'add');
+
+      fixture.detectChanges();
+
+      mockTripsEventSelector.setResult({
+        name: TripsEventName.Load,
+        type: TripsEventType.Success,
+        trip: DEFAULT_TRIP_4,
+      });
+
+      store.refreshState();
+
+      expect(component.isLoading).toBeFalsy();
+      expect(messageAddSpy).toHaveBeenCalledTimes(0);
+    });
+
+    it('handling Trips Event with Load Error works', () => {
+      const messageAddSpy = jest.spyOn(messageService, 'add');
+
+      fixture.detectChanges();
+
+      mockTripsEventSelector.setResult({
+        name: TripsEventName.Load,
+        type: TripsEventType.Error,
+        message: 'Trip not available',
+      });
+
+      store.refreshState();
+
+      expect(component.isLoading).toBeFalsy();
+      expect(messageAddSpy).toHaveBeenCalledWith({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'Trip not available',
+        key: 'toast',
+        life: 3000,
+      });
+    });
+
+    it('handling Trips Event with Update Success works', () => {
+      const navigateSpy = jest.spyOn(router, 'navigate');
+      const messageAddSpy = jest.spyOn(messageService, 'add');
+
+      fixture.detectChanges();
+
+      mockTripsEventSelector.setResult({
+        name: TripsEventName.Update,
+        type: TripsEventType.Success,
+        message: 'Trip updated',
+        trip: DEFAULT_TRIP_1,
+      });
+
+      store.refreshState();
+
+      expect(component.isSubmitInProgress).toBeFalsy();
+      expect(messageAddSpy).toHaveBeenCalledWith({
+        severity: 'success',
+        summary: 'Success',
+        detail: 'Trip updated',
+        key: 'toast',
+        life: 3000,
+      });
+      expect(navigateSpy).toHaveBeenCalledWith([`/trips/${DEFAULT_TRIP_1.id}`]);
+    });
+
+    it('handling Trips Event with Update Error works', () => {
+      const messageAddSpy = jest.spyOn(messageService, 'add');
+
+      fixture.detectChanges();
+
+      mockTripsEventSelector.setResult({
+        name: TripsEventName.Update,
+        type: TripsEventType.Error,
+        message: 'Trip not updated',
+      });
+
+      store.refreshState();
+
+      expect(component.isSubmitInProgress).toBeFalsy();
+      expect(messageAddSpy).toHaveBeenCalledWith({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'Trip not updated',
+        key: 'toast',
+        life: 3000,
+      });
+    });
   });
 });
