@@ -1,7 +1,7 @@
 import { createReducer, on } from '@ngrx/store';
 
 import { settingsActions } from './settings.actions';
-import { SettingsActionType, SettingsState, SettiongsActionName } from './settings.state';
+import { SettingsEventType, SettingsState, SettingsEventName } from './settings.state';
 
 import { DEFAULT_SETTINGS } from '../constants/settings.constants';
 
@@ -15,24 +15,24 @@ export const settingsReducer = createReducer(
   // load settings
   on(settingsActions.loadSettings, (state: SettingsState) => ({
     ...state,
-    actionState: {
-      name: SettiongsActionName.LoadSettings,
-      type: SettingsActionType.Loading,
+    event: {
+      name: SettingsEventName.Load,
+      type: SettingsEventType.Loading,
     },
   })),
   on(settingsActions.loadSettingsSuccess, (state: SettingsState, { settings }) => ({
     ...state,
     settings,
-    actionState: {
-      name: SettiongsActionName.LoadSettings,
-      type: SettingsActionType.Success,
+    event: {
+      name: SettingsEventName.Load,
+      type: SettingsEventType.Success,
     },
   })),
   on(settingsActions.loadSettingsError, (state: SettingsState, { message }) => ({
     ...state,
-    actionState: {
-      name: SettiongsActionName.LoadSettings,
-      type: SettingsActionType.Error,
+    event: {
+      name: SettingsEventName.Load,
+      type: SettingsEventType.Error,
       message,
     },
   })),
@@ -40,17 +40,17 @@ export const settingsReducer = createReducer(
   on(settingsActions.updateSettingsSuccess, (state: SettingsState, { settings, message }) => ({
     ...state,
     settings,
-    actionState: {
-      name: SettiongsActionName.UpdateSettings,
-      type: SettingsActionType.Success,
+    event: {
+      name: SettingsEventName.Update,
+      type: SettingsEventType.Success,
       message,
     },
   })),
   on(settingsActions.updateSettingsError, (state: SettingsState, { message }) => ({
     ...state,
-    actionState: {
-      name: SettiongsActionName.UpdateSettings,
-      type: SettingsActionType.Error,
+    event: {
+      name: SettingsEventName.Update,
+      type: SettingsEventType.Error,
       message,
     },
   })),

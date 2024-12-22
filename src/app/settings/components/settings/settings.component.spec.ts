@@ -17,8 +17,8 @@ import {
 import { messageServiceMock, translateServiceMock } from '../../../common/mocks/services.mocks';
 
 import { SettingsAction } from '../../store/settings.actions';
-import { selectSettings, selectSettingsActionState } from '../../store/settings.selectors';
-import { SettiongsActionName, SettingsActionType } from '../../store/settings.state';
+import { selectSettings, selectSettingsEvent } from '../../store/settings.selectors';
+import { SettingsEventName, SettingsEventType } from '../../store/settings.state';
 
 import { SettingsComponent } from './settings.component';
 import { SettingsEventMessage } from '../../models/settings.model';
@@ -31,7 +31,7 @@ describe('SettingsComponent', () => {
   let store: MockStore;
 
   let mockSettingsSelector: any;
-  let mockActionStateSelector: any;
+  let mockSettingsEvent: any;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -52,9 +52,9 @@ describe('SettingsComponent', () => {
     messageService = TestBed.inject(MessageService);
 
     mockSettingsSelector = store.overrideSelector(selectSettings, DEFAULT_MOCK_SETTINGS_1);
-    mockActionStateSelector = store.overrideSelector(selectSettingsActionState, {
-      name: SettiongsActionName.LoadSettings,
-      type: SettingsActionType.Success,
+    mockSettingsEvent = store.overrideSelector(selectSettingsEvent, {
+      name: SettingsEventName.Load,
+      type: SettingsEventType.Success,
     });
   });
 
@@ -115,7 +115,7 @@ describe('SettingsComponent', () => {
 
     fixture.detectChanges();
 
-    mockActionStateSelector.setResult(null);
+    mockSettingsEvent.setResult(null);
 
     store.refreshState();
 
@@ -127,9 +127,9 @@ describe('SettingsComponent', () => {
 
     fixture.detectChanges();
 
-    mockActionStateSelector.setResult({
-      name: SettiongsActionName.LoadSettings,
-      type: SettingsActionType.Error,
+    mockSettingsEvent.setResult({
+      name: SettingsEventName.Load,
+      type: SettingsEventType.Error,
       message: SettingsEventMessage.LOAD_SETTINGS_ERROR,
     });
 
@@ -149,9 +149,9 @@ describe('SettingsComponent', () => {
 
     fixture.detectChanges();
 
-    mockActionStateSelector.setResult({
-      name: SettiongsActionName.UpdateSettings,
-      type: SettingsActionType.Error,
+    mockSettingsEvent.setResult({
+      name: SettingsEventName.Update,
+      type: SettingsEventType.Error,
       message: SettingsEventMessage.UPDATE_SETTINGS_ERROR,
     });
 
@@ -171,9 +171,9 @@ describe('SettingsComponent', () => {
 
     fixture.detectChanges();
 
-    mockActionStateSelector.setResult({
-      name: SettiongsActionName.UpdateSettings,
-      type: SettingsActionType.Success,
+    mockSettingsEvent.setResult({
+      name: SettingsEventName.Update,
+      type: SettingsEventType.Success,
       message: SettingsEventMessage.UPDATE_SETTINGS_SUCCESS,
     });
 

@@ -4,7 +4,7 @@ import { SettingsState } from './settings.state';
 
 export const selectSettingsState = createFeatureSelector<SettingsState>('settings');
 
-export const selectSettingsActionState = createSelector(selectSettingsState, (state: SettingsState) => state.actionState);
+export const selectSettingsEvent = createSelector(selectSettingsState, (state: SettingsState) => state.event);
 
 export const selectSettings = createSelector(selectSettingsState, (state: SettingsState) => state.settings);
 
@@ -14,6 +14,6 @@ export const selectSettingsTheme = createSelector(selectSettingsState, (state: S
 // TODO - use it or remove?
 export const SettingsSelectors = {
   state: selectSettingsState,
-  actionState: selectSettingsActionState,
+  event: selectSettingsEvent,
   settings: selectSettings,
 };

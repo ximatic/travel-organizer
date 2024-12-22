@@ -96,8 +96,20 @@
 
       <ng-template #footer>
         <p-divider />
-        <p-button icon="pi pi-flag-fill" text severity="secondary" label="EN" />
-        <p-button icon="pi pi-flag" text severity="secondary" label="PL" />
+        <p-button
+          [icon]="isLanguageEnglish() ? 'pi pi-flag-fill' : 'pi pi-flag'"
+          text
+          severity="secondary"
+          label="EN"
+          (onClick)="switchLanguage(language.English)"
+        />
+        <p-button
+          [icon]="isLanguagePolish() ? 'pi pi-flag-fill' : 'pi pi-flag'"
+          text
+          severity="secondary"
+          label="PL"
+          (onClick)="switchLanguage(language.Polish)"
+        />
       </ng-template>
     </p-drawer>
   </div>

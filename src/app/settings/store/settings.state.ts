@@ -1,23 +1,23 @@
 import { Settings } from '../models/settings.model';
 
-export enum SettiongsActionName {
-  LoadSettings = 'load-settings',
-  UpdateSettings = 'update-settings',
+export enum SettingsEventName {
+  Load = 'load-settings',
+  Update = 'update-settings',
 }
 
-export enum SettingsActionType {
+export enum SettingsEventType {
   Loading = 'loading',
   Success = 'success',
   Error = 'error',
 }
 
-export interface SettingsActionState {
-  name: SettiongsActionName;
-  type: SettingsActionType;
+export interface SettingsEvent {
+  name: SettingsEventName;
+  type: SettingsEventType;
   message?: string;
 }
 
 export interface SettingsState {
   settings: Settings;
-  actionState?: SettingsActionState;
+  event?: SettingsEvent;
 }

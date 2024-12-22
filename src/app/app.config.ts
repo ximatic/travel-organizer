@@ -23,7 +23,7 @@ import { settingsActions } from './settings/store/settings.actions';
 import { SettingsEffects } from './settings/store/settings.effects';
 
 import { selectSettings } from './settings/store/settings.selectors';
-import { SettingsActionState } from './settings/store/settings.state';
+import { SettingsState } from './settings/store/settings.state';
 
 import { tripsReducer } from './trips/store/trips.reducer';
 import { settingsReducer } from './settings/store/settings.reducer';
@@ -33,7 +33,7 @@ import { routes } from './app.routes';
 export const httpLoaderFactory: (http: HttpClient) => TranslateHttpLoader = (http: HttpClient) =>
   new TranslateHttpLoader(http, './i18n/', '.json');
 
-export function initializeApplication(store: Store<SettingsActionState>, translateService: TranslateService) {
+export function initializeApplication(store: Store<SettingsState>, translateService: TranslateService) {
   return () =>
     new Promise<boolean>((resolve) => {
       store.dispatch(settingsActions.loadSettings());
@@ -88,7 +88,7 @@ export const appConfig: ApplicationConfig = {
       provide: APP_INITIALIZER,
       useFactory: initializeApplication,
       multi: true,
-      deps: [Store<SettingsActionState>, TranslateService],
+      deps: [Store<SettingsState>, TranslateService],
     },
     SettingsService, // required for SettingsEffects
   ],

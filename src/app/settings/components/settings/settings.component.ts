@@ -17,8 +17,8 @@ import { SelectModule } from 'primeng/select';
 
 import { DEFAULT_UX_DELAY } from '../../../common/constants/common.constants';
 
-import { SettingsActionState, SettingsActionType, SettiongsActionName } from '../../store/settings.state';
-import { selectSettings, selectSettingsActionState } from '../../store/settings.selectors';
+import { SettingsEvent, SettingsEventType, SettingsEventName, SettingsState } from '../../store/settings.state';
+import { selectSettings, selectSettingsEvent } from '../../store/settings.selectors';
 import { settingsActions } from '../../store/settings.actions';
 import { Settings, SettingsDateFormat, SettingsLanguage, SettingsTheme, SettingsTimeFormat } from '../../models/settings.model';
 import { DEFAULT_DATE_FORMAT, DEFAULT_LANGUAGE, DEFAULT_THEME, DEFAULT_TIME_FORMAT } from '../../constants/settings.constants';
@@ -50,7 +50,7 @@ export interface SettingsFormOption {
 export class SettingsComponent implements OnInit, AfterViewInit, OnDestroy {
   // ngrx
   settings$!: Observable<Settings>;
-  actionState$!: Observable<SettingsActionState | undefined>;
+  settingsEvent$!: Observable<SettingsEvent | undefined>;
 
   // settings
   settings?: Settings;
@@ -74,7 +74,7 @@ export class SettingsComponent implements OnInit, AfterViewInit, OnDestroy {
     private formBuilder: FormBuilder,
     private translateService: TranslateService,
     private messageService: MessageService,
-    private store: Store<SettingsActionState>,
+    private store: Store<SettingsState>,
   ) {
     this.initFormOptions();
   }
@@ -150,43 +150,42 @@ export class SettingsComponent implements OnInit, AfterViewInit, OnDestroy {
       }),
     );
 
-    this.actionState$ = this.store.select(selectSettingsActionState);
+    this.settingsEvent$ = this.store.select(selectSettingsEvent);
     this.subscription.add(
-      this.actionState$.subscribe((actionState: SettingsActionState | undefined) => this.handleActionState(actionState)),
+      this.settingsEvent$.subscribe((settingsEvent: SettingsEvent | undefined) => this.handleSettingsEvent(settingsEvent)),
     );
   }
 
-  private handleActionState(actionState: SettingsActionState | undefined): void {
-    console.log(actionState);
-    if (!actionState) {
+  private handleSettingsEvent(settingsEvent: SettingsEvent | undefined): void {
+    if (!settingsEvent) {
       return;
     }
 
-    switch (actionState?.name) {
-      case SettiongsActionName.LoadSettings:
-        this.handleLoadSettings(actionState);
+    switch (settingsEvent?.name) {
+      case SettingsEventName.Load:
+        this.handleSettingsEventLoad(settingsEvent);
         break;
-      case SettiongsActionName.UpdateSettings:
-        this.handleUpdateSettings(actionState);
-        break;
-    }
-  }
-
-  private handleLoadSettings(actionState: SettingsActionState): void {
-    switch (actionState.type) {
-      case SettingsActionType.Error:
-        this.showToastError(actionState?.message);
+      case SettingsEventName.Update:
+        this.handleSettingsEventUpdate(settingsEvent);
         break;
     }
   }
 
-  private handleUpdateSettings(actionState: SettingsActionState): void {
-    switch (actionState.type) {
-      case SettingsActionType.Success:
-        this.showToastSuccess(actionState?.message);
+  private handleSettingsEventLoad(settingsEvent: SettingsEvent): void {
+    switch (settingsEvent.type) {
+      case SettingsEventType.Error:
+        this.showToastError(settingsEvent?.message);
         break;
-      case SettingsActionType.Error:
-        this.showToastError(actionState?.message);
+    }
+  }
+
+  private handleSettingsEventUpdate(settingsEvent: SettingsEvent): void {
+    switch (settingsEvent.type) {
+      case SettingsEventType.Success:
+        this.showToastSuccess(settingsEvent?.message);
+        break;
+      case SettingsEventType.Error:
+        this.showToastError(settingsEvent?.message);
         break;
     }
     this.isSubmitInProgress = false;

@@ -12,7 +12,7 @@ import {
 } from '../common/mocks/settings.constants';
 
 import { DEFAULT_SETTINGS } from '../settings/constants/settings.constants';
-import { SettingsTheme } from '../settings/models/settings.model';
+import { SettingsLanguage, SettingsTheme } from '../settings/models/settings.model';
 import { SettingsAction } from '../settings/store/settings.actions';
 import { selectSettings } from '../settings/store/settings.selectors';
 
@@ -75,6 +75,46 @@ describe('MainComponent', () => {
     expect(component.darkMode).toEqual(true);
     expect(component.settings).toEqual(DEFAULT_MOCK_SETTINGS_2);
     expect(document.querySelector('html')?.classList.contains('dark-mode')).toBeTruthy();
+  });
+
+  it('checking if language is English works', () => {
+    fixture.detectChanges();
+
+    component.settings.language = SettingsLanguage.English;
+    expect(component.isLanguageEnglish()).toBeTruthy();
+    expect(component.isLanguagePolish()).toBeFalsy();
+  });
+
+  it('checking if language is Polish works', () => {
+    fixture.detectChanges();
+
+    component.settings.language = SettingsLanguage.Polish;
+    expect(component.isLanguageEnglish()).toBeFalsy();
+    expect(component.isLanguagePolish()).toBeTruthy();
+  });
+
+  it('changing language to English works', () => {
+    const dispatchSpy = jest.spyOn(store, 'dispatch');
+
+    fixture.detectChanges();
+
+    component.switchLanguage(SettingsLanguage.English);
+    expect(dispatchSpy).toHaveBeenLastCalledWith({
+      type: SettingsAction.UpdateSettings,
+      settings: { ...DEFAULT_MOCK_SETTINGS_1, language: SettingsLanguage.English },
+    });
+  });
+
+  it('changing language to English works', () => {
+    const dispatchSpy = jest.spyOn(store, 'dispatch');
+
+    fixture.detectChanges();
+
+    component.switchLanguage(SettingsLanguage.Polish);
+    expect(dispatchSpy).toHaveBeenLastCalledWith({
+      type: SettingsAction.UpdateSettings,
+      settings: { ...DEFAULT_MOCK_SETTINGS_1, language: SettingsLanguage.Polish },
+    });
   });
 
   it('toggleSidebar works', () => {
