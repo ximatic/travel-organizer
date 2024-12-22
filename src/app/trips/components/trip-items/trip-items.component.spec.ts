@@ -4,6 +4,7 @@ import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { ActivatedRoute, provideRouter } from '@angular/router';
 
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { provideTranslateService } from '@ngx-translate/core';
 import { of } from 'rxjs';
 
 import { MessageService } from 'primeng/api';
@@ -13,6 +14,7 @@ import { messageServiceMock } from '../../../common/mocks/services.mocks';
 
 import { DEFAULT_UX_DELAY } from '../../../common/constants/common.constants';
 
+import { TripsEventMessage } from '../../models/trip.model';
 import { TripItemAction } from '../../store/trips.actions';
 import { selectTripsEvent } from '../../store/trips.selectors';
 import { TripsEventName, TripsEventType } from '../../store/trips.state';
@@ -33,6 +35,7 @@ describe('TripItemsComponent', () => {
       providers: [
         provideRouter([]),
         provideNoopAnimations(),
+        provideTranslateService(),
         provideMockStore({ initialState: DEFAULT_INITIAL_TRIPS_STATE }),
         {
           provide: ActivatedRoute,
@@ -171,7 +174,7 @@ describe('TripItemsComponent', () => {
     mockTripsEventSelector.setResult({
       name: TripsEventName.CreateItem,
       type: TripsEventType.Error,
-      message: 'No trip item',
+      message: TripsEventMessage.CREATE_TRIP_ITEM_ERROR,
     });
 
     store.refreshState();
@@ -179,8 +182,8 @@ describe('TripItemsComponent', () => {
     expect(component.isSubmitInProgress).toBeFalsy();
     expect(messageAddSpy).toHaveBeenCalledWith({
       severity: 'error',
-      summary: 'Error',
-      detail: 'No trip item',
+      summary: 'EVENT.TYPE.ERROR',
+      detail: `EVENT.MESSAGE.${TripsEventMessage.CREATE_TRIP_ITEM_ERROR}`,
       key: 'toast',
       life: 3000,
     });
@@ -211,15 +214,15 @@ describe('TripItemsComponent', () => {
     mockTripsEventSelector.setResult({
       name: TripsEventName.CheckItem,
       type: TripsEventType.Error,
-      message: 'No toggle for trip item',
+      message: TripsEventMessage.CHECK_TRIP_ITEM_ERROR,
     });
 
     store.refreshState();
 
     expect(messageAddSpy).toHaveBeenCalledWith({
       severity: 'error',
-      summary: 'Error',
-      detail: 'No toggle for trip item',
+      summary: 'EVENT.TYPE.ERROR',
+      detail: `EVENT.MESSAGE.${TripsEventMessage.CHECK_TRIP_ITEM_ERROR}`,
       key: 'toast',
       life: 3000,
     });
@@ -250,15 +253,15 @@ describe('TripItemsComponent', () => {
     mockTripsEventSelector.setResult({
       name: TripsEventName.RemoveItem,
       type: TripsEventType.Error,
-      message: 'No removal for trip item',
+      message: TripsEventMessage.REMOVE_TRIP_ITEM_ERROR,
     });
 
     store.refreshState();
 
     expect(messageAddSpy).toHaveBeenCalledWith({
       severity: 'error',
-      summary: 'Error',
-      detail: 'No removal for trip item',
+      summary: 'EVENT.TYPE.ERROR',
+      detail: `EVENT.MESSAGE.${TripsEventMessage.REMOVE_TRIP_ITEM_ERROR}`,
       key: 'toast',
       life: 3000,
     });

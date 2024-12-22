@@ -40,12 +40,12 @@ export const tripsReducer = createReducer(
   ),
   on(
     tripActions.loadTripsError,
-    (state: TripsState, { error }): TripsState => ({
+    (state: TripsState, { message }): TripsState => ({
       ...state,
       event: {
         name: TripsEventName.LoadAll,
         type: TripsEventType.Error,
-        message: error,
+        message,
       },
     }),
   ),
@@ -73,12 +73,12 @@ export const tripsReducer = createReducer(
   ),
   on(
     tripActions.loadTripError,
-    (state: TripsState, { error }): TripsState => ({
+    (state: TripsState, { message }): TripsState => ({
       ...state,
       event: {
         name: TripsEventName.Load,
         type: TripsEventType.Error,
-        message: error,
+        message,
       },
     }),
   ),
@@ -91,19 +91,20 @@ export const tripsReducer = createReducer(
       event: {
         name: TripsEventName.Create,
         type: TripsEventType.Success,
-        message: message,
         trip: trip,
+        message: message,
       },
     }),
   ),
   on(
     tripActions.createTripError,
-    (state: TripsState, { error }): TripsState => ({
+    (state: TripsState, { trip, message }): TripsState => ({
       ...state,
       event: {
         name: TripsEventName.Create,
         type: TripsEventType.Error,
-        message: error,
+        trip: trip,
+        message,
       },
     }),
   ),
@@ -116,19 +117,20 @@ export const tripsReducer = createReducer(
       event: {
         name: TripsEventName.Update,
         type: TripsEventType.Success,
-        message: message,
         trip: trip,
+        message: message,
       },
     }),
   ),
   on(
     tripActions.updateTripError,
-    (state: TripsState, { error }): TripsState => ({
+    (state: TripsState, { trip, message }): TripsState => ({
       ...state,
       event: {
         name: TripsEventName.Update,
         type: TripsEventType.Error,
-        message: error,
+        trip: trip,
+        message,
       },
     }),
   ),
@@ -141,18 +143,20 @@ export const tripsReducer = createReducer(
       event: {
         name: TripsEventName.Remove,
         type: TripsEventType.Success,
+        trip: trip,
         message: message,
       },
     }),
   ),
   on(
     tripActions.removeTripError,
-    (state: TripsState, { error }): TripsState => ({
+    (state: TripsState, { trip, message }): TripsState => ({
       ...state,
       event: {
         name: TripsEventName.Remove,
         type: TripsEventType.Error,
-        message: error,
+        trip: trip,
+        message,
       },
     }),
   ),
@@ -172,12 +176,12 @@ export const tripsReducer = createReducer(
   ),
   on(
     tripItemActions.createTripItemError,
-    (state: TripsState, { error }): TripsState => ({
+    (state: TripsState, { message }): TripsState => ({
       ...state,
       event: {
         name: TripsEventName.CreateItem,
         type: TripsEventType.Error,
-        message: error,
+        message,
       },
     }),
   ),
@@ -197,12 +201,12 @@ export const tripsReducer = createReducer(
   ),
   on(
     tripItemActions.checkTripItemError,
-    (state: TripsState, { error }): TripsState => ({
+    (state: TripsState, { message }): TripsState => ({
       ...state,
       event: {
         name: TripsEventName.CheckItem,
         type: TripsEventType.Error,
-        message: error,
+        message,
       },
     }),
   ),
@@ -222,12 +226,12 @@ export const tripsReducer = createReducer(
   ),
   on(
     tripItemActions.removeTripItemError,
-    (state: TripsState, { error }): TripsState => ({
+    (state: TripsState, { message }): TripsState => ({
       ...state,
       event: {
         name: TripsEventName.RemoveItem,
         type: TripsEventType.Error,
-        message: error,
+        message,
       },
     }),
   ),

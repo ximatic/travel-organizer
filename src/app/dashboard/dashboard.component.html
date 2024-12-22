@@ -1,27 +1,22 @@
 <div class="dashboard">
-  <p-card header="Welcome to Travel Organizer">
+  <p-card [header]="'DASHBOARD.TITLE' | translate">
     <p class="m-0">
-      Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard
-      dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen
-      book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially
-      unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more
-      recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+      {{ 'DASHBOARD.DESCRIPTION' | translate }}
     </p>
   </p-card>
   <div class="mt-4">
     <p-button
       class="dashboard__button dashboard__button--add block w-full"
-      icon="pi pi-plus"
       severity="primary"
       size="large"
-      label="New trip"
+      [label]="'COMMON.BUTTON.NEW_TRIP' | translate"
       routerLink="/trips/add"
     />
   </div>
 
   <div class="mt-2">
     <button pButton pRipple severity="secondary" size="large" class="block w-full" routerLink="/trips">
-      <span pButtonLabel>All Trips</span>
+      <span pButtonLabel>{{ 'COMMON.BUTTON.ALL_TRIPS' | translate }}</span>
     </button>
   </div>
 </div>

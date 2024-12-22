@@ -1,0 +1,114 @@
+{
+  "APP": {
+    "TITLE": "Travel Organizer"
+  },
+  "COMMON": {
+    "BUTTON": {
+      "ADD": "Add",
+      "UPDATE": "Aktualizuj",
+      "BACK": "Powrót",
+      "NEW_TRIP": "Nowa Podróż",
+      "ALL_TRIPS": "Wszystkie Podróże"
+    }
+  },
+  "MENU": {
+    "TITLE": "Menu",
+    "DASHBOARD": "Dashboard",
+    "TRIPS": "Podróże",
+    "SETTINGS": "Ustawienia"
+  },
+  "DASHBOARD": {
+    "TITLE": "Witaj w Travel Organizer",
+    "DESCRIPTION": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
+  },
+  "SETTINGS": {
+    "TITLE": "Ustawienia",
+    "FORM": {
+      "LANGUAGE": {
+        "LABEL": "Język",
+        "OPTION": {
+          "EN": "Angielski",
+          "PL": "Polsiki"
+        }
+      },
+      "DATE_FORMAT": {
+        "LABEL": "Format Daty"
+      },
+      "TIME_FORMAT": {
+        "LABEL": "Format Czasu"
+      },
+      "THEME": {
+        "LABEL": "Motyw",
+        "OPTION": {
+          "LIGHT": "Jasny",
+          "DARK": "Ciemny"
+        }
+      }
+    }
+  },
+  "TRIPS": {
+    "NO_TRIPS": {
+      "TITLE": "Brak dostępnych podróży.",
+      "SUBTITLE": "Użyj przycisku <strong>Nowa Podróż</strong> aby dodać nową podróż."
+    }
+  },
+  "TRIP": {
+    "NO_TRIP": "Podróż niedostępna",
+    "FORM": {
+      "TITLE": {
+        "ADD": "Dodaj podróż",
+        "UPDATE": "Aktualizuj podróż"
+      },
+      "FORM": {
+        "NAME": {
+          "LABEL": "Nazwa*"
+        },
+        "LOCATION": {
+          "LABEL": "Lokalizacja"
+        },
+        "DESCRIPTION": {
+          "LABEL": "Opis"
+        },
+        "DATE": {
+          "LABEL": "Data"
+        },
+        "ERROR": {
+          "NAME": "Nazwa jest wymagana"
+        }
+      }
+    },
+    "ITEMS": {
+      "LABEL": "Element podróży",
+      "FORM": {
+        "NAME": {
+          "LABEL": "Nazwa"
+        }
+      }
+    }
+  },
+  "EVENT": {
+    "TYPE": {
+      "SUCCESS": "Sukces",
+      "ERROR": "Błąd"
+    },
+    "MESSAGE": {
+      "LOAD_SETTINGS_ERROR": "Nie można wczytać ustawień. Domyślne ustawienia będą użyte.",
+      "UPDATE_SETTINGS_SUCCESS": "Ustawienia zaktualizowane",
+      "UPDATE_SETTINGS_ERROR": "Nie można zaktualizować ustawień. Spróbuj ponownie póżniej.",
+      "LOAD_TRIPS_ERROR": "Nie można wczytać wszystkich podróży. Spróbuj ponownie póżniej.",
+      "LOAD_TRIP_ERROR": "Nie można wczytać podróż. Spróbuj ponownie póżniej.",
+      "CREATE_TRIP_SUCCESS": "Podróż ({{trip}}) dodana",
+      "CREATE_TRIP_ERROR": "Nie można dodać podróży ({{trip}}). Spróbuj ponownie póżniej.",
+      "UPDATE_TRIP_SUCCESS": "Podróż ({{trip}}) zaktualizowana",
+      "UPDATE_TRIP_ERROR": "Nie można zaktualizować podróży ({{trip}}). Spróbuj ponownie póżniej.",
+      "REMOVE_TRIP_SUCCESS": "Podróż ({{trip}}) usunięta",
+      "REMOVE_TRIP_ERROR": "Nie można usunąć podróży ({{trip}}). Spróbuj ponownie póżniej.",
+      "CREATE_TRIP_ITEM_SUCCESS": "Element podróży dodany",
+      "CREATE_TRIP_ITEM_ERROR": "Nie można dodać elementu podróży. Spróbuj ponownie póżniej.",
+      "CHECK_TRIP_ITEM_SUCCESS": "Element podróży zaznaczony",
+      "CHECK_TRIP_ITEM_ERROR": "Nie można zaznaczyć elementu podróży. Spróbuj ponownie póżniej.",
+      "REMOVE_TRIP_ITEM_SUCCESS": "Element podróży usunięty",
+      "REMOVE_TRIP_ITEM_ERROR": "Nie można usunąć elementu podróży. Spróbuj ponownie póżniej."
+    }
+  }
+}

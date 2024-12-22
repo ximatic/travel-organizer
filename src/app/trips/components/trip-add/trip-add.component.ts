@@ -4,6 +4,7 @@ import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validator
 import { ActivatedRoute, Params, Router, RouterModule } from '@angular/router';
 
 import { Store } from '@ngrx/store';
+import { InterpolationParameters, TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { delay, Observable, of, Subscription } from 'rxjs';
 
 import { MessageService } from 'primeng/api';
@@ -31,6 +32,7 @@ import { TripsEvent, TripsEventName, TripsEventType, TripsState } from '../../st
     CommonModule,
     RouterModule,
     ReactiveFormsModule,
+    TranslatePipe,
     ButtonModule,
     DatePickerModule,
     FloatLabelModule,
@@ -39,7 +41,7 @@ import { TripsEvent, TripsEventName, TripsEventType, TripsState } from '../../st
     TextareaModule,
     ToastModule,
   ],
-  providers: [MessageService],
+  providers: [TranslateService, MessageService],
 })
 export class TripAddComponent implements OnInit, OnDestroy {
   // ngrx
@@ -62,6 +64,7 @@ export class TripAddComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     private formBuilder: FormBuilder,
+    private translateService: TranslateService,
     private messageService: MessageService,
     private store: Store<TripsState>,
   ) {}
@@ -159,7 +162,7 @@ export class TripAddComponent implements OnInit, OnDestroy {
         break;
       case TripsEventType.Error:
         this.isLoading = false;
-        this.showToast('error', 'Error', event?.message);
+        this.showToastError(event?.message);
         break;
     }
   }
@@ -167,13 +170,13 @@ export class TripAddComponent implements OnInit, OnDestroy {
   private handleTripsEventCreate(event: TripsEvent): void {
     switch (event.type) {
       case TripsEventType.Success:
-        this.showToast('success', 'Success', event?.message);
+        this.showToastSuccess(event?.message, { trip: event.trip?.name });
         if (event.trip) {
           this.router.navigate([`/trips/${event.trip.id}`]);
         }
         break;
       case TripsEventType.Error:
-        this.showToast('error', 'Error', event?.message);
+        this.showToastError(event?.message, { trip: event.trip?.name });
         break;
     }
     this.isSubmitInProgress = false;
@@ -182,13 +185,13 @@ export class TripAddComponent implements OnInit, OnDestroy {
   private handleTripsEventUpdate(event: TripsEvent): void {
     switch (event.type) {
       case TripsEventType.Success:
-        this.showToast('success', 'Success', event?.message);
+        this.showToastSuccess(event?.message, { trip: event.trip?.name });
         if (event.trip) {
           this.router.navigate([`/trips/${event.trip.id}`]);
         }
         break;
       case TripsEventType.Error:
-        this.showToast('error', 'Error', event?.message);
+        this.showToastError(event?.message, { trip: event.trip?.name });
         break;
     }
     this.isSubmitInProgress = false;
@@ -231,6 +234,23 @@ export class TripAddComponent implements OnInit, OnDestroy {
   }
 
   // toasts
+
+  private showToastSuccess(detail?: string, detailsParams?: InterpolationParameters) {
+    this.showToast(
+      'success',
+      this.translateService.instant('EVENT.TYPE.SUCCESS'),
+      this.translateService.instant(`EVENT.MESSAGE.${detail}`, detailsParams),
+    );
+  }
+
+  private showToastError(detail?: string, detailsParams?: InterpolationParameters) {
+    console.log(detailsParams);
+    this.showToast(
+      'error',
+      this.translateService.instant('EVENT.TYPE.ERROR'),
+      this.translateService.instant(`EVENT.MESSAGE.${detail}`, detailsParams),
+    );
+  }
 
   private showToast(severity: string, summary: string, detail?: string) {
     this.messageService.add({ severity, summary, detail, key: 'toast', life: 3000 });

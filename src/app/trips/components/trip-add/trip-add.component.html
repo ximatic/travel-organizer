@@ -2,12 +2,12 @@
   <p-panel class="trip__panel">
     <ng-template pTemplate="header" *ngIf="!trip">
       <div class="flex grid justify-items-center w-full">
-        <span class="grow font-bold">Add trip</span>
+        <span class="grow font-bold">{{ 'TRIP.FORM.TITLE.ADD' | translate }}</span>
       </div>
     </ng-template>
     <ng-template pTemplate="header" *ngIf="trip">
       <div class="flex grid justify-items-center w-full">
-        <span class="grow font-bold">Update trip</span>
+        <span class="grow font-bold">{{ 'TRIP.FORM.TITLE.UPDATE' | translate }}</span>
       </div>
     </ng-template>
 
@@ -22,20 +22,22 @@
             class="w-full"
             [ngClass]="{ 'ng-invalid': nameControl?.invalid, 'ng-dirty': nameControl?.dirty }"
           />
-          <label for="name">Name*</label>
+          <label for="name">{{ 'TRIP.FORM.FORM.NAME.LABEL' | translate }}</label>
         </p-floatlabel>
-        <small *ngIf="nameControl?.invalid && nameControl?.dirty" class="ml-1 trip__form-error">Name is required</small>
+        <small *ngIf="nameControl?.invalid && nameControl?.dirty" class="ml-1 trip__form-error">{{
+          'TRIP.FORM.FORM.ERROR.NAME' | translate
+        }}</small>
       </div>
       <div class="mb-3">
         <p-floatlabel variant="on">
           <input pInputText id="location" type="text" formControlName="location" class="w-full" />
-          <label for="location">Location</label>
+          <label for="location">{{ 'TRIP.FORM.FORM.LOCATION.LABEL' | translate }}</label>
         </p-floatlabel>
       </div>
       <div class="mb-3">
         <p-floatlabel variant="on">
           <textarea pTextarea id="description" rows="5" formControlName="description" class="w-full"></textarea>
-          <label for="description">Description</label>
+          <label for="description">{{ 'TRIP.FORM.FORM.DESCRIPTION.LABEL' | translate }}</label>
         </p-floatlabel>
       </div>
       <div class="mb-3">
@@ -48,7 +50,7 @@
             showIcon
             class="trip__date block w-full"
           />
-          <label for="date">Date</label>
+          <label for="date">{{ 'TRIP.FORM.FORM.DATE.LABEL' | translate }}</label>
         </p-floatlabel>
       </div>
 
@@ -62,13 +64,13 @@
           (click)="submitTrip()"
         >
           <i class="pi pi-spin pi-spinner mr-1" *ngIf="isSubmitInProgress"></i>
-          <span pButtonLabel *ngIf="!trip">Add</span>
-          <span pButtonLabel *ngIf="trip">Update</span>
+          <span pButtonLabel *ngIf="!trip">{{ 'COMMON.BUTTON.ADD' | translate }}</span>
+          <span pButtonLabel *ngIf="trip">{{ 'COMMON.BUTTON.UPDATE' | translate }}</span>
         </button>
       </div>
       <div class="mt-2">
         <button pButton pRipple severity="secondary" *ngIf="trip" class="block w-full" routerLink="/trips/{{ trip.id }}">
-          <span pButtonLabel>Back</span>
+          <span pButtonLabel>{{ 'COMMON.BUTTON.BACK' | translate }}</span>
         </button>
       </div>
     </div>
@@ -76,7 +78,7 @@
 
   <div class="mt-4">
     <button pButton pRipple severity="secondary" size="large" class="block w-full" routerLink="/trips">
-      <span pButtonLabel>All Trips</span>
+      <span pButtonLabel>{{ 'COMMON.BUTTON.ALL_TRIPS' | translate }}</span>
     </button>
   </div>
 

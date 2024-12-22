@@ -3,13 +3,15 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { provideRouter, Router } from '@angular/router';
 
-import { MessageService } from 'primeng/api';
-
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { provideTranslateService } from '@ngx-translate/core';
+
+import { MessageService } from 'primeng/api';
 
 import { DEFAULT_INITIAL_TRIPS_STATE, DEFAULT_TRIP_1, DEFAULT_TRIP_2 } from '../../../common/mocks/trips.constants';
 import { messageServiceMock } from '../../../common/mocks/services.mocks';
 
+import { TripsEventMessage } from '../../models/trip.model';
 import { TripAction } from '../../store/trips.actions';
 import { selectTrips, selectTripsEvent } from '../../store/trips.selectors';
 import { TripsEventName, TripsEventType } from '../../store/trips.state';
@@ -32,6 +34,7 @@ describe('TripsComponent', () => {
       providers: [
         provideRouter([]),
         provideNoopAnimations(),
+        provideTranslateService(),
         provideMockStore({ initialState: DEFAULT_INITIAL_TRIPS_STATE }),
         MessageService,
       ],
@@ -145,16 +148,16 @@ describe('TripsComponent', () => {
     mockTripsEventSelector.setResult({
       name: TripsEventName.LoadAll,
       type: TripsEventType.Error,
-      message: 'No trips',
+      message: TripsEventMessage.LOAD_TRIPS_ERROR,
     });
 
     store.refreshState();
 
     expect(component.isLoading).toBeFalsy();
-    expect(messageAddSpy).toHaveBeenCalledWith({
+    expect(messageAddSpy).toHaveBeenLastCalledWith({
       severity: 'error',
-      summary: 'Error',
-      detail: 'No trips',
+      summary: 'EVENT.TYPE.ERROR',
+      detail: `EVENT.MESSAGE.${TripsEventMessage.LOAD_TRIPS_ERROR}`,
       key: 'toast',
       life: 3000,
     });
@@ -168,15 +171,16 @@ describe('TripsComponent', () => {
     mockTripsEventSelector.setResult({
       name: TripsEventName.Remove,
       type: TripsEventType.Success,
-      message: 'Trip deleted',
+      trip: DEFAULT_TRIP_1,
+      message: TripsEventMessage.REMOVE_TRIP_SUCCESS,
     });
 
     store.refreshState();
 
-    expect(messageAddSpy).toHaveBeenCalledWith({
+    expect(messageAddSpy).toHaveBeenLastCalledWith({
       severity: 'success',
-      summary: 'Success',
-      detail: 'Trip deleted',
+      summary: 'EVENT.TYPE.SUCCESS',
+      detail: `EVENT.MESSAGE.${TripsEventMessage.REMOVE_TRIP_SUCCESS}`,
       key: 'toast',
       life: 3000,
     });
@@ -190,15 +194,16 @@ describe('TripsComponent', () => {
     mockTripsEventSelector.setResult({
       name: TripsEventName.Remove,
       type: TripsEventType.Error,
-      message: 'Trip not deleted',
+      trip: DEFAULT_TRIP_1,
+      message: TripsEventMessage.REMOVE_TRIP_ERROR,
     });
 
     store.refreshState();
 
-    expect(messageAddSpy).toHaveBeenCalledWith({
+    expect(messageAddSpy).toHaveBeenLastCalledWith({
       severity: 'error',
-      summary: 'Error',
-      detail: 'Trip not deleted',
+      summary: 'EVENT.TYPE.ERROR',
+      detail: `EVENT.MESSAGE.${TripsEventMessage.REMOVE_TRIP_ERROR}`,
       key: 'toast',
       life: 3000,
     });

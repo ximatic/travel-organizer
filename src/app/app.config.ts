@@ -1,3 +1,4 @@
+import { provideHttpClient, HttpClient } from '@angular/common/http';
 import { APP_INITIALIZER, ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideRouter } from '@angular/router';
@@ -6,10 +7,14 @@ import { provideEffects } from '@ngrx/effects';
 import { provideStore, Store } from '@ngrx/store';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
 
+import { provideTranslateService, TranslateLoader, TranslateService } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { take } from 'rxjs';
 
-import { providePrimeNG } from 'primeng/config';
 import Aura from '@primeng/themes/aura';
+import { providePrimeNG } from 'primeng/config';
+
+import { DEFAULT_LANGUAGE } from './settings/constants/settings.constants';
 
 import { SettingsService } from './settings/services/settings.service';
 import { Settings, SettingsTheme } from './settings/models/settings.model';
@@ -25,7 +30,10 @@ import { settingsReducer } from './settings/store/settings.reducer';
 
 import { routes } from './app.routes';
 
-export function initializeApplication(store: Store<SettingsActionState>) {
+export const httpLoaderFactory: (http: HttpClient) => TranslateHttpLoader = (http: HttpClient) =>
+  new TranslateHttpLoader(http, './i18n/', '.json');
+
+export function initializeApplication(store: Store<SettingsActionState>, translateService: TranslateService) {
   return () =>
     new Promise<boolean>((resolve) => {
       store.dispatch(settingsActions.loadSettings());
@@ -36,6 +44,7 @@ export function initializeApplication(store: Store<SettingsActionState>) {
           const htmlElement = document.querySelector('html');
           if (htmlElement) {
             htmlElement.setAttribute('lang', settings.language);
+            translateService.use(settings.language);
 
             if (settings.theme === SettingsTheme.Dark) {
               htmlElement?.classList.add('dark-mode');
@@ -49,8 +58,18 @@ export function initializeApplication(store: Store<SettingsActionState>) {
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
+    provideHttpClient(),
     provideRouter(routes),
     provideAnimationsAsync(),
+    provideTranslateService({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: httpLoaderFactory,
+        deps: [HttpClient],
+      },
+      defaultLanguage: DEFAULT_LANGUAGE,
+      useDefaultLang: true,
+    }),
     provideEffects([SettingsEffects]),
     provideStore({
       trips: tripsReducer,
@@ -69,7 +88,7 @@ export const appConfig: ApplicationConfig = {
       provide: APP_INITIALIZER,
       useFactory: initializeApplication,
       multi: true,
-      deps: [Store<SettingsActionState>],
+      deps: [Store<SettingsActionState>, TranslateService],
     },
     SettingsService, // required for SettingsEffects
   ],

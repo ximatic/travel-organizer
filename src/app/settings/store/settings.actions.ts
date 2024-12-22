@@ -22,13 +22,13 @@ export interface ActionPropsSettingsSuccess {
 }
 
 export interface ActionPropsSettingsError {
-  error: string;
+  message: string;
 }
 
 export const settingsActions = {
   reset: createAction(SettingsAction.Reset),
   loadSettings: createAction(SettingsAction.LoadSettings),
-  loadSettingsSuccess: createAction(SettingsAction.LoadSettingsSuccess, props<ActionPropsSettingsSuccess>()),
+  loadSettingsSuccess: createAction(SettingsAction.LoadSettingsSuccess, props<ActionPropsSettings>()),
   loadSettingsError: createAction(SettingsAction.LoadSettingsError, props<ActionPropsSettingsError>()),
   updateSettings: createAction(SettingsAction.UpdateSettings, props<ActionPropsSettings>()),
   updateSettingsSuccess: createAction(SettingsAction.UpdateSettingsSuccess, props<ActionPropsSettingsSuccess>()),

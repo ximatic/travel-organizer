@@ -3,6 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { provideTranslateService } from '@ngx-translate/core';
 
 import {
   DEFAULT_INITIAL_SETTINGS_STATE,
@@ -27,7 +28,11 @@ describe('MainComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [MainComponent],
-      providers: [provideRouter([]), provideMockStore({ initialState: DEFAULT_INITIAL_SETTINGS_STATE })],
+      providers: [
+        provideRouter([]),
+        provideTranslateService(),
+        provideMockStore({ initialState: DEFAULT_INITIAL_SETTINGS_STATE }),
+      ],
     }).compileComponents();
 
     store = TestBed.inject(MockStore);

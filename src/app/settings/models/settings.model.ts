@@ -1,3 +1,11 @@
+export enum SettingsEventMessage {
+  LOAD_SETTINGS_ERROR = 'LOAD_SETTINGS_ERROR',
+  UPDATE_SETTINGS_SUCCESS = 'UPDATE_SETTINGS_SUCCESS',
+  UPDATE_SETTINGS_ERROR = 'UPDATE_SETTINGS_ERROR',
+}
+
+// settings
+
 export enum SettingsLanguage {
   English = 'en',
   Polish = 'pl',

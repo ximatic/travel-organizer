@@ -1,7 +1,7 @@
 <p-panel class="trip__panel full-height">
   <ng-template pTemplate="header">
     <div class="flex items-center gap-2 w-full">
-      <span class="grow font-bold">Trip items</span>
+      <span class="grow font-bold">{{ 'TRIP.ITEMS.LABEL' | translate }}</span>
     </div>
   </ng-template>
   <div>
@@ -25,7 +25,7 @@
     <div class="grow">
       <p-floatlabel variant="on">
         <input pInputText id="name" pSize="small" type="text" formControlName="name" class="w-full" />
-        <label for="name">Name</label>
+        <label for="name">{{ 'TRIP.ITEMS.FORM.NAME.LABEL' | translate }}</label>
       </p-floatlabel>
     </div>
     <div>

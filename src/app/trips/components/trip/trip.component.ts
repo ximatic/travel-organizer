@@ -3,6 +3,7 @@ import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, RouterModule } from '@angular/router';
 
 import { Store } from '@ngrx/store';
+import { InterpolationParameters, TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { Observable, Subscription } from 'rxjs';
 
 import { MessageService } from 'primeng/api';
@@ -28,6 +29,7 @@ import { TripItemsComponent } from '../trip-items/trip-items.component';
   imports: [
     CommonModule,
     RouterModule,
+    TranslatePipe,
     ButtonModule,
     CardModule,
     PanelModule,
@@ -36,7 +38,7 @@ import { TripItemsComponent } from '../trip-items/trip-items.component';
     TripItemsComponent,
     TripPanelComponent,
   ],
-  providers: [MessageService],
+  providers: [TranslateService, MessageService],
 })
 export class TripComponent implements OnInit, AfterViewInit, OnDestroy {
   // ngrx
@@ -52,6 +54,7 @@ export class TripComponent implements OnInit, AfterViewInit, OnDestroy {
 
   constructor(
     private route: ActivatedRoute,
+    private translateService: TranslateService,
     private messageService: MessageService,
     private store: Store<TripsState>,
   ) {}
@@ -112,12 +115,21 @@ export class TripComponent implements OnInit, AfterViewInit, OnDestroy {
         break;
       case TripsEventType.Error:
         this.isLoading = false;
-        this.showToast('error', 'Error', event?.message);
+        this.showToastError(event?.message);
         break;
     }
   }
 
   // toast
+
+  private showToastError(detail?: string, detailsParams?: InterpolationParameters) {
+    console.log(detailsParams);
+    this.showToast(
+      'error',
+      this.translateService.instant('EVENT.TYPE.ERROR'),
+      this.translateService.instant(`EVENT.MESSAGE.${detail}`, detailsParams),
+    );
+  }
 
   private showToast(severity: string, summary: string, detail?: string) {
     this.messageService.add({ severity, summary, detail, key: 'toast', life: 3000 });

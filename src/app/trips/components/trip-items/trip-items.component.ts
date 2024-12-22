@@ -4,6 +4,7 @@ import { ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angula
 import { RouterModule } from '@angular/router';
 
 import { Store } from '@ngrx/store';
+import { InterpolationParameters, TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { delay, Observable, of, Subscription } from 'rxjs';
 
 import { MessageService } from 'primeng/api';
@@ -31,6 +32,7 @@ import { TripsEvent, TripsEventName, TripsEventType, TripsState } from '../../st
     CommonModule,
     RouterModule,
     ReactiveFormsModule,
+    TranslatePipe,
     ButtonModule,
     CardModule,
     DividerModule,
@@ -39,7 +41,7 @@ import { TripsEvent, TripsEventName, TripsEventType, TripsState } from '../../st
     PanelModule,
     ToastModule,
   ],
-  providers: [MessageService],
+  providers: [TranslateService, MessageService],
 })
 export class TripItemsComponent implements OnInit, AfterViewInit, OnDestroy {
   // ngrx
@@ -58,6 +60,7 @@ export class TripItemsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   constructor(
     private formBuilder: FormBuilder,
+    private translateService: TranslateService,
     private messageService: MessageService,
     private store: Store<TripsState>,
   ) {}
@@ -139,7 +142,7 @@ export class TripItemsComponent implements OnInit, AfterViewInit, OnDestroy {
         this.clearForm();
         break;
       case TripsEventType.Error:
-        this.showToast('error', 'Error', event?.message);
+        this.showToastError(event?.message);
         break;
     }
     this.isSubmitInProgress = false;
@@ -154,7 +157,7 @@ export class TripItemsComponent implements OnInit, AfterViewInit, OnDestroy {
         this.clearForm();
         break;
       case TripsEventType.Error:
-        this.showToast('error', 'Error', event?.message);
+        this.showToastError(event?.message);
         break;
     }
   }
@@ -167,7 +170,7 @@ export class TripItemsComponent implements OnInit, AfterViewInit, OnDestroy {
         }
         break;
       case TripsEventType.Error:
-        this.showToast('error', 'Error', event?.message);
+        this.showToastError(event?.message);
         break;
     }
   }
@@ -195,6 +198,15 @@ export class TripItemsComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   // toast
+
+  private showToastError(detail?: string, detailsParams?: InterpolationParameters) {
+    console.log(detailsParams);
+    this.showToast(
+      'error',
+      this.translateService.instant('EVENT.TYPE.ERROR'),
+      this.translateService.instant(`EVENT.MESSAGE.${detail}`, detailsParams),
+    );
+  }
 
   private showToast(severity: string, summary: string, detail?: string) {
     this.messageService.add({ severity, summary, detail, key: 'toast', life: 3000 });

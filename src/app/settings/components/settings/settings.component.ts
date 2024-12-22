@@ -3,6 +3,7 @@ import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { Store } from '@ngrx/store';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { delay, Observable, of, Subscription } from 'rxjs';
 
 import { MessageService } from 'primeng/api';
@@ -22,6 +23,11 @@ import { settingsActions } from '../../store/settings.actions';
 import { Settings, SettingsDateFormat, SettingsLanguage, SettingsTheme, SettingsTimeFormat } from '../../models/settings.model';
 import { DEFAULT_DATE_FORMAT, DEFAULT_LANGUAGE, DEFAULT_THEME, DEFAULT_TIME_FORMAT } from '../../constants/settings.constants';
 
+export interface SettingsFormOption {
+  name: string;
+  code: string;
+}
+
 @Component({
   selector: 'app-settings',
   templateUrl: './settings.component.html',
@@ -30,6 +36,7 @@ import { DEFAULT_DATE_FORMAT, DEFAULT_LANGUAGE, DEFAULT_THEME, DEFAULT_TIME_FORM
   imports: [
     CommonModule,
     ReactiveFormsModule,
+    TranslatePipe,
     ButtonModule,
     DatePickerModule,
     FloatLabelModule,
@@ -38,7 +45,7 @@ import { DEFAULT_DATE_FORMAT, DEFAULT_LANGUAGE, DEFAULT_THEME, DEFAULT_TIME_FORM
     SelectModule,
     ToastModule,
   ],
-  providers: [MessageService],
+  providers: [TranslateService, MessageService],
 })
 export class SettingsComponent implements OnInit, AfterViewInit, OnDestroy {
   // ngrx
@@ -55,19 +62,22 @@ export class SettingsComponent implements OnInit, AfterViewInit, OnDestroy {
   isSubmitInProgress = false;
 
   // form options
-  languages = Object.entries(SettingsLanguage).map(([key, value]) => ({ name: key, code: value }));
-  dateFormats = Object.values(SettingsDateFormat).map((value: string) => ({ name: value.toLowerCase(), code: value }));
-  timeFormats = Object.values(SettingsTimeFormat).map((value: string) => ({ name: value, code: value }));
-  themes = Object.entries(SettingsTheme).map(([key, value]) => ({ name: key, code: value }));
+  languages: SettingsFormOption[] = [];
+  dateFormats: SettingsFormOption[] = [];
+  timeFormats: SettingsFormOption[] = [];
+  themes: SettingsFormOption[] = [];
 
   // other
   private subscription = new Subscription();
 
   constructor(
     private formBuilder: FormBuilder,
+    private translateService: TranslateService,
     private messageService: MessageService,
     private store: Store<SettingsActionState>,
-  ) {}
+  ) {
+    this.initFormOptions();
+  }
 
   // lifecycle methods
 
@@ -113,11 +123,28 @@ export class SettingsComponent implements OnInit, AfterViewInit, OnDestroy {
     this.initForm();
   }
 
+  private initFormOptions(): void {
+    this.languages = Object.values(SettingsLanguage).map((value: string) => ({
+      name: this.translateService.instant(`SETTINGS.FORM.LANGUAGE.OPTION.${value.toUpperCase()}`),
+      code: value,
+    }));
+    this.dateFormats = Object.values(SettingsDateFormat).map((value: string) => ({ name: value.toLowerCase(), code: value }));
+    this.timeFormats = Object.values(SettingsTimeFormat).map((value: string) => ({ name: value, code: value }));
+    this.themes = Object.values(SettingsTheme).map((value: string) => ({
+      name: this.translateService.instant(`SETTINGS.FORM.THEME.OPTION.${value.toUpperCase()}`),
+      code: value,
+    }));
+  }
+
   private initState(): void {
     this.settings$ = this.store.select(selectSettings);
     this.subscription.add(
       this.settings$.subscribe((settings: Settings) => {
         this.settings = { ...settings };
+        this.translateService.use(this.settings.language);
+        this.translateService.get('APP.TITLE').subscribe(() => {
+          this.initFormOptions();
+        });
         this.fillForm();
         this.isSubmitInProgress = false;
       }),
@@ -125,17 +152,12 @@ export class SettingsComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.actionState$ = this.store.select(selectSettingsActionState);
     this.subscription.add(
-      this.actionState$
-        //.pipe(filter((actionState: SettingsActionState | undefined) => this.filterActionState(actionState)))
-        .subscribe((actionState: SettingsActionState | undefined) => this.handleActionState(actionState)),
+      this.actionState$.subscribe((actionState: SettingsActionState | undefined) => this.handleActionState(actionState)),
     );
   }
 
-  // private filterActionState(actionState: SettingsActionState | undefined): boolean {
-  //   return actionState?.name === SettiongsActionName.LoadSettings || actionState?.name === SettiongsActionName.UpdateSettings;
-  // }
-
   private handleActionState(actionState: SettingsActionState | undefined): void {
+    console.log(actionState);
     if (!actionState) {
       return;
     }
@@ -153,7 +175,7 @@ export class SettingsComponent implements OnInit, AfterViewInit, OnDestroy {
   private handleLoadSettings(actionState: SettingsActionState): void {
     switch (actionState.type) {
       case SettingsActionType.Error:
-        this.showToast('error', 'Error', actionState?.message);
+        this.showToastError(actionState?.message);
         break;
     }
   }
@@ -161,10 +183,10 @@ export class SettingsComponent implements OnInit, AfterViewInit, OnDestroy {
   private handleUpdateSettings(actionState: SettingsActionState): void {
     switch (actionState.type) {
       case SettingsActionType.Success:
-        this.showToast('success', 'Success', actionState?.message);
+        this.showToastSuccess(actionState?.message);
         break;
       case SettingsActionType.Error:
-        this.showToast('error', 'Error', actionState?.message);
+        this.showToastError(actionState?.message);
         break;
     }
     this.isSubmitInProgress = false;
@@ -206,6 +228,22 @@ export class SettingsComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   // toasts
+
+  private showToastSuccess(detail?: string) {
+    this.showToast(
+      'success',
+      this.translateService.instant('EVENT.TYPE.SUCCESS'),
+      this.translateService.instant(`EVENT.MESSAGE.${detail}`),
+    );
+  }
+
+  private showToastError(detail?: string) {
+    this.showToast(
+      'error',
+      this.translateService.instant('EVENT.TYPE.ERROR'),
+      this.translateService.instant(`EVENT.MESSAGE.${detail}`),
+    );
+  }
 
   private showToast(severity: string, summary: string, detail?: string) {
     this.messageService.add({ severity, summary, detail, key: 'toast', life: 3000 });

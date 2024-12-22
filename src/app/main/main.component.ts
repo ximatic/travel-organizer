@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 import { Store } from '@ngrx/store';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Observable, Subscription } from 'rxjs';
 
 import { ButtonModule } from 'primeng/button';
@@ -21,7 +22,7 @@ import { Settings, SettingsTheme } from '../settings/models/settings.model';
   templateUrl: './main.component.html',
   styleUrl: './main.component.scss',
   standalone: true,
-  imports: [RouterModule, ButtonModule, DividerModule, DrawerModule, ToolbarModule],
+  imports: [RouterModule, TranslatePipe, ButtonModule, DividerModule, DrawerModule, ToolbarModule],
 })
 export class MainComponent implements OnInit, OnDestroy {
   // ngrx

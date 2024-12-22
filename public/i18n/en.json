@@ -1,0 +1,117 @@
+{
+  "APP": {
+    "TITLE": "Travel Organizer"
+  },
+  "COMMON": {
+    "BUTTON": {
+      "ADD": "Add",
+      "UPDATE": "Update",
+      "BACK": "Back",
+      "NEW_TRIP": "New Trip",
+      "ALL_TRIPS": "All Trips"
+    }
+  },
+  "MENU": {
+    "TITLE": "Menu",
+    "DASHBOARD": "Dashboard",
+    "TRIPS": "Trips",
+    "SETTINGS": "Settings"
+  },
+  "DASHBOARD": {
+    "TITLE": "Welcome to Travel Organizer",
+    "DESCRIPTION": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
+  },
+  "SETTINGS": {
+    "TITLE": "Settings",
+    "FORM": {
+      "LANGUAGE": {
+        "LABEL": "Language",
+        "OPTION": {
+          "EN": "English",
+          "PL": "Polish"
+        }
+      },
+      "DATE_FORMAT": {
+        "LABEL": "Date Format"
+      },
+      "TIME_FORMAT": {
+        "LABEL": "Time Format"
+      },
+      "THEME": {
+        "LABEL": "Theme",
+        "OPTION": {
+          "LIGHT": "Light",
+          "DARK": "Dark"
+        }
+      },
+      "ERROR": {
+        "NAME": "Name is required"
+      }
+    }
+  },
+  "TRIPS": {
+    "NO_TRIPS": {
+      "TITLE": "No trips available.",
+      "SUBTITLE": "Please use <strong>New Trip</strong> button to add new one."
+    }
+  },
+  "TRIP": {
+    "NO_TRIP": "Trip not available",
+    "FORM": {
+      "TITLE": {
+        "ADD": "Add trip",
+        "UPDATE": "Update trip"
+      },
+      "FORM": {
+        "NAME": {
+          "LABEL": "Name*"
+        },
+        "LOCATION": {
+          "LABEL": "Location"
+        },
+        "DESCRIPTION": {
+          "LABEL": "Description"
+        },
+        "DATE": {
+          "LABEL": "Date"
+        },
+        "ERROR": {
+          "NAME": "Name is required"
+        }
+      }
+    },
+    "ITEMS": {
+      "LABEL": "Trip items",
+      "FORM": {
+        "NAME": {
+          "LABEL": "Name"
+        }
+      }
+    }
+  },
+  "EVENT": {
+    "TYPE": {
+      "SUCCESS": "Success",
+      "ERROR": "Error"
+    },
+    "MESSAGE": {
+      "LOAD_SETTINGS_ERROR": "Can't load settings. Default settings will be used.",
+      "UPDATE_SETTINGS_SUCCESS": "Settings updated",
+      "UPDATE_SETTINGS_ERROR": "Can't update settings. Please try again later.",
+      "LOAD_TRIPS_ERROR": "Can't load trips. Please try again later.",
+      "LOAD_TRIP_ERROR": "Can't load trip. Please try again later.",
+      "CREATE_TRIP_SUCCESS": "Trip ({{trip}}) added",
+      "CREATE_TRIP_ERROR": "Can't create trip ({{trip}}). Please try again later.",
+      "UPDATE_TRIP_SUCCESS": "Trip ({{trip}}) updated",
+      "UPDATE_TRIP_ERROR": "Can't update trip ({{trip}}). Please try again later.",
+      "REMOVE_TRIP_SUCCESS": "Trip ({{trip}}) removed",
+      "REMOVE_TRIP_ERROR": "Can't remove trip ({{trip}}). Please try again later.",
+      "CREATE_TRIP_ITEM_SUCCESS": "Trip item added",
+      "CREATE_TRIP_ITEM_ERROR": "Can't create trip item. Please try again later.",
+      "CHECK_TRIP_ITEM_SUCCESS": "Trip item toggled",
+      "CHECK_TRIP_ITEM_ERROR": "Can't toggle trip item. Please try again later.",
+      "REMOVE_TRIP_ITEM_SUCCESS": "Trip item removed",
+      "REMOVE_TRIP_ITEM_ERROR": "Can't remove trip item. Please try again later."
+    }
+  }
+}

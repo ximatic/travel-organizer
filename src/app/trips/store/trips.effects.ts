@@ -15,7 +15,7 @@ import {
   tripItemActions,
 } from './trips.actions';
 
-import { Trip, TripError } from '../models/trip.model';
+import { Trip, TripError, TripsEventMessage } from '../models/trip.model';
 
 @Injectable()
 export class TripsEffects {
@@ -27,7 +27,7 @@ export class TripsEffects {
       exhaustMap(() =>
         this.tripsService.loadTrips().pipe(
           map((trips: Trip[]) => tripActions.loadTripsSuccess({ trips })),
-          catchError(() => of(tripActions.loadTripsError({ error: "Can't load trips. Please try again later." }))),
+          catchError(() => of(tripActions.loadTripsError({ message: TripsEventMessage.LOAD_TRIPS_ERROR }))),
         ),
       ),
     ),
@@ -39,7 +39,7 @@ export class TripsEffects {
       exhaustMap((action: ActionPropsId) =>
         this.tripsService.loadTrip(action.id).pipe(
           map((trip: Trip) => tripActions.loadTripSuccess({ trip })),
-          catchError(() => of(tripActions.loadTripError({ error: "Can't load trip. Please try again later." }))),
+          catchError(() => of(tripActions.loadTripError({ message: TripsEventMessage.LOAD_TRIP_ERROR }))),
         ),
       ),
     ),
@@ -50,9 +50,9 @@ export class TripsEffects {
       ofType(TripAction.CreateTrip),
       exhaustMap((action: ActionPropsTrip) =>
         this.tripsService.createTrip(action.trip).pipe(
-          map((trip: Trip) => tripActions.createTripSuccess({ trip, message: `Trip (${trip.name}) added` })),
+          map((trip: Trip) => tripActions.createTripSuccess({ trip, message: TripsEventMessage.CREATE_TRIP_SUCCESS })),
           catchError((error: TripError) =>
-            of(tripActions.createTripError({ error: `Can't create trip (${error.trip?.name}). Please try again later.` })),
+            of(tripActions.createTripError({ trip: error.trip, message: TripsEventMessage.CREATE_TRIP_ERROR })),
           ),
         ),
       ),
@@ -64,9 +64,9 @@ export class TripsEffects {
       ofType(TripAction.UpdateTrip),
       exhaustMap((action: ActionPropsTrip) =>
         this.tripsService.updateTrip(action.trip).pipe(
-          map((trip: Trip) => tripActions.updateTripSuccess({ trip, message: `Trip (${trip.name}) updated` })),
+          map((trip: Trip) => tripActions.updateTripSuccess({ trip, message: TripsEventMessage.UPDATE_TRIP_SUCCESS })),
           catchError((error: TripError) =>
-            of(tripActions.updateTripError({ error: `Can't update trip (${error.trip?.name}). Please try again later.` })),
+            of(tripActions.updateTripError({ trip: error.trip, message: TripsEventMessage.UPDATE_TRIP_ERROR })),
           ),
         ),
       ),
@@ -78,9 +78,9 @@ export class TripsEffects {
       ofType(TripAction.RemoveTrip),
       exhaustMap((action: ActionPropsTrip) =>
         this.tripsService.removeTrip(action.trip).pipe(
-          map((trip: Trip) => tripActions.removeTripSuccess({ trip, message: `Trip (${trip.name}) removed` })),
+          map((trip: Trip) => tripActions.removeTripSuccess({ trip, message: TripsEventMessage.REMOVE_TRIP_SUCCESS })),
           catchError((error: TripError) =>
-            of(tripActions.removeTripError({ error: `Can't remove trip (${error.trip?.name}). Please try again later.` })),
+            of(tripActions.removeTripError({ trip: error.trip, message: TripsEventMessage.REMOVE_TRIP_ERROR })),
           ),
         ),
       ),
@@ -95,12 +95,12 @@ export class TripsEffects {
       exhaustMap((action: ActionPropsTripItem) =>
         this.tripsService.createTripItem(action.trip, action.tripItem).pipe(
           map((trip: Trip) =>
-            tripItemActions.createTripItemSuccess({ trip, message: `Trip Item (${action.tripItem.name}) created` }),
+            tripItemActions.createTripItemSuccess({ trip, message: TripsEventMessage.CREATE_TRIP_ITEM_SUCCESS }),
           ),
           catchError(() =>
             of(
               tripItemActions.createTripItemError({
-                error: `Can't create Trip Item (${action.tripItem.name}). Please try again later.`,
+                message: TripsEventMessage.CREATE_TRIP_ITEM_ERROR,
               }),
             ),
           ),
@@ -114,13 +114,11 @@ export class TripsEffects {
       ofType(TripItemAction.CheckTripItem),
       exhaustMap((action: ActionPropsTripItem) =>
         this.tripsService.checkTripItem(action.trip, action.tripItem).pipe(
-          map((trip: Trip) =>
-            tripItemActions.checkTripItemSuccess({ trip, message: `Trip Item (${action.tripItem.name}) toggled` }),
-          ),
+          map((trip: Trip) => tripItemActions.checkTripItemSuccess({ trip, message: TripsEventMessage.CHECK_TRIP_ITEM_SUCCESS })),
           catchError(() =>
             of(
               tripItemActions.checkTripItemError({
-                error: `Can't toggle Trip Item (${action.tripItem.name}). Please try again later.`,
+                message: TripsEventMessage.CHECK_TRIP_ITEM_ERROR,
               }),
             ),
           ),
@@ -135,12 +133,12 @@ export class TripsEffects {
       exhaustMap((action: ActionPropsTripItem) =>
         this.tripsService.removeTripItem(action.trip, action.tripItem).pipe(
           map((trip: Trip) =>
-            tripItemActions.removeTripItemSuccess({ trip, message: `Trip Item (${action.tripItem.name}) removed` }),
+            tripItemActions.removeTripItemSuccess({ trip, message: TripsEventMessage.REMOVE_TRIP_ITEM_SUCCESS }),
           ),
           catchError(() =>
             of(
               tripItemActions.removeTripItemError({
-                error: `Can't remove Trip Item (${action.tripItem.name}). Please try again later.`,
+                message: TripsEventMessage.REMOVE_TRIP_ITEM_ERROR,
               }),
             ),
           ),

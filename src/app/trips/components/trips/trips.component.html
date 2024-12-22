@@ -24,8 +24,8 @@
             <p>
               <span class="pi pi-map trips__logo"></span>
             </p>
-            <p class="mt-2">No trips available.</p>
-            <p class="mt-2">Please use <strong>New trip</strong> button to add new one.</p>
+            <p class="mt-2">{{ 'TRIPS.NO_TRIPS.TITLE' | translate }}</p>
+            <p class="mt-2" [innerHTML]="'TRIPS.NO_TRIPS.SUBTITLE' | translate"></p>
           </div>
         </p-panel>
       </div>
@@ -33,7 +33,7 @@
 
     <div class="mt-4">
       <button pButton pRipple severity="primary" size="large" class="block w-full" routerLink="/trips/add">
-        <span pButtonLabel>New trip</span>
+        <span pButtonLabel>{{ 'COMMON.BUTTON.NEW_TRIP' | translate }}</span>
       </button>
     </div>
   </ng-template>

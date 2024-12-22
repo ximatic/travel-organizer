@@ -3,6 +3,7 @@ import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 
 import { Store } from '@ngrx/store';
+import { InterpolationParameters, TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { Observable, skip, Subscription } from 'rxjs';
 
 import { MessageService } from 'primeng/api';
@@ -23,8 +24,17 @@ import { TripPanelComponent } from '../trip-panel/trip-panel.component';
   templateUrl: './trips.component.html',
   styleUrl: './trips.component.scss',
   standalone: true,
-  imports: [CommonModule, RouterModule, ButtonModule, PanelModule, ProgressSpinnerModule, ToastModule, TripPanelComponent],
-  providers: [MessageService],
+  imports: [
+    CommonModule,
+    RouterModule,
+    TranslatePipe,
+    ButtonModule,
+    PanelModule,
+    ProgressSpinnerModule,
+    ToastModule,
+    TripPanelComponent,
+  ],
+  providers: [TranslateService, MessageService],
 })
 export class TripsComponent implements OnInit, AfterViewInit, OnDestroy {
   // ngrx
@@ -40,6 +50,7 @@ export class TripsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   constructor(
     private router: Router,
+    private translateService: TranslateService,
     private messageService: MessageService,
     private storeTrips: Store<TripsState>,
   ) {}
@@ -84,12 +95,11 @@ export class TripsComponent implements OnInit, AfterViewInit, OnDestroy {
     );
 
     this.tripsEvent$ = this.storeTrips.select(selectTripsEvent);
-    this.subscription.add(
-      this.tripsEvent$.pipe(skip(1)).subscribe((event: TripsEvent | undefined) => this.handleTripsEvent(event)),
-    );
+    this.subscription.add(this.tripsEvent$.subscribe((event: TripsEvent | undefined) => this.handleTripsEvent(event)));
   }
 
   private handleTripsEvent(event: TripsEvent | undefined): void {
+    console.log(event);
     if (!event) {
       return;
     }
@@ -114,7 +124,7 @@ export class TripsComponent implements OnInit, AfterViewInit, OnDestroy {
         break;
       case TripsEventType.Error:
         this.isLoading = false;
-        this.showToast('error', 'Error', event?.message);
+        this.showToastError(event?.message);
         break;
     }
   }
@@ -122,10 +132,10 @@ export class TripsComponent implements OnInit, AfterViewInit, OnDestroy {
   private handleTripsEventRemove(event: TripsEvent): void {
     switch (event.type) {
       case TripsEventType.Success:
-        this.showToast('success', 'Success', event?.message);
+        this.showToastSuccess(event?.message, { trip: event.trip?.name });
         break;
       case TripsEventType.Error:
-        this.showToast('error', 'Error', event?.message);
+        this.showToastError(event?.message, { trip: event.trip?.name });
         break;
     }
   }
@@ -137,6 +147,23 @@ export class TripsComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   // toast
+
+  private showToastSuccess(detail?: string, detailsParams?: InterpolationParameters) {
+    this.showToast(
+      'success',
+      this.translateService.instant('EVENT.TYPE.SUCCESS'),
+      this.translateService.instant(`EVENT.MESSAGE.${detail}`, detailsParams),
+    );
+  }
+
+  private showToastError(detail?: string, detailsParams?: InterpolationParameters) {
+    console.log(detailsParams);
+    this.showToast(
+      'error',
+      this.translateService.instant('EVENT.TYPE.ERROR'),
+      this.translateService.instant(`EVENT.MESSAGE.${detail}`, detailsParams),
+    );
+  }
 
   private showToast(severity: string, summary: string, detail?: string) {
     this.messageService.add({ severity, summary, detail, key: 'toast', life: 3000 });

@@ -20,56 +20,6 @@
 
         <div>
           <app-trip-items [trip]="trip"></app-trip-items>
-          <!-- <p-panel class="trip__panel full-height">
-            <ng-template pTemplate="header">
-              <div class="flex items-center gap-2 w-full">
-                <span class="grow font-bold">Trip items</span>
-              </div>
-            </ng-template>
-            <div>
-              <div class="trip__item flex" *ngFor="let item of trip.items">
-                <div>
-                  <p-button
-                    icon="pi pi-star"
-                    severity="contrast"
-                    text
-                    class="flex-none"
-                    [disabled]="tripItemForm.invalid"
-                    (onClick)="checkTripItem(item)"
-                  />
-                </div>
-                <div class="flex items-center grow">{{ item.name }}</div>
-                <div>
-                  <p-button
-                    icon="pi pi-times-circle"
-                    severity="danger"
-                    text
-                    class="flex-none"
-                    [disabled]="tripItemForm.invalid"
-                    (onClick)="removeTripItem(item)"
-                  />
-                </div>
-              </div>
-            </div>
-            <p-divider class="mt-4 mb-4" />
-            <div [formGroup]="tripItemForm" class="flex gap-1">
-              <div class="grow">
-                <p-floatlabel variant="on">
-                  <input pInputText id="name" pSize="small" type="text" formControlName="name" class="w-full" />
-                  <label for="name">Name</label>
-                </p-floatlabel>
-              </div>
-              <div>
-                <p-button
-                  icon="pi pi-plus"
-                  severity="secondary"
-                  class="flex-none"
-                  [disabled]="tripItemForm.invalid"
-                  (onClick)="submitTripItem()"
-                />
-              </div>
-            </div>
-          </p-panel> -->
         </div>
       </div>
     </ng-container>
@@ -81,7 +31,7 @@
             <p>
               <span class="pi pi-map trip__logo"></span>
             </p>
-            <p class="mt-2">Trip not available.</p>
+            <p class="mt-2">{{ 'TRIP.NO_TRIP' | translate }}</p>
           </div>
         </p-panel>
       </div>
@@ -89,7 +39,7 @@
 
     <div class="mt-4">
       <button pButton pRipple severity="secondary" size="large" class="block w-full" routerLink="/trips">
-        <span pButtonLabel>All Trips</span>
+        <span pButtonLabel>{{ 'COMMON.BUTTON.ALL_TRIPS' | translate }}</span>
       </button>
     </div>
   </ng-template>

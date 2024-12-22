@@ -2,7 +2,7 @@
   <p-panel class="settings__panel">
     <ng-template pTemplate="header">
       <div class="flex grid justify-items-center w-full">
-        <span class="grow font-bold">Settings</span>
+        <span class="grow font-bold">{{ 'SETTINGS.TITLE' | translate }}</span>
       </div>
     </ng-template>
 
@@ -17,9 +17,11 @@
             id="language"
             class="w-full"
           />
-          <label for="language">Language</label>
+          <label for="language">{{ 'SETTINGS.FORM.LANGUAGE.LABEL' | translate }}</label>
         </p-floatlabel>
-        <small *ngIf="nameControl?.invalid && nameControl?.dirty" class="ml-1 trip__form-error">Name is required</small>
+        <small *ngIf="nameControl?.invalid && nameControl?.dirty" class="ml-1 trip__form-error">{{
+          'SETTINGS.FORM.ERROR.NAME' | translate
+        }}</small>
       </div>
       <div class="mb-3">
         <p-floatlabel variant="on">
@@ -31,7 +33,7 @@
             id="dateFormat"
             class="w-full"
           />
-          <label for="dateFormat">Date Format</label>
+          <label for="dateFormat">{{ 'SETTINGS.FORM.DATE_FORMAT.LABEL' | translate }}</label>
         </p-floatlabel>
       </div>
       <div class="mb-3">
@@ -44,13 +46,13 @@
             id="timeFormat"
             class="w-full"
           />
-          <label for="timeFormat">Time Format</label>
+          <label for="timeFormat">{{ 'SETTINGS.FORM.TIME_FORMAT.LABEL' | translate }}</label>
         </p-floatlabel>
       </div>
       <div class="mb-4">
         <p-floatlabel variant="on">
           <p-select formControlName="theme" [options]="themes" optionLabel="name" optionValue="code" id="theme" class="w-full" />
-          <label for="theme">Theme</label>
+          <label for="theme">{{ 'SETTINGS.FORM.THEME.LABEL' | translate }}</label>
         </p-floatlabel>
       </div>
 
@@ -64,7 +66,7 @@
           (click)="submitSettings()"
         >
           <i class="pi pi-spin pi-spinner mr-1" *ngIf="isSubmitInProgress"></i>
-          <span pButtonLabel>Update</span>
+          <span pButtonLabel>{{ 'COMMON.BUTTON.UPDATE' | translate }}</span>
         </button>
       </div>
     </div>

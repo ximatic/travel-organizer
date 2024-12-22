@@ -4,7 +4,10 @@ import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { ActivatedRoute, provideRouter, Router } from '@angular/router';
 
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { provideTranslateService } from '@ngx-translate/core';
 import { of } from 'rxjs';
+
+import { MessageService } from 'primeng/api';
 
 import { DEFAULT_UX_DELAY } from '../../../common/constants/common.constants';
 import {
@@ -16,12 +19,12 @@ import {
 } from '../../../common/mocks/trips.constants';
 import { messageServiceMock } from '../../../common/mocks/services.mocks';
 
+import { TripsEventMessage } from '../../models/trip.model';
 import { TripAction } from '../../store/trips.actions';
 import { selectTrip, selectTripsEvent } from '../../store/trips.selectors';
 import { TripsEventName, TripsEventType } from '../../store/trips.state';
 
 import { TripAddComponent } from './trip-add.component';
-import { MessageService } from 'primeng/api';
 
 describe('TripAddComponent', () => {
   let component: TripAddComponent;
@@ -40,6 +43,7 @@ describe('TripAddComponent', () => {
         providers: [
           provideRouter([]),
           provideNoopAnimations(),
+          provideTranslateService(),
           provideMockStore({ initialState: DEFAULT_INITIAL_TRIPS_STATE }),
           MessageService,
         ],
@@ -128,7 +132,7 @@ describe('TripAddComponent', () => {
       mockTripsEventSelector.setResult({
         name: TripsEventName.Create,
         type: TripsEventType.Success,
-        message: 'Trip created',
+        message: TripsEventMessage.CREATE_TRIP_SUCCESS,
         trip: DEFAULT_TRIP_3,
       });
 
@@ -137,8 +141,8 @@ describe('TripAddComponent', () => {
       expect(component.isSubmitInProgress).toBeFalsy();
       expect(messageAddSpy).toHaveBeenCalledWith({
         severity: 'success',
-        summary: 'Success',
-        detail: 'Trip created',
+        summary: 'EVENT.TYPE.SUCCESS',
+        detail: `EVENT.MESSAGE.${TripsEventMessage.CREATE_TRIP_SUCCESS}`,
         key: 'toast',
         life: 3000,
       });
@@ -153,7 +157,8 @@ describe('TripAddComponent', () => {
       mockTripsEventSelector.setResult({
         name: TripsEventName.Create,
         type: TripsEventType.Error,
-        message: 'Trip not created',
+        message: TripsEventMessage.CREATE_TRIP_ERROR,
+        trip: DEFAULT_TRIP_3,
       });
 
       store.refreshState();
@@ -161,8 +166,8 @@ describe('TripAddComponent', () => {
       expect(component.isSubmitInProgress).toBeFalsy();
       expect(messageAddSpy).toHaveBeenCalledWith({
         severity: 'error',
-        summary: 'Error',
-        detail: 'Trip not created',
+        summary: 'EVENT.TYPE.ERROR',
+        detail: `EVENT.MESSAGE.${TripsEventMessage.CREATE_TRIP_ERROR}`,
         key: 'toast',
         life: 3000,
       });
@@ -176,6 +181,7 @@ describe('TripAddComponent', () => {
         providers: [
           provideRouter([]),
           provideNoopAnimations(),
+          provideTranslateService(),
           provideMockStore({ initialState: DEFAULT_INITIAL_TRIPS_STATE }),
           {
             provide: ActivatedRoute,
@@ -302,7 +308,7 @@ describe('TripAddComponent', () => {
       mockTripsEventSelector.setResult({
         name: TripsEventName.Load,
         type: TripsEventType.Error,
-        message: 'Trip not available',
+        message: TripsEventMessage.LOAD_TRIP_ERROR,
       });
 
       store.refreshState();
@@ -310,8 +316,8 @@ describe('TripAddComponent', () => {
       expect(component.isLoading).toBeFalsy();
       expect(messageAddSpy).toHaveBeenCalledWith({
         severity: 'error',
-        summary: 'Error',
-        detail: 'Trip not available',
+        summary: 'EVENT.TYPE.ERROR',
+        detail: `EVENT.MESSAGE.${TripsEventMessage.LOAD_TRIP_ERROR}`,
         key: 'toast',
         life: 3000,
       });
@@ -326,7 +332,7 @@ describe('TripAddComponent', () => {
       mockTripsEventSelector.setResult({
         name: TripsEventName.Update,
         type: TripsEventType.Success,
-        message: 'Trip updated',
+        message: TripsEventMessage.UPDATE_TRIP_SUCCESS,
         trip: DEFAULT_TRIP_1,
       });
 
@@ -335,8 +341,8 @@ describe('TripAddComponent', () => {
       expect(component.isSubmitInProgress).toBeFalsy();
       expect(messageAddSpy).toHaveBeenCalledWith({
         severity: 'success',
-        summary: 'Success',
-        detail: 'Trip updated',
+        summary: 'EVENT.TYPE.SUCCESS',
+        detail: `EVENT.MESSAGE.${TripsEventMessage.UPDATE_TRIP_SUCCESS}`,
         key: 'toast',
         life: 3000,
       });
@@ -351,7 +357,8 @@ describe('TripAddComponent', () => {
       mockTripsEventSelector.setResult({
         name: TripsEventName.Update,
         type: TripsEventType.Error,
-        message: 'Trip not updated',
+        message: TripsEventMessage.UPDATE_TRIP_ERROR,
+        trip: DEFAULT_TRIP_1,
       });
 
       store.refreshState();
@@ -359,8 +366,8 @@ describe('TripAddComponent', () => {
       expect(component.isSubmitInProgress).toBeFalsy();
       expect(messageAddSpy).toHaveBeenCalledWith({
         severity: 'error',
-        summary: 'Error',
-        detail: 'Trip not updated',
+        summary: 'EVENT.TYPE.ERROR',
+        detail: `EVENT.MESSAGE.${TripsEventMessage.UPDATE_TRIP_ERROR}`,
         key: 'toast',
         life: 3000,
       });

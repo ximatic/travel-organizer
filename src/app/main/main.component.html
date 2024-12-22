@@ -5,10 +5,10 @@
       <p-toolbar>
         <ng-template #start>
           <p-button icon="pi pi-bars" text severity="secondary" (click)="toggleSidebar()" class="md:hidden" />
-          <span class="hidden md:flex ml-2"><span class="pi pi-globe pr-2 main__logo"></span>Travel Organizer</span>
+          <span class="hidden md:flex ml-2"><span class="pi pi-globe pr-2 main__logo"></span>{{ 'APP.TITLE' | translate }}</span>
         </ng-template>
         <ng-template #center>
-          <span class="flex md:hidden"><span class="pi pi-globe pr-2 main__logo"></span>Travel Organizer</span>
+          <span class="flex md:hidden"><span class="pi pi-globe pr-2 main__logo"></span>{{ 'APP.TITLE' | translate }}</span>
         </ng-template>
         <ng-template #end>
           <p-button icon="pi pi-palette" text severity="secondary" (click)="toggleDarkMode()" />
@@ -21,13 +21,34 @@
     <div class="menu hidden md:block px-3">
       <div class="flex">
         <div>
-          <p-button icon="pi pi-th-large" text severity="secondary" [link]="true" routerLink="/dashboard" label="Dashboard" />
+          <p-button
+            icon="pi pi-th-large"
+            text
+            severity="secondary"
+            [link]="true"
+            routerLink="/dashboard"
+            [label]="'MENU.DASHBOARD' | translate"
+          />
         </div>
         <div>
-          <p-button icon="pi pi-map" text severity="secondary" [link]="true" routerLink="/trips" label="Trips" />
+          <p-button
+            icon="pi pi-map"
+            text
+            severity="secondary"
+            [link]="true"
+            routerLink="/trips"
+            [label]="'MENU.TRIPS' | translate"
+          />
         </div>
         <div class="grow flex justify-end">
-          <p-button icon="pi pi-cog" text severity="secondary" [link]="true" routerLink="/settings" label="Settings" />
+          <p-button
+            icon="pi pi-cog"
+            text
+            severity="secondary"
+            [link]="true"
+            routerLink="/settings"
+            [label]="'MENU.SETTINGS' | translate"
+          />
         </div>
       </div>
     </div>
@@ -38,7 +59,7 @@
     </div>
 
     <!-- mobile menu -->
-    <p-drawer [(visible)]="sidebarVisible" header="Menu" class="md:hidden">
+    <p-drawer [(visible)]="sidebarVisible" [header]="'MENU.TITLE' | translate" class="md:hidden">
       <div>
         <p-button
           icon="pi pi-th-large"
@@ -46,7 +67,7 @@
           severity="secondary"
           [link]="true"
           routerLink="/dashboard"
-          label="Dashboard"
+          [label]="'MENU.DASHBOARD' | translate"
           (onClick)="toggleSidebar()"
         />
       </div>
@@ -57,7 +78,7 @@
           severity="secondary"
           [link]="true"
           routerLink="/trips"
-          label="Trips"
+          [label]="'MENU.TRIPS' | translate"
           (onClick)="toggleSidebar()"
         />
       </div>
@@ -68,7 +89,7 @@
           severity="secondary"
           [link]="true"
           routerLink="/settings"
-          label="Settings"
+          [label]="'MENU.SETTINGS' | translate"
           (onClick)="toggleSidebar()"
         />
       </div>

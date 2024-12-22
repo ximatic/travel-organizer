@@ -28,12 +28,12 @@ export const settingsReducer = createReducer(
       type: SettingsActionType.Success,
     },
   })),
-  on(settingsActions.loadSettingsError, (state: SettingsState, { error }) => ({
+  on(settingsActions.loadSettingsError, (state: SettingsState, { message }) => ({
     ...state,
     actionState: {
       name: SettiongsActionName.LoadSettings,
       type: SettingsActionType.Error,
-      message: error,
+      message,
     },
   })),
   // update settings
@@ -43,15 +43,15 @@ export const settingsReducer = createReducer(
     actionState: {
       name: SettiongsActionName.UpdateSettings,
       type: SettingsActionType.Success,
-      message: message,
+      message,
     },
   })),
-  on(settingsActions.updateSettingsError, (state: SettingsState, { error }) => ({
+  on(settingsActions.updateSettingsError, (state: SettingsState, { message }) => ({
     ...state,
     actionState: {
       name: SettiongsActionName.UpdateSettings,
       type: SettingsActionType.Error,
-      message: error,
+      message,
     },
   })),
 );

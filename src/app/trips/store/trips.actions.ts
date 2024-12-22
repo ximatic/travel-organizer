@@ -56,7 +56,8 @@ export interface ActionPropsSuccess {
 }
 
 export interface ActionPropsError {
-  error: string;
+  trip?: Trip;
+  message: string;
 }
 
 export const tripActions = {

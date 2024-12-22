@@ -7,7 +7,7 @@ import { map, exhaustMap, catchError } from 'rxjs/operators';
 import { SettingsService } from '../services/settings.service';
 import { ActionPropsSettings, SettingsAction, settingsActions } from './settings.actions';
 
-import { Settings } from '../models/settings.model';
+import { Settings, SettingsEventMessage } from '../models/settings.model';
 
 @Injectable()
 export class SettingsEffects {
@@ -16,10 +16,8 @@ export class SettingsEffects {
       ofType(SettingsAction.LoadSettings),
       exhaustMap(() =>
         this.settingsService.loadSettings().pipe(
-          map((settings: Settings) => settingsActions.loadSettingsSuccess({ settings, message: `Settings loaded` })),
-          catchError(() =>
-            of(settingsActions.loadSettingsError({ error: "Can't load settings. Default settings will be used." })),
-          ),
+          map((settings: Settings) => settingsActions.loadSettingsSuccess({ settings })),
+          catchError(() => of(settingsActions.loadSettingsError({ message: SettingsEventMessage.LOAD_SETTINGS_ERROR }))),
         ),
       ),
     ),
@@ -30,8 +28,10 @@ export class SettingsEffects {
       ofType(SettingsAction.UpdateSettings),
       exhaustMap((action: ActionPropsSettings) =>
         this.settingsService.updateSettings(action.settings).pipe(
-          map((settings: Settings) => settingsActions.updateSettingsSuccess({ settings, message: `Settings updated` })),
-          catchError(() => of(settingsActions.updateSettingsError({ error: `Can't update settings. Please try again later.` }))),
+          map((settings: Settings) =>
+            settingsActions.updateSettingsSuccess({ settings, message: SettingsEventMessage.UPDATE_SETTINGS_SUCCESS }),
+          ),
+          catchError(() => of(settingsActions.updateSettingsError({ message: SettingsEventMessage.UPDATE_SETTINGS_ERROR }))),
         ),
       ),
     ),

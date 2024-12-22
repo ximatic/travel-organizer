@@ -4,6 +4,7 @@ import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { ActivatedRoute, provideRouter } from '@angular/router';
 
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { provideTranslateService } from '@ngx-translate/core';
 import { of } from 'rxjs';
 
 import { MessageService } from 'primeng/api';
@@ -16,6 +17,7 @@ import { selectTripsEvent } from '../../store/trips.selectors';
 import { TripsEventName, TripsEventType } from '../../store/trips.state';
 
 import { TripComponent } from './trip.component';
+import { TripsEventMessage } from '../../models/trip.model';
 
 describe('TripComponent', () => {
   let component: TripComponent;
@@ -31,6 +33,7 @@ describe('TripComponent', () => {
       providers: [
         provideRouter([]),
         provideNoopAnimations(),
+        provideTranslateService(),
         provideMockStore({ initialState: DEFAULT_INITIAL_TRIPS_STATE }),
         {
           provide: ActivatedRoute,
@@ -126,7 +129,8 @@ describe('TripComponent', () => {
     mockTripsEventSelector.setResult({
       name: TripsEventName.Load,
       type: TripsEventType.Error,
-      message: 'No trip',
+      message: TripsEventMessage.LOAD_TRIP_ERROR,
+      trip: DEFAULT_TRIP_1,
     });
 
     store.refreshState();
@@ -134,8 +138,8 @@ describe('TripComponent', () => {
     expect(component.isLoading).toBeFalsy();
     expect(messageAddSpy).toHaveBeenCalledWith({
       severity: 'error',
-      summary: 'Error',
-      detail: 'No trip',
+      summary: 'EVENT.TYPE.ERROR',
+      detail: `EVENT.MESSAGE.${TripsEventMessage.LOAD_TRIP_ERROR}`,
       key: 'toast',
       life: 3000,
     });
