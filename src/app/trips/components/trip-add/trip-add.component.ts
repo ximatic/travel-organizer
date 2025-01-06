@@ -172,7 +172,7 @@ export class TripAddComponent implements OnInit, OnDestroy {
       case TripsEventType.Success:
         this.showToastSuccess(event?.message, { trip: event.trip?.name });
         if (event.trip) {
-          this.router.navigate([`/trips/${event.trip.id}`]);
+          this.router.navigate([`/trips/${event.trip._id}`]);
         }
         break;
       case TripsEventType.Error:
@@ -187,7 +187,7 @@ export class TripAddComponent implements OnInit, OnDestroy {
       case TripsEventType.Success:
         this.showToastSuccess(event?.message, { trip: event.trip?.name });
         if (event.trip) {
-          this.router.navigate([`/trips/${event.trip.id}`]);
+          this.router.navigate([`/trips/${event.trip._id}`]);
         }
         break;
       case TripsEventType.Error:
@@ -244,7 +244,6 @@ export class TripAddComponent implements OnInit, OnDestroy {
   }
 
   private showToastError(detail?: string, detailsParams?: InterpolationParameters) {
-    console.log(detailsParams);
     this.showToast(
       'error',
       this.translateService.instant('EVENT.TYPE.ERROR'),

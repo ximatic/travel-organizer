@@ -71,7 +71,7 @@ export class TripsComponent implements OnInit, AfterViewInit, OnDestroy {
   // trip handling
 
   openTrip(trip: Trip): void {
-    this.router.navigate([`/trips/${trip.id}`]);
+    this.router.navigate([`/trips/${trip._id}`]);
   }
 
   removeTrip(event: Event, trip: Trip): void {
@@ -99,7 +99,6 @@ export class TripsComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private handleTripsEvent(event: TripsEvent | undefined): void {
-    console.log(event);
     if (!event) {
       return;
     }
@@ -157,7 +156,6 @@ export class TripsComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private showToastError(detail?: string, detailsParams?: InterpolationParameters) {
-    console.log(detailsParams);
     this.showToast(
       'error',
       this.translateService.instant('EVENT.TYPE.ERROR'),

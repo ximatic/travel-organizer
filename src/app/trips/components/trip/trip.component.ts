@@ -123,7 +123,6 @@ export class TripComponent implements OnInit, AfterViewInit, OnDestroy {
   // toast
 
   private showToastError(detail?: string, detailsParams?: InterpolationParameters) {
-    console.log(detailsParams);
     this.showToast(
       'error',
       this.translateService.instant('EVENT.TYPE.ERROR'),

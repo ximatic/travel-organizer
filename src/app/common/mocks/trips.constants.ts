@@ -8,26 +8,26 @@ export const DEFAULT_TRIP_0: Trip = {
 };
 
 export const DEFAULT_TRIP_1: Trip = {
-  id: 'test-id-1',
+  _id: 'test-id-1',
   name: 'Test Trip #1',
 };
 
 export const DEFAULT_TRIP_2: Trip = {
-  id: 'test-id-2',
+  _id: 'test-id-2',
   name: 'Test Trip #2',
   description: 'Test Description #2',
   items: [],
 };
 
 export const DEFAULT_TRIP_3: Trip = {
-  id: 'test-id-3',
+  _id: 'test-id-3',
   name: 'Test Trip #3',
   description: 'Test Description #3',
   location: 'Berlin',
 };
 
 export const DEFAULT_TRIP_4: Trip = {
-  id: 'test-id-4',
+  _id: 'test-id-4',
   name: 'Test Trip #4',
   description: 'Test Description #4',
   location: 'Berlin',
@@ -43,13 +43,13 @@ export const DEFAULT_TRIP_ITEM_0: TripItem = {
 };
 
 export const DEFAULT_TRIP_ITEM_1: TripItem = {
-  id: 'test-item-id-1',
+  _id: 'test-item-id-1',
   name: 'Test Trip Item #1',
   checked: false,
 };
 
 export const DEFAULT_TRIP_ITEM_2: TripItem = {
-  id: 'test-item-id-2',
+  _id: 'test-item-id-2',
   name: 'Test Trip Item #2',
   checked: false,
 };

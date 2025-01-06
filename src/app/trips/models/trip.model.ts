@@ -27,7 +27,7 @@ export enum TripsEventMessage {
 // trip
 
 export interface TripItem {
-  id?: string;
+  _id?: string;
   name: string;
   checked: boolean;
   description?: string;
@@ -37,7 +37,7 @@ export interface TripItem {
 }
 
 export interface Trip {
-  id?: string;
+  _id?: string;
   name: string;
   type?: string; // foot, car, train, plane, boat, etc.
   description?: string;

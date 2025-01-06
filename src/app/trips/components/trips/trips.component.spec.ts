@@ -85,7 +85,7 @@ describe('TripsComponent', () => {
     const navigateSpy = jest.spyOn(router, 'navigate');
 
     component.openTrip(DEFAULT_TRIP_1);
-    expect(navigateSpy).toHaveBeenCalledWith([`/trips/${DEFAULT_TRIP_1.id}`]);
+    expect(navigateSpy).toHaveBeenCalledWith([`/trips/${DEFAULT_TRIP_1._id}`]);
   });
 
   it('removing trip works', () => {

@@ -13,10 +13,10 @@ import {
   DEFAULT_TRIP_ITEM_2,
 } from '../../common/mocks/trips.constants';
 
-import { TripsService } from './trips.service';
+import { TripsStorageService } from './trips-storage.service';
 
-describe('TripsService', () => {
-  let service: TripsService;
+describe('TripsStorageService', () => {
+  let service: TripsStorageService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
@@ -24,7 +24,7 @@ describe('TripsService', () => {
     // clear localStorage before every test to have known state
     localStorage.clear();
 
-    service = TestBed.inject(TripsService);
+    service = TestBed.inject(TripsStorageService);
   });
 
   it('should be created', () => {
@@ -158,7 +158,7 @@ describe('TripsService', () => {
   it('loading trip works', (done) => {
     service
       .createTrip(DEFAULT_TRIP_1)
-      .pipe(switchMap(() => service.loadTrip(DEFAULT_TRIP_1.id as string)))
+      .pipe(switchMap(() => service.loadTrip(DEFAULT_TRIP_1._id as string)))
       .subscribe((trip: Trip) => {
         expect(trip).toEqual(DEFAULT_TRIP_1);
         done();
@@ -180,7 +180,7 @@ describe('TripsService', () => {
   it("loading trip doesn't work for non existing trip", (done) => {
     service
       .createTrip(DEFAULT_TRIP_1)
-      .pipe(switchMap(() => service.loadTrip(DEFAULT_TRIP_2.id as string)))
+      .pipe(switchMap(() => service.loadTrip(DEFAULT_TRIP_2._id as string)))
       .subscribe({
         error: (error: TripError) => {
           expect(error).toEqual(new TripError("Trip with provided ID doesn't exist"));

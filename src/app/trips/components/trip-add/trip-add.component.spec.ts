@@ -146,7 +146,7 @@ describe('TripAddComponent', () => {
         key: 'toast',
         life: 3000,
       });
-      expect(navigateSpy).toHaveBeenCalledWith([`/trips/${DEFAULT_TRIP_3.id}`]);
+      expect(navigateSpy).toHaveBeenCalledWith([`/trips/${DEFAULT_TRIP_3._id}`]);
     });
 
     it('handling Trips Event with Create Error works', () => {
@@ -186,7 +186,7 @@ describe('TripAddComponent', () => {
           {
             provide: ActivatedRoute,
             useValue: {
-              params: of({ id: DEFAULT_TRIP_1.id }),
+              params: of({ id: DEFAULT_TRIP_1._id }),
             },
           },
           MessageService,
@@ -219,7 +219,7 @@ describe('TripAddComponent', () => {
 
       fixture.detectChanges();
 
-      expect(dispatchSpy).toHaveBeenCalledWith({ type: TripAction.LoadTrip, id: DEFAULT_TRIP_1.id });
+      expect(dispatchSpy).toHaveBeenCalledWith({ type: TripAction.LoadTrip, id: DEFAULT_TRIP_1._id });
     });
 
     it('loading trip works', () => {
@@ -259,7 +259,7 @@ describe('TripAddComponent', () => {
       expect(dispatchSpy).toHaveBeenLastCalledWith({
         type: TripAction.UpdateTrip,
         trip: {
-          id: DEFAULT_TRIP_1.id,
+          _id: DEFAULT_TRIP_1._id,
           name: DEFAULT_TRIP_1.name,
           location: 'Berlin',
           description: '',
@@ -346,7 +346,7 @@ describe('TripAddComponent', () => {
         key: 'toast',
         life: 3000,
       });
-      expect(navigateSpy).toHaveBeenCalledWith([`/trips/${DEFAULT_TRIP_1.id}`]);
+      expect(navigateSpy).toHaveBeenCalledWith([`/trips/${DEFAULT_TRIP_1._id}`]);
     });
 
     it('handling Trips Event with Update Error works', () => {

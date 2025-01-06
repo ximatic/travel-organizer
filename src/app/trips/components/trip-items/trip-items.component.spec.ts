@@ -40,7 +40,7 @@ describe('TripItemsComponent', () => {
         {
           provide: ActivatedRoute,
           useValue: {
-            params: of({ id: DEFAULT_TRIP_1.id }),
+            params: of({ id: DEFAULT_TRIP_1._id }),
           },
         },
         MessageService,

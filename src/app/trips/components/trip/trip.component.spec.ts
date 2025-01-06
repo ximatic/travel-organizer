@@ -38,7 +38,7 @@ describe('TripComponent', () => {
         {
           provide: ActivatedRoute,
           useValue: {
-            params: of({ id: DEFAULT_TRIP_1.id }),
+            params: of({ id: DEFAULT_TRIP_1._id }),
           },
         },
         MessageService,
@@ -70,7 +70,7 @@ describe('TripComponent', () => {
     fixture.detectChanges();
 
     expect(component.isLoading).toBeTruthy();
-    expect(dispatchSpy).toHaveBeenCalledWith({ type: TripAction.LoadTrip, id: DEFAULT_TRIP_1.id });
+    expect(dispatchSpy).toHaveBeenCalledWith({ type: TripAction.LoadTrip, id: DEFAULT_TRIP_1._id });
   });
 
   // trips event
