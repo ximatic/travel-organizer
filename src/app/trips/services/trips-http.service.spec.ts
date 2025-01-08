@@ -163,7 +163,7 @@ describe('TripsHttpService', () => {
       serviceResponse = trip;
     });
 
-    const req = httpMock.expectOne(`${environment.tripsApi}/${DEFAULT_TRIP_1._id}`);
+    const req = httpMock.expectOne(`${environment.tripsApi}/${DEFAULT_TRIP_1._id}/item`);
     req.flush(mockData);
 
     tick();
@@ -183,7 +183,7 @@ describe('TripsHttpService', () => {
       serviceResponse = trip;
     });
 
-    const req = httpMock.expectOne(`${environment.tripsApi}/${DEFAULT_TRIP_1._id}/${DEFAULT_TRIP_ITEM_1._id}`);
+    const req = httpMock.expectOne(`${environment.tripsApi}/${DEFAULT_TRIP_1._id}/item/${DEFAULT_TRIP_ITEM_1._id}`);
     req.flush(mockData);
 
     tick();
@@ -203,7 +203,7 @@ describe('TripsHttpService', () => {
       serviceResponse = trip;
     });
 
-    const req = httpMock.expectOne(`${environment.tripsApi}/${DEFAULT_TRIP_1._id}/${DEFAULT_TRIP_ITEM_1._id}`);
+    const req = httpMock.expectOne(`${environment.tripsApi}/${DEFAULT_TRIP_1._id}/item/${DEFAULT_TRIP_ITEM_1._id}`);
     req.flush(mockData);
 
     tick();

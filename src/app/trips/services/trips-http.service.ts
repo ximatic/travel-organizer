@@ -43,18 +43,20 @@ export class TripsHttpService extends TripsService {
   // trip items
 
   createTripItem(trip: Trip, tripItem: TripItem): Observable<Trip> {
-    return this.httpClient.post(`${environment.tripsApi}/${trip._id}`, tripItem).pipe(map((response: any) => response as Trip));
+    return this.httpClient
+      .post(`${environment.tripsApi}/${trip._id}/item`, tripItem)
+      .pipe(map((response: any) => response as Trip));
   }
 
   checkTripItem(trip: Trip, tripItem: TripItem): Observable<Trip> {
     return this.httpClient
-      .put(`${environment.tripsApi}/${trip._id}/${tripItem._id}`, tripItem)
+      .put(`${environment.tripsApi}/${trip._id}/item/${tripItem._id}`, { ...tripItem, checked: !tripItem.checked })
       .pipe(map((response: any) => response as Trip));
   }
 
   removeTripItem(trip: Trip, tripItem: TripItem): Observable<Trip> {
     return this.httpClient
-      .delete(`${environment.tripsApi}/${trip._id}/${tripItem._id}`)
+      .delete(`${environment.tripsApi}/${trip._id}/item/${tripItem._id}`)
       .pipe(map((response: any) => response as Trip));
   }
 }
