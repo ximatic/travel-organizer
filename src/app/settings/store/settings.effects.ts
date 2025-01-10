@@ -11,11 +11,11 @@ import { Settings, SettingsEventMessage } from '../models/settings.model';
 
 @Injectable()
 export class SettingsEffects {
-  loadTrips$ = createEffect(() =>
+  loadSettings$ = createEffect(() =>
     this.actions$.pipe(
       ofType(SettingsAction.LoadSettings),
       exhaustMap(() =>
-        this.settingsService.loadSettings().pipe(
+        this.settingsService.getSettings().pipe(
           map((settings: Settings) => settingsActions.loadSettingsSuccess({ settings })),
           catchError(() => of(settingsActions.loadSettingsError({ message: SettingsEventMessage.LOAD_SETTINGS_ERROR }))),
         ),
@@ -23,7 +23,7 @@ export class SettingsEffects {
     ),
   );
 
-  updateTrip$ = createEffect(() =>
+  updateSettings$ = createEffect(() =>
     this.actions$.pipe(
       ofType(SettingsAction.UpdateSettings),
       exhaustMap((action: ActionPropsSettings) =>

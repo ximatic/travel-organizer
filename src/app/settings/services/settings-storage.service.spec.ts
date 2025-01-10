@@ -7,10 +7,10 @@ import { Settings } from '../models/settings.model';
 
 import { DEFAULT_MOCK_SETTINGS_2 } from '../../common/mocks/settings.constants';
 
-import { SettingsService } from './settings.service';
+import { SettingsStorageService } from './settings-storage.service';
 
-describe('SettingsService', () => {
-  let service: SettingsService;
+describe('SettingsStorageService', () => {
+  let service: SettingsStorageService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
@@ -18,17 +18,17 @@ describe('SettingsService', () => {
     // clear localStorage before every test to have known state
     localStorage.clear();
 
-    service = TestBed.inject(SettingsService);
+    service = TestBed.inject(SettingsStorageService);
   });
 
   it('should be created', () => {
     expect(service).toBeTruthy();
   });
 
-  // loadSettings
+  // getSettings
 
   it('no settings initially in localStorage', (done) => {
-    service.loadSettings().subscribe((settings: Settings) => {
+    service.getSettings().subscribe((settings: Settings) => {
       expect(settings).toEqual(DEFAULT_SETTINGS);
       done();
     });
@@ -43,7 +43,7 @@ describe('SettingsService', () => {
 
     service
       .updateSettings(updatedSettings)
-      .pipe(switchMap(() => service.loadSettings()))
+      .pipe(switchMap(() => service.getSettings()))
       .subscribe((settings: Settings) => {
         expect(settings).toEqual(DEFAULT_MOCK_SETTINGS_2);
         done();

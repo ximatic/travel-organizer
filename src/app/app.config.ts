@@ -17,6 +17,8 @@ import { providePrimeNG } from 'primeng/config';
 import { DEFAULT_LANGUAGE } from './settings/constants/settings.constants';
 
 import { SettingsService } from './settings/services/settings.service';
+import { SettingsHttpService } from './settings/services/settings-http.service';
+import { SettingsStorageService } from './settings/services/settings-storage.service';
 import { Settings, SettingsTheme } from './settings/models/settings.model';
 
 import { settingsActions } from './settings/store/settings.actions';
@@ -29,6 +31,8 @@ import { tripsReducer } from './trips/store/trips.reducer';
 import { settingsReducer } from './settings/store/settings.reducer';
 
 import { routes } from './app.routes';
+
+import { environment } from '../environments/environment';
 
 export const httpLoaderFactory: (http: HttpClient) => TranslateHttpLoader = (http: HttpClient) =>
   new TranslateHttpLoader(http, './i18n/', '.json');
@@ -90,6 +94,6 @@ export const appConfig: ApplicationConfig = {
       multi: true,
       deps: [Store<SettingsState>, TranslateService],
     },
-    SettingsService, // required for SettingsEffects
+    { provide: SettingsService, useClass: environment.storageMethod === 'http' ? SettingsHttpService : SettingsStorageService }, // required for SettingsEffects
   ],
 };

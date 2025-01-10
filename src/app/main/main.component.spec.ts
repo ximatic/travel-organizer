@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
@@ -9,12 +9,16 @@ import {
   DEFAULT_INITIAL_SETTINGS_STATE,
   DEFAULT_MOCK_SETTINGS_1,
   DEFAULT_MOCK_SETTINGS_2,
+  DEFAULT_MOCK_SETTINGS_EVENT_LOAD_LOADING,
+  DEFAULT_MOCK_SETTINGS_EVENT_LOAD_SUCCESS,
+  DEFAULT_MOCK_SETTINGS_EVENT_UPDATE_SUCCESS,
 } from '../common/mocks/settings.constants';
+import { DEFAULT_UX_DELAY } from '../common/constants/common.constants';
 
 import { DEFAULT_SETTINGS } from '../settings/constants/settings.constants';
 import { SettingsLanguage, SettingsTheme } from '../settings/models/settings.model';
 import { SettingsAction } from '../settings/store/settings.actions';
-import { selectSettings } from '../settings/store/settings.selectors';
+import { selectSettings, selectSettingsEvent } from '../settings/store/settings.selectors';
 
 import { MainComponent } from './main.component';
 
@@ -24,6 +28,7 @@ describe('MainComponent', () => {
   let store: MockStore;
 
   let mockSettingsSelector: any;
+  let mockSettingsEventSelector: any;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -38,6 +43,7 @@ describe('MainComponent', () => {
     store = TestBed.inject(MockStore);
 
     mockSettingsSelector = store.overrideSelector(selectSettings, DEFAULT_MOCK_SETTINGS_1);
+    mockSettingsEventSelector = store.overrideSelector(selectSettingsEvent, DEFAULT_MOCK_SETTINGS_EVENT_LOAD_LOADING);
   });
 
   beforeEach(() => {
@@ -53,7 +59,7 @@ describe('MainComponent', () => {
     expect(component.settings).toEqual(DEFAULT_SETTINGS);
   });
 
-  it('loading setting works for light theme', () => {
+  it('loading settings works for light theme', () => {
     fixture.detectChanges();
 
     mockSettingsSelector.setResult(DEFAULT_MOCK_SETTINGS_1);
@@ -65,7 +71,7 @@ describe('MainComponent', () => {
     expect(document.querySelector('html')?.classList.contains('dark-mode')).toBeFalsy();
   });
 
-  it('loading setting works for dark theme', () => {
+  it('loading settings works for dark theme', () => {
     fixture.detectChanges();
 
     mockSettingsSelector.setResult(DEFAULT_MOCK_SETTINGS_2);
@@ -76,6 +82,34 @@ describe('MainComponent', () => {
     expect(component.settings).toEqual(DEFAULT_MOCK_SETTINGS_2);
     expect(document.querySelector('html')?.classList.contains('dark-mode')).toBeTruthy();
   });
+
+  it('getting settings event works for event Load', fakeAsync(() => {
+    fixture.detectChanges();
+
+    expect(component.isLoading).toEqual(true);
+    mockSettingsEventSelector.setResult(DEFAULT_MOCK_SETTINGS_EVENT_LOAD_SUCCESS);
+
+    store.refreshState();
+
+    // artificial delay as in component
+    tick(DEFAULT_UX_DELAY);
+
+    expect(component.isLoading).toEqual(false);
+  }));
+
+  it("getting settings event doesn't work for event Update", fakeAsync(() => {
+    fixture.detectChanges();
+
+    expect(component.isLoading).toEqual(true);
+    mockSettingsEventSelector.setResult(DEFAULT_MOCK_SETTINGS_EVENT_UPDATE_SUCCESS);
+
+    store.refreshState();
+
+    // artificial delay as in component
+    tick(DEFAULT_UX_DELAY);
+
+    expect(component.isLoading).toEqual(true);
+  }));
 
   it('checking if language is English works', () => {
     fixture.detectChanges();

@@ -27,6 +27,7 @@ export enum SettingsTheme {
 }
 
 export interface Settings {
+  _id?: string;
   language: SettingsLanguage;
   dateFormat: SettingsDateFormat;
   timeFormat: SettingsTimeFormat;

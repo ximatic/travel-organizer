@@ -19,9 +19,6 @@ describe('TripsHttpService', () => {
       teardown: { destroyAfterEach: false },
     });
 
-    // clear localStorage before every test to have known state
-    localStorage.clear();
-
     httpMock = TestBed.inject(HttpTestingController);
     service = TestBed.inject(TripsHttpService);
   });

@@ -1,20 +1,24 @@
+import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 import { Store } from '@ngrx/store';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
-import { Observable, Subscription } from 'rxjs';
+import { delay, Observable, of, Subscription } from 'rxjs';
 
 import { ButtonModule } from 'primeng/button';
 import { DividerModule } from 'primeng/divider';
 import { DrawerModule } from 'primeng/drawer';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { ToolbarModule } from 'primeng/toolbar';
 
 import { settingsActions } from '../settings/store/settings.actions';
-import { selectSettings } from '../settings/store/settings.selectors';
-import { SettingsState } from '../settings/store/settings.state';
+import { selectSettings, selectSettingsEvent } from '../settings/store/settings.selectors';
+import { SettingsEvent, SettingsEventName, SettingsState } from '../settings/store/settings.state';
 
+import { DEFAULT_UX_DELAY } from '../common/constants/common.constants';
 import { DEFAULT_SETTINGS } from '../settings/constants/settings.constants';
+
 import { Settings, SettingsLanguage, SettingsTheme } from '../settings/models/settings.model';
 
 @Component({
@@ -22,18 +26,31 @@ import { Settings, SettingsLanguage, SettingsTheme } from '../settings/models/se
   templateUrl: './main.component.html',
   styleUrl: './main.component.scss',
   standalone: true,
-  imports: [RouterModule, TranslatePipe, ButtonModule, DividerModule, DrawerModule, ToolbarModule],
+  imports: [
+    CommonModule,
+    RouterModule,
+    TranslatePipe,
+    ButtonModule,
+    DividerModule,
+    DrawerModule,
+    ProgressSpinnerModule,
+    ToolbarModule,
+  ],
   providers: [TranslateService],
 })
 export class MainComponent implements OnInit, OnDestroy {
   // ngrx
   settings$!: Observable<Settings>;
+  settingsEvent$!: Observable<SettingsEvent | undefined>;
 
   settings: Settings = DEFAULT_SETTINGS;
   darkMode = false;
   sidebarVisible = false;
 
   language = SettingsLanguage;
+
+  // state flag
+  isLoading = true;
 
   // other
   private subscription = new Subscription();
@@ -100,6 +117,20 @@ export class MainComponent implements OnInit, OnDestroy {
           htmlElement?.classList.add('dark-mode');
         } else {
           htmlElement?.classList.remove('dark-mode');
+        }
+      }),
+    );
+
+    this.settingsEvent$ = this.store.select(selectSettingsEvent);
+    this.subscription.add(
+      this.settingsEvent$.subscribe((settingsEvent: SettingsEvent | undefined) => {
+        if (settingsEvent?.name === SettingsEventName.Load) {
+          // artificial delay to improve UX
+          of({})
+            .pipe(delay(DEFAULT_UX_DELAY))
+            .subscribe(() => {
+              this.isLoading = false;
+            });
         }
       }),
     );
