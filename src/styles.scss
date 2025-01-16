@@ -26,6 +26,13 @@ body {
   border-radius: 0 !important;
 }
 
+p-password {
+  .p-inputwrapper,
+  .p-password-input {
+    width: 100%;
+  }
+}
+
 @media (min-width: 768px) {
   .full-height {
     .p-panel.p-component {

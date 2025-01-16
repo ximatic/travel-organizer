@@ -1,10 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
-import { provideRouter } from '@angular/router';
+import { provideRouter, Router } from '@angular/router';
 
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { provideTranslateService } from '@ngx-translate/core';
 
+import { DEFAULT_MOCK_AUTH_EVENT_LOGOUT_LOADING, DEFAULT_MOCK_AUTH_EVENT_LOGOUT_SUCCESS } from '../common/mocks/auth.constants';
 import {
   DEFAULT_INITIAL_SETTINGS_STATE,
   DEFAULT_MOCK_SETTINGS_1,
@@ -20,15 +21,20 @@ import { SettingsLanguage, SettingsTheme } from '../settings/models/settings.mod
 import { SettingsAction } from '../settings/store/settings.actions';
 import { selectSettings, selectSettingsEvent } from '../settings/store/settings.selectors';
 
+import { AuthAction } from '../auth/store/auth.actions';
+import { selectAuthEvent } from '../auth/store/auth.selectors';
+
 import { MainComponent } from './main.component';
 
 describe('MainComponent', () => {
   let component: MainComponent;
   let fixture: ComponentFixture<MainComponent>;
+  let router: Router;
   let store: MockStore;
 
   let mockSettingsSelector: any;
   let mockSettingsEventSelector: any;
+  let mockauthEventSelector: any;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -40,10 +46,12 @@ describe('MainComponent', () => {
       ],
     }).compileComponents();
 
+    router = TestBed.inject(Router);
     store = TestBed.inject(MockStore);
 
     mockSettingsSelector = store.overrideSelector(selectSettings, DEFAULT_MOCK_SETTINGS_1);
     mockSettingsEventSelector = store.overrideSelector(selectSettingsEvent, DEFAULT_MOCK_SETTINGS_EVENT_LOAD_LOADING);
+    mockauthEventSelector = store.overrideSelector(selectAuthEvent, DEFAULT_MOCK_AUTH_EVENT_LOGOUT_LOADING);
   });
 
   beforeEach(() => {
@@ -54,6 +62,8 @@ describe('MainComponent', () => {
   it('should be created', () => {
     expect(component).toBeTruthy();
   });
+
+  // settings
 
   it('initial settings are default', () => {
     expect(component.settings).toEqual(DEFAULT_SETTINGS);
@@ -83,6 +93,8 @@ describe('MainComponent', () => {
     expect(document.querySelector('html')?.classList.contains('dark-mode')).toBeTruthy();
   });
 
+  // settings events
+
   it('getting settings event works for event Load', fakeAsync(() => {
     fixture.detectChanges();
 
@@ -110,6 +122,8 @@ describe('MainComponent', () => {
 
     expect(component.isLoading).toEqual(true);
   }));
+
+  // language
 
   it('checking if language is English works', () => {
     fixture.detectChanges();
@@ -151,6 +165,8 @@ describe('MainComponent', () => {
     });
   });
 
+  // dark mode
+
   it('toggleSidebar works', () => {
     fixture.detectChanges();
 
@@ -190,4 +206,34 @@ describe('MainComponent', () => {
       settings: { ...component.settings, theme: SettingsTheme.Light },
     });
   });
+
+  // logout
+
+  it('logout works', () => {
+    const dispatchSpy = jest.spyOn(store, 'dispatch');
+
+    fixture.detectChanges();
+
+    component.logout();
+    expect(dispatchSpy).toHaveBeenLastCalledWith({
+      type: AuthAction.Logout,
+    });
+  });
+
+  // auth events
+
+  it('user is redirected to /auth/login after receiving Logout Success auth event', fakeAsync(() => {
+    const navigateSpy = jest.spyOn(router, 'navigate').mockReturnValue(
+      new Promise((resolve) => {
+        resolve(true);
+      }),
+    );
+    fixture.detectChanges();
+
+    mockauthEventSelector.setResult(DEFAULT_MOCK_AUTH_EVENT_LOGOUT_SUCCESS);
+
+    store.refreshState();
+
+    expect(navigateSpy).toHaveBeenCalledWith([`/auth/login`]);
+  }));
 });

@@ -1,4 +1,4 @@
-import { provideHttpClient, HttpClient } from '@angular/common/http';
+import { provideHttpClient, HttpClient, withInterceptors } from '@angular/common/http';
 import { APP_INITIALIZER, ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideRouter } from '@angular/router';
@@ -9,12 +9,14 @@ import { provideStoreDevtools } from '@ngrx/store-devtools';
 
 import { provideTranslateService, TranslateLoader, TranslateService } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-import { take } from 'rxjs';
+import { forkJoin, Subject, take, takeUntil, tap } from 'rxjs';
 
 import Aura from '@primeng/themes/aura';
 import { providePrimeNG } from 'primeng/config';
 
 import { DEFAULT_LANGUAGE } from './settings/constants/settings.constants';
+
+import { authInterceptor } from './auth/utils/auth.interceptor';
 
 import { SettingsService } from './settings/services/settings.service';
 import { SettingsHttpService } from './settings/services/settings-http.service';
@@ -23,12 +25,19 @@ import { Settings, SettingsTheme } from './settings/models/settings.model';
 
 import { settingsActions } from './settings/store/settings.actions';
 import { SettingsEffects } from './settings/store/settings.effects';
-
 import { selectSettings } from './settings/store/settings.selectors';
 import { SettingsState } from './settings/store/settings.state';
 
+import { AuthService } from './auth/services/auth.service';
+
+import { authActions } from './auth/store/auth.actions';
+import { AuthEffects } from './auth/store/auth.effects';
+import { selectAuthEvent } from './auth/store/auth.selectors';
+import { AuthEvent, AuthEventName, AuthEventType, AuthState } from './auth/store/auth.state';
+
 import { tripsReducer } from './trips/store/trips.reducer';
 import { settingsReducer } from './settings/store/settings.reducer';
+import { authReducer } from './auth/store/auth.reducer';
 
 import { routes } from './app.routes';
 
@@ -37,14 +46,30 @@ import { environment } from '../environments/environment';
 export const httpLoaderFactory: (http: HttpClient) => TranslateHttpLoader = (http: HttpClient) =>
   new TranslateHttpLoader(http, './i18n/', '.json');
 
-export function initializeApplication(store: Store<SettingsState>, translateService: TranslateService) {
+export function initializeApplication(
+  authStore: Store<AuthState>,
+  settingsStore: Store<SettingsState>,
+  translateService: TranslateService,
+) {
   return () =>
     new Promise<boolean>((resolve) => {
-      store.dispatch(settingsActions.loadSettings());
-      store
-        .select(selectSettings)
-        .pipe(take(1))
-        .subscribe((settings: Settings) => {
+      authStore.dispatch(authActions.verify());
+      settingsStore.dispatch(settingsActions.loadSettings());
+
+      const authVerify$ = new Subject<void>();
+      const authEvent$ = authStore.select(selectAuthEvent).pipe(
+        takeUntil(authVerify$),
+        tap((authEvent: AuthEvent | undefined) => {
+          if (authEvent?.name === AuthEventName.Verify && authEvent?.type !== AuthEventType.Loading) {
+            authVerify$.next();
+            authVerify$.complete();
+          }
+        }),
+      );
+
+      const settings$ = settingsStore.select(selectSettings).pipe(
+        take(1),
+        tap((settings: Settings) => {
           const htmlElement = document.querySelector('html');
           if (htmlElement) {
             htmlElement.setAttribute('lang', settings.language);
@@ -54,15 +79,20 @@ export function initializeApplication(store: Store<SettingsState>, translateServ
               htmlElement?.classList.add('dark-mode');
             }
           }
-          resolve(true);
-        });
+        }),
+      );
+
+      forkJoin(authEvent$, settings$).subscribe(() => {
+        resolve(true);
+      });
     });
 }
 
 export const appConfig: ApplicationConfig = {
   providers: [
+    AuthService,
     provideZoneChangeDetection({ eventCoalescing: true }),
-    provideHttpClient(),
+    provideHttpClient(withInterceptors([authInterceptor])),
     provideRouter(routes),
     provideAnimationsAsync(),
     provideTranslateService({
@@ -75,9 +105,11 @@ export const appConfig: ApplicationConfig = {
       useDefaultLang: true,
     }),
     provideEffects([SettingsEffects]),
+    provideEffects([AuthEffects]),
     provideStore({
       trips: tripsReducer,
       settings: settingsReducer,
+      auth: authReducer,
     }),
     provideStoreDevtools({ maxAge: 25, logOnly: false }),
     providePrimeNG({
@@ -92,7 +124,7 @@ export const appConfig: ApplicationConfig = {
       provide: APP_INITIALIZER,
       useFactory: initializeApplication,
       multi: true,
-      deps: [Store<SettingsState>, TranslateService],
+      deps: [Store<AuthState>, Store<SettingsState>, TranslateService],
     },
     { provide: SettingsService, useClass: environment.storageMethod === 'http' ? SettingsHttpService : SettingsStorageService }, // required for SettingsEffects
   ],

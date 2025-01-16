@@ -1,0 +1,79 @@
+<div class="signup">
+  <p-panel class="signup__panel">
+    <ng-template pTemplate="header">
+      <div class="flex grid justify-items-center w-full">
+        <span class="grow font-bold">{{ 'SIGNUP.TITLE' | translate }}</span>
+      </div>
+    </ng-template>
+
+    <div [formGroup]="signupForm">
+      <div class="mb-3">
+        <p-floatlabel variant="on">
+          <input
+            pInputText
+            id="email"
+            type="text"
+            formControlName="email"
+            class="w-full"
+            [ngClass]="{ 'ng-invalid': emailControl?.invalid, 'ng-dirty': emailControl?.dirty }"
+          />
+          <label for="email">{{ 'SIGNUP.FORM.EMAIL.LABEL' | translate }}</label>
+        </p-floatlabel>
+        <small *ngIf="emailControl?.invalid && emailControl?.dirty" class="ml-1 signup__form-error">
+          {{ 'SIGNUP.FORM.EMAIL.ERROR' | translate }}
+        </small>
+      </div>
+      <div class="mb-3">
+        <p-floatlabel variant="on">
+          <p-password
+            id="password"
+            type="text"
+            formControlName="password"
+            class="block w-full"
+            [ngClass]="{ 'ng-invalid': passwordControl?.invalid, 'ng-dirty': passwordControl?.dirty }"
+          />
+          <label for="password">{{ 'SIGNUP.FORM.PASSWORD.LABEL' | translate }}</label>
+        </p-floatlabel>
+        <small *ngIf="passwordControl?.invalid && passwordControl?.dirty" class="ml-1 signup__form-error">
+          {{ 'SIGNUP.FORM.PASSWORD.ERROR' | translate }}
+        </small>
+      </div>
+      <div class="mb-3">
+        <p-floatlabel variant="on">
+          <p-password
+            id="passwordRepeat"
+            type="text"
+            formControlName="passwordRepeat"
+            class="block w-full"
+            [ngClass]="{ 'ng-invalid': passwordRepeatControl?.invalid, 'ng-dirty': passwordRepeatControl?.dirty }"
+          />
+          <label for="passwordRepeat">{{ 'SIGNUP.FORM.PASSWORD_REPEAT.LABEL' | translate }}</label>
+        </p-floatlabel>
+        <small *ngIf="passwordRepeatControl?.invalid && passwordRepeatControl?.dirty" class="ml-1 signup__form-error">
+          {{ 'SIGNUP.FORM.PASSWORD_REPEAT.ERROR' | translate }}
+        </small>
+      </div>
+
+      <div class="mt-4">
+        <button
+          pButton
+          pRipple
+          severity="primary"
+          [disabled]="signupForm.invalid || isSubmitInProgress"
+          class="block w-full"
+          (click)="submitForm()"
+        >
+          <i class="pi pi-spin pi-spinner mr-1" *ngIf="isSubmitInProgress"></i>
+          <span pButtonLabel>{{ 'COMMON.BUTTON.SUBMIT' | translate }}</span>
+        </button>
+      </div>
+      <div class="mt-2">
+        <button pButton pRipple severity="secondary" class="block w-full" routerLink="/auth/login">
+          <span pButtonLabel>{{ 'COMMON.BUTTON.BACK' | translate }}</span>
+        </button>
+      </div>
+    </div>
+  </p-panel>
+
+  <p-toast position="bottom-center" key="toast" />
+</div>

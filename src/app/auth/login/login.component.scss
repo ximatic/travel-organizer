@@ -1,0 +1,11 @@
+.trip {
+  &__date {
+    ::ng-deep .p-datepicker {
+      width: 100% !important;
+    }
+  }
+
+  &__form-error {
+    color: var(--p-red-400);
+  }
+}

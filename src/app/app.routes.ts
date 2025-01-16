@@ -12,9 +12,13 @@ import { SettingsService } from './settings/services/settings.service';
 import { SettingsHttpService } from './settings/services/settings-http.service';
 import { SettingsStorageService } from './settings/services/settings-storage.service';
 
+import { AuthEffects } from './auth/store/auth.effects';
+import { AuthService } from './auth/services/auth.service';
+
 import { DashboardComponent } from './dashboard/dashboard.component';
 
 import { environment } from '../environments/environment';
+import { AuthGuard } from './auth/utils/auth.guard';
 
 export const routes: Routes = [
   {
@@ -24,10 +28,17 @@ export const routes: Routes = [
   },
   {
     path: 'dashboard',
+    canActivate: [AuthGuard],
     component: DashboardComponent,
   },
   {
+    path: 'auth',
+    loadChildren: () => import('./auth/auth.routes').then((m) => m.authRoutes),
+    providers: [provideEffects([AuthEffects]), AuthService],
+  },
+  {
     path: 'trips',
+    canActivate: [AuthGuard],
     loadChildren: () => import('./trips/trips.routes').then((m) => m.tripsRoutes),
     providers: [
       provideEffects([TripsEffects]),
@@ -36,6 +47,7 @@ export const routes: Routes = [
   },
   {
     path: 'settings',
+    canActivate: [AuthGuard],
     loadChildren: () => import('./settings/settings.routes').then((m) => m.settingsRoutes),
     providers: [
       provideEffects([SettingsEffects]),

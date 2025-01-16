@@ -8,7 +8,8 @@
       "UPDATE": "Update",
       "BACK": "Back",
       "NEW_TRIP": "New Trip",
-      "ALL_TRIPS": "All Trips"
+      "ALL_TRIPS": "All Trips",
+      "SUBMIT": "Submit"
     }
   },
   "MENU": {
@@ -20,6 +21,36 @@
   "DASHBOARD": {
     "TITLE": "Welcome to Travel Organizer",
     "DESCRIPTION": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
+  },
+  "SIGNUP": {
+    "TITLE": "Create Account",
+    "FORM": {
+      "EMAIL": {
+        "LABEL": "Email",
+        "ERROR": "error email"
+      },
+      "PASSWORD": {
+        "LABEL": "Password",
+        "ERROR": "error password"
+      },
+      "PASSWORD_REPEAT": {
+        "LABEL": "Repeat password",
+        "ERROR": "error password repeat"
+      }
+    }
+  },
+  "LOGIN": {
+    "TITLE": "Login",
+    "FORM": {
+      "EMAIL": {
+        "LABEL": "Email",
+        "ERROR": "error email"
+      },
+      "PASSWORD": {
+        "LABEL": "Password",
+        "ERROR": "error password"
+      }
+    }
   },
   "SETTINGS": {
     "TITLE": "Settings",
