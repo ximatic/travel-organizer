@@ -53,6 +53,38 @@
           {{ 'SIGNUP.FORM.PASSWORD_REPEAT.ERROR' | translate }}
         </small>
       </div>
+      <div class="mb-3">
+        <p-floatlabel variant="on">
+          <input
+            pInputText
+            id="firstname"
+            type="text"
+            formControlName="firstname"
+            class="block w-full"
+            [ngClass]="{ 'ng-invalid': firstnameControl?.invalid, 'ng-dirty': firstnameControl?.dirty }"
+          />
+          <label for="firstname">{{ 'SIGNUP.FORM.FIRSTNAME.LABEL' | translate }}</label>
+        </p-floatlabel>
+        <small *ngIf="firstnameControl?.invalid && firstnameControl?.dirty" class="ml-1 signup__form-error">
+          {{ 'SIGNUP.FORM.FIRSTNAME.ERROR' | translate }}
+        </small>
+      </div>
+      <div class="mb-3">
+        <p-floatlabel variant="on">
+          <input
+            pInputText
+            id="lastname"
+            type="text"
+            formControlName="lastname"
+            class="block w-full"
+            [ngClass]="{ 'ng-invalid': lastnameControl?.invalid, 'ng-dirty': lastnameControl?.dirty }"
+          />
+          <label for="lastname">{{ 'SIGNUP.FORM.LASTNAME.LABEL' | translate }}</label>
+        </p-floatlabel>
+        <small *ngIf="lastnameControl?.invalid && lastnameControl?.dirty" class="ml-1 signup__form-error">
+          {{ 'SIGNUP.FORM.LASTNAME.ERROR' | translate }}
+        </small>
+      </div>
 
       <div class="mt-4">
         <button

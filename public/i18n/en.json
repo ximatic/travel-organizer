@@ -36,6 +36,14 @@
       "PASSWORD_REPEAT": {
         "LABEL": "Repeat password",
         "ERROR": "error password repeat"
+      },
+      "FIRSTNAME": {
+        "LABEL": "Name",
+        "ERROR": "error name"
+      },
+      "LASTNAME": {
+        "LABEL": "Surname",
+        "ERROR": "error surname"
       }
     }
   },

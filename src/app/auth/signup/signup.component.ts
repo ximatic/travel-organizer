@@ -174,14 +174,6 @@ export class SignupComponent implements OnInit, OnDestroy {
 
   // toasts
 
-  private showToastSuccess(detail?: string, detailsParams?: InterpolationParameters) {
-    this.showToast(
-      'success',
-      this.translateService.instant('EVENT.TYPE.SUCCESS'),
-      this.translateService.instant(`EVENT.MESSAGE.${detail}`, detailsParams),
-    );
-  }
-
   private showToastError(detail?: string, detailsParams?: InterpolationParameters) {
     this.showToast(
       'error',

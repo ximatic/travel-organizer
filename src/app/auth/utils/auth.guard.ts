@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router } from '@angular/router';
+import { CanActivate, Router } from '@angular/router';
 
 import { Store } from '@ngrx/store';
-import { map, Observable } from 'rxjs';
+import { map, Observable, take } from 'rxjs';
 
 import { selectAuthToken } from '../store/auth.selectors';
 import { AuthState } from '../store/auth.state';
@@ -18,11 +18,10 @@ export class AuthGuard implements CanActivate {
     private authStore: Store<AuthState>,
   ) {}
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
+  canActivate(): Observable<boolean> {
     return this.authStore.select(selectAuthToken).pipe(
+      take(1),
       map((authToken: AuthToken | null) => {
-        console.log('AuthGuard | canActivate() | authToken:', authToken);
         if (!authToken) {
           this.router.navigate(['/auth/login']);
           return false;
