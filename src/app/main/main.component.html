@@ -9,17 +9,24 @@
       <div>
         <p-toolbar>
           <ng-template #start>
-            <p-button icon="pi pi-bars" text severity="secondary" (click)="toggleSidebar()" class="md:hidden" />
-            <span class="hidden md:flex ml-2"
-              ><span class="pi pi-globe pr-2 main__logo"></span>{{ 'APP.TITLE' | translate }}</span
-            >
+            <p-button
+              *ngIf="isLoggedIn"
+              icon="pi pi-bars"
+              text
+              severity="secondary"
+              (click)="toggleSidebar()"
+              class="md:hidden"
+            />
+            <span class="hidden md:flex ml-2">
+              <span class="pi pi-globe pr-2 main__logo"></span>{{ 'APP.TITLE' | translate }}
+            </span>
           </ng-template>
           <ng-template #center>
             <span class="flex md:hidden"><span class="pi pi-globe pr-2 main__logo"></span>{{ 'APP.TITLE' | translate }}</span>
           </ng-template>
           <ng-template #end>
             <p-button icon="pi pi-palette" text severity="secondary" (click)="toggleDarkMode()" />
-            <p-button icon="pi pi-power-off" text severity="secondary" (click)="logout()" />
+            <p-button *ngIf="isLoggedIn" icon="pi pi-power-off" text severity="secondary" (click)="logout()" />
           </ng-template>
         </p-toolbar>
       </div>

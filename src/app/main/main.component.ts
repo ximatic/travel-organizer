@@ -12,19 +12,18 @@ import { DrawerModule } from 'primeng/drawer';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { ToolbarModule } from 'primeng/toolbar';
 
+import { AuthToken } from '../auth/model/auth.model';
+import { authActions } from '../auth/store/auth.actions';
+import { selectAuthEvent, selectAuthToken } from '../auth/store/auth.selectors';
 import { AuthEvent, AuthEventName, AuthEventType, AuthState } from '../auth/store/auth.state';
 
+import { Settings, SettingsLanguage, SettingsTheme } from '../settings/models/settings.model';
 import { settingsActions } from '../settings/store/settings.actions';
 import { selectSettings, selectSettingsEvent } from '../settings/store/settings.selectors';
 import { SettingsEvent, SettingsEventName, SettingsState } from '../settings/store/settings.state';
 
-import { authActions } from '../auth/store/auth.actions';
-import { selectAuthEvent } from '../auth/store/auth.selectors';
-
 import { DEFAULT_UX_DELAY } from '../common/constants/common.constants';
 import { DEFAULT_SETTINGS } from '../settings/constants/settings.constants';
-
-import { Settings, SettingsLanguage, SettingsTheme } from '../settings/models/settings.model';
 
 @Component({
   selector: 'app-main',
@@ -48,10 +47,12 @@ export class MainComponent implements OnInit, OnDestroy {
   settings$!: Observable<Settings>;
   settingsEvent$!: Observable<SettingsEvent | undefined>;
   authEvent$!: Observable<AuthEvent | undefined>;
+  authToken$!: Observable<AuthToken | null>;
 
   settings: Settings = DEFAULT_SETTINGS;
   darkMode = false;
   sidebarVisible = false;
+  isLoggedIn = false;
 
   language = SettingsLanguage;
 
@@ -149,11 +150,22 @@ export class MainComponent implements OnInit, OnDestroy {
     );
 
     // auth
+    this.authToken$ = this.authStore.select(selectAuthToken);
+    this.subscription.add(
+      this.authToken$.subscribe((authToken: AuthToken | null) => {
+        this.isLoggedIn = !!authToken;
+      }),
+    );
+
     this.authEvent$ = this.authStore.select(selectAuthEvent);
     this.subscription.add(
       this.authEvent$.subscribe((authEvent: AuthEvent | undefined) => {
         if (authEvent?.name === AuthEventName.Logout && authEvent?.type === AuthEventType.Success) {
+          this.isLoggedIn = false;
           this.router.navigate(['/auth/login']);
+        } else if (authEvent?.name === AuthEventName.Login && authEvent?.type === AuthEventType.Success) {
+          this.isLoggedIn = true;
+          this.settingsStore.dispatch(settingsActions.loadSettings());
         }
       }),
     );

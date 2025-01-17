@@ -5,7 +5,12 @@ import { provideRouter, Router } from '@angular/router';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { provideTranslateService } from '@ngx-translate/core';
 
-import { DEFAULT_MOCK_AUTH_EVENT_LOGOUT_LOADING, DEFAULT_MOCK_AUTH_EVENT_LOGOUT_SUCCESS } from '../common/mocks/auth.constants';
+import {
+  DEFAULT_AUTH_TOKEN_1,
+  DEFAULT_MOCK_AUTH_EVENT_LOGIN_SUCCESS,
+  DEFAULT_MOCK_AUTH_EVENT_LOGOUT_LOADING,
+  DEFAULT_MOCK_AUTH_EVENT_LOGOUT_SUCCESS,
+} from '../common/mocks/auth.constants';
 import {
   DEFAULT_INITIAL_SETTINGS_STATE,
   DEFAULT_MOCK_SETTINGS_1,
@@ -22,7 +27,7 @@ import { SettingsAction } from '../settings/store/settings.actions';
 import { selectSettings, selectSettingsEvent } from '../settings/store/settings.selectors';
 
 import { AuthAction } from '../auth/store/auth.actions';
-import { selectAuthEvent } from '../auth/store/auth.selectors';
+import { selectAuthEvent, selectAuthToken } from '../auth/store/auth.selectors';
 
 import { MainComponent } from './main.component';
 
@@ -34,7 +39,8 @@ describe('MainComponent', () => {
 
   let mockSettingsSelector: any;
   let mockSettingsEventSelector: any;
-  let mockauthEventSelector: any;
+  let mockAuthTokenSelector: any;
+  let mockAuthEventSelector: any;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -51,7 +57,8 @@ describe('MainComponent', () => {
 
     mockSettingsSelector = store.overrideSelector(selectSettings, DEFAULT_MOCK_SETTINGS_1);
     mockSettingsEventSelector = store.overrideSelector(selectSettingsEvent, DEFAULT_MOCK_SETTINGS_EVENT_LOAD_LOADING);
-    mockauthEventSelector = store.overrideSelector(selectAuthEvent, DEFAULT_MOCK_AUTH_EVENT_LOGOUT_LOADING);
+    mockAuthTokenSelector = store.overrideSelector(selectAuthToken, null);
+    mockAuthEventSelector = store.overrideSelector(selectAuthEvent, DEFAULT_MOCK_AUTH_EVENT_LOGOUT_LOADING);
   });
 
   beforeEach(() => {
@@ -220,6 +227,28 @@ describe('MainComponent', () => {
     });
   });
 
+  // auth
+
+  it('user is not logged in when Auth Token is null', fakeAsync(() => {
+    fixture.detectChanges();
+
+    mockAuthTokenSelector.setResult(null);
+
+    store.refreshState();
+
+    expect(component.isLoggedIn).toBe(false);
+  }));
+
+  it('user is logged in when Auth Token is valid', fakeAsync(() => {
+    fixture.detectChanges();
+
+    mockAuthTokenSelector.setResult(DEFAULT_AUTH_TOKEN_1.accessToken);
+
+    store.refreshState();
+
+    expect(component.isLoggedIn).toBe(true);
+  }));
+
   // auth events
 
   it('user is redirected to /auth/login after receiving Logout Success auth event', fakeAsync(() => {
@@ -230,10 +259,25 @@ describe('MainComponent', () => {
     );
     fixture.detectChanges();
 
-    mockauthEventSelector.setResult(DEFAULT_MOCK_AUTH_EVENT_LOGOUT_SUCCESS);
+    mockAuthEventSelector.setResult(DEFAULT_MOCK_AUTH_EVENT_LOGOUT_SUCCESS);
 
     store.refreshState();
 
+    expect(component.isLoggedIn).toBe(false);
     expect(navigateSpy).toHaveBeenCalledWith([`/auth/login`]);
+  }));
+
+  it('request for settings is dispatched after user login', fakeAsync(() => {
+    const dispatchSpy = jest.spyOn(store, 'dispatch');
+    fixture.detectChanges();
+
+    mockAuthEventSelector.setResult(DEFAULT_MOCK_AUTH_EVENT_LOGIN_SUCCESS);
+
+    store.refreshState();
+
+    expect(component.isLoggedIn).toBe(true);
+    expect(dispatchSpy).toHaveBeenLastCalledWith({
+      type: SettingsAction.LoadSettings,
+    });
   }));
 });
