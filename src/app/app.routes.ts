@@ -2,6 +2,13 @@ import { Routes } from '@angular/router';
 
 import { provideEffects } from '@ngrx/effects';
 
+import { AuthGuard } from './auth/utils/auth.guard';
+import { AuthEffects } from './auth/store/auth.effects';
+import { AuthService } from './auth/services/auth.service';
+
+import { UserEffects } from './user/store/user.effects';
+import { ProfileService } from './user/services/profile.service';
+
 import { TripsEffects } from './trips/store/trips.effects';
 import { TripsService } from './trips/services/trips.service';
 import { TripsHttpService } from './trips/services/trips-http.service';
@@ -12,13 +19,9 @@ import { SettingsService } from './settings/services/settings.service';
 import { SettingsHttpService } from './settings/services/settings-http.service';
 import { SettingsStorageService } from './settings/services/settings-storage.service';
 
-import { AuthEffects } from './auth/store/auth.effects';
-import { AuthService } from './auth/services/auth.service';
-
 import { DashboardComponent } from './dashboard/dashboard.component';
 
 import { environment } from '../environments/environment';
-import { AuthGuard } from './auth/utils/auth.guard';
 
 export const routes: Routes = [
   {
@@ -35,6 +38,11 @@ export const routes: Routes = [
     path: 'auth',
     loadChildren: () => import('./auth/auth.routes').then((m) => m.authRoutes),
     providers: [provideEffects([AuthEffects]), AuthService],
+  },
+  {
+    path: 'profile',
+    loadChildren: () => import('./user/user.routes').then((m) => m.userRoutes),
+    providers: [provideEffects([UserEffects]), ProfileService],
   },
   {
     path: 'trips',

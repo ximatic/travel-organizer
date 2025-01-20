@@ -29,6 +29,8 @@ import { selectSettings, selectSettingsEvent } from '../settings/store/settings.
 import { AuthAction } from '../auth/store/auth.actions';
 import { selectAuthEvent, selectAuthToken } from '../auth/store/auth.selectors';
 
+import { UserAction } from '../user/store/user.actions';
+
 import { MainComponent } from './main.component';
 
 describe('MainComponent', () => {
@@ -267,7 +269,7 @@ describe('MainComponent', () => {
     expect(navigateSpy).toHaveBeenCalledWith([`/auth/login`]);
   }));
 
-  it('request for settings is dispatched after user login', fakeAsync(() => {
+  it('request for settings and profile is dispatched after user login', fakeAsync(() => {
     const dispatchSpy = jest.spyOn(store, 'dispatch');
     fixture.detectChanges();
 
@@ -276,8 +278,11 @@ describe('MainComponent', () => {
     store.refreshState();
 
     expect(component.isLoggedIn).toBe(true);
-    expect(dispatchSpy).toHaveBeenLastCalledWith({
+    expect(dispatchSpy).toHaveBeenCalledWith({
       type: SettingsAction.LoadSettings,
+    });
+    expect(dispatchSpy).toHaveBeenLastCalledWith({
+      type: UserAction.LoadUser,
     });
   }));
 });

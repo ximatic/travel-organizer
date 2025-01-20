@@ -57,6 +57,16 @@
           </div>
           <div class="grow flex justify-end">
             <p-button
+              icon="pi pi-user"
+              text
+              severity="secondary"
+              [link]="true"
+              routerLink="/profile"
+              [label]="'MENU.PROFILE' | translate"
+            />
+          </div>
+          <div class="grow flex justify-end">
+            <p-button
               icon="pi pi-cog"
               text
               severity="secondary"
@@ -94,6 +104,17 @@
             [link]="true"
             routerLink="/trips"
             [label]="'MENU.TRIPS' | translate"
+            (onClick)="toggleSidebar()"
+          />
+        </div>
+        <div>
+          <p-button
+            icon="pi pi-user"
+            text
+            severity="secondary"
+            [link]="true"
+            routerLink="/profile"
+            [label]="'MENU.PROFILE' | translate"
             (onClick)="toggleSidebar()"
           />
         </div>

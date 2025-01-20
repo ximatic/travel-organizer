@@ -17,6 +17,9 @@ import { authActions } from '../auth/store/auth.actions';
 import { selectAuthEvent, selectAuthToken } from '../auth/store/auth.selectors';
 import { AuthEvent, AuthEventName, AuthEventType, AuthState } from '../auth/store/auth.state';
 
+import { userActions } from '../user/store/user.actions';
+import { UserState } from '../user/store/user.state';
+
 import { Settings, SettingsLanguage, SettingsTheme } from '../settings/models/settings.model';
 import { settingsActions } from '../settings/store/settings.actions';
 import { selectSettings, selectSettingsEvent } from '../settings/store/settings.selectors';
@@ -66,6 +69,7 @@ export class MainComponent implements OnInit, OnDestroy {
     private router: Router,
     private translateService: TranslateService,
     private authStore: Store<AuthState>,
+    private userStore: Store<UserState>,
     private settingsStore: Store<SettingsState>,
   ) {}
 
@@ -166,6 +170,7 @@ export class MainComponent implements OnInit, OnDestroy {
         } else if (authEvent?.name === AuthEventName.Login && authEvent?.type === AuthEventType.Success) {
           this.isLoggedIn = true;
           this.settingsStore.dispatch(settingsActions.loadSettings());
+          this.userStore.dispatch(userActions.loadUser());
         }
       }),
     );
