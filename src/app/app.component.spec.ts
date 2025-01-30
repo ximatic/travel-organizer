@@ -4,7 +4,7 @@ import { provideRouter } from '@angular/router';
 import { provideMockStore } from '@ngrx/store/testing';
 import { provideTranslateService } from '@ngx-translate/core';
 
-import { DEFAULT_INITIAL_SETTINGS_STATE } from './common/mocks/settings.constants';
+import { MOCK_INITIAL_USER_STATE } from '../../__mocks__/user.constants';
 
 import { AppComponent } from './app.component';
 
@@ -12,11 +12,7 @@ describe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [AppComponent],
-      providers: [
-        provideRouter([]),
-        provideTranslateService(),
-        provideMockStore({ initialState: DEFAULT_INITIAL_SETTINGS_STATE }),
-      ],
+      providers: [provideRouter([]), provideTranslateService(), provideMockStore({ initialState: MOCK_INITIAL_USER_STATE })],
     }).compileComponents();
   });
 

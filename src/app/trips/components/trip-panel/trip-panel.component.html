@@ -9,7 +9,7 @@
     <span *ngIf="trip.location">{{ trip.location }}</span>
     <span *ngIf="trip.location && trip.startDate && trip.endDate" class="px-1">|</span>
     <span *ngIf="trip.startDate && trip.endDate">
-      {{ trip.startDate | date: settings?.dateFormat }} - {{ trip.endDate | date: settings?.dateFormat }}
+      {{ trip.startDate | date: userSettings?.dateFormat }} - {{ trip.endDate | date: userSettings?.dateFormat }}
     </span>
   </p>
   <p class="m-0">

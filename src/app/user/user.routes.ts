@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 
 import { ProfileComponent } from './components/profile/profile.component';
+import { SettingsComponent } from './components/settings/settings.component';
 
 export const userRoutes: Routes = [
   {
@@ -9,7 +10,11 @@ export const userRoutes: Routes = [
     redirectTo: 'profile',
   },
   {
-    path: '',
+    path: 'profile',
     component: ProfileComponent,
+  },
+  {
+    path: 'settings',
+    component: SettingsComponent,
   },
 ];

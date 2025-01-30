@@ -21,7 +21,7 @@ import {
   DEFAULT_USER_LANGUAGE,
   DEFAULT_USER_THEME,
   DEFAULT_USER_TIME_FORMAT,
-} from '../../../user/constants/settings.constants';
+} from '../../constants/settings.constants';
 
 import {
   UserSettings,
@@ -29,10 +29,10 @@ import {
   UserSettingsLanguage,
   UserSettingsTheme,
   UserSettingsTimeFormat,
-} from '../../../user/models/user-settings.model';
-import { userActions } from '../../../user/store/user.actions';
-import { selectUserEvent, selectUserSettings } from '../../../user/store/user.selectors';
-import { UserEvent, UserEventName, UserEventType, UserState } from '../../../user/store/user.state';
+} from '../../models/user-settings.model';
+import { userActions } from '../../store/user.actions';
+import { selectUserEvent, selectUserSettings } from '../../store/user.selectors';
+import { UserEvent, UserEventName, UserEventType, UserState } from '../../store/user.state';
 
 export interface SettingsFormOption {
   name: string;

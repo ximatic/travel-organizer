@@ -13,10 +13,10 @@ import { MOCK_USER_SETTINGS_1, MOCK_USER_SETTINGS_2 } from '../../../../../__moc
 
 import { messageServiceMock, translateServiceMock } from '../../../common/mocks/services.mocks';
 
-import { UserEventMessage } from '../../../user/models/user.model';
-import { selectUserEvent, selectUserSettings } from '../../../user/store/user.selectors';
-import { UserAction } from '../../../user/store/user.actions';
-import { UserEventName, UserEventType } from '../../../user/store/user.state';
+import { UserEventMessage } from '../../models/user.model';
+import { selectUserEvent, selectUserSettings } from '../../store/user.selectors';
+import { UserAction } from '../../store/user.actions';
+import { UserEventName, UserEventType } from '../../store/user.state';
 
 import { SettingsComponent } from './settings.component';
 

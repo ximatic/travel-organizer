@@ -8,9 +8,10 @@ import { PanelModule } from 'primeng/panel';
 
 import { Trip } from '../../models/trip.model';
 
-import { Settings } from '../../../settings/models/settings.model';
-import { selectSettings } from '../../../settings/store/settings.selectors';
-import { SettingsState } from '../../../settings/store/settings.state';
+import { UserSettings } from '../../../user/models/user-settings.model';
+import { selectUserSettings } from '../../../user/store/user.selectors';
+import { UserState } from '../../../user/store/user.state';
+import { DEFAULT_USER_SETTINGS } from '../../../user/constants/settings.constants';
 
 @Component({
   selector: 'app-trip-panel',
@@ -23,15 +24,15 @@ export class TripPanelComponent implements OnInit, OnDestroy {
   @Input() trip!: Trip;
 
   // ngrx
-  settings$!: Observable<Settings>;
+  userSettings$!: Observable<UserSettings | null>;
 
   // data
-  settings?: Settings;
+  userSettings?: UserSettings;
 
   // other
   private subscription = new Subscription();
 
-  constructor(private store: Store<SettingsState>) {}
+  constructor(private store: Store<UserState>) {}
 
   // lifecycle methods
 
@@ -50,10 +51,10 @@ export class TripPanelComponent implements OnInit, OnDestroy {
   }
 
   private initState(): void {
-    this.settings$ = this.store.select(selectSettings);
+    this.userSettings$ = this.store.select(selectUserSettings);
     this.subscription.add(
-      this.settings$.subscribe((settings: Settings) => {
-        this.settings = { ...settings };
+      this.userSettings$.subscribe((userSettings: UserSettings | null) => {
+        this.userSettings = { ...(userSettings || DEFAULT_USER_SETTINGS) };
       }),
     );
   }
