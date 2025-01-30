@@ -16,12 +16,23 @@ import { ToastModule } from 'primeng/toast';
 import { SelectModule } from 'primeng/select';
 
 import { DEFAULT_UX_DELAY } from '../../../common/constants/common.constants';
+import {
+  DEFAULT_USER_DATE_FORMAT,
+  DEFAULT_USER_LANGUAGE,
+  DEFAULT_USER_THEME,
+  DEFAULT_USER_TIME_FORMAT,
+} from '../../../user/constants/settings.constants';
 
-import { SettingsEvent, SettingsEventType, SettingsEventName, SettingsState } from '../../store/settings.state';
-import { selectSettings, selectSettingsEvent } from '../../store/settings.selectors';
-import { settingsActions } from '../../store/settings.actions';
-import { Settings, SettingsDateFormat, SettingsLanguage, SettingsTheme, SettingsTimeFormat } from '../../models/settings.model';
-import { DEFAULT_DATE_FORMAT, DEFAULT_LANGUAGE, DEFAULT_THEME, DEFAULT_TIME_FORMAT } from '../../constants/settings.constants';
+import {
+  UserSettings,
+  UserSettingsDateFormat,
+  UserSettingsLanguage,
+  UserSettingsTheme,
+  UserSettingsTimeFormat,
+} from '../../../user/models/user-settings.model';
+import { userActions } from '../../../user/store/user.actions';
+import { selectUserEvent, selectUserSettings } from '../../../user/store/user.selectors';
+import { UserEvent, UserEventName, UserEventType, UserState } from '../../../user/store/user.state';
 
 export interface SettingsFormOption {
   name: string;
@@ -49,11 +60,11 @@ export interface SettingsFormOption {
 })
 export class SettingsComponent implements OnInit, AfterViewInit, OnDestroy {
   // ngrx
-  settings$!: Observable<Settings>;
-  settingsEvent$!: Observable<SettingsEvent | undefined>;
+  userSettings$!: Observable<UserSettings | null>;
+  userEvent$!: Observable<UserEvent | undefined>;
 
   // settings
-  settings?: Settings;
+  settings?: UserSettings;
 
   // form
   settingsForm!: FormGroup;
@@ -74,7 +85,7 @@ export class SettingsComponent implements OnInit, AfterViewInit, OnDestroy {
     private formBuilder: FormBuilder,
     private translateService: TranslateService,
     private messageService: MessageService,
-    private store: Store<SettingsState>,
+    private userStore: Store<UserState>,
   ) {
     this.initFormOptions();
   }
@@ -112,8 +123,8 @@ export class SettingsComponent implements OnInit, AfterViewInit, OnDestroy {
     of({})
       .pipe(delay(DEFAULT_UX_DELAY))
       .subscribe(() => {
-        const settings = this.processFormValue();
-        this.store.dispatch(settingsActions.updateSettings({ settings }));
+        const userSettings = this.processFormValue();
+        this.userStore.dispatch(userActions.updateUserSettings({ userSettings }));
       });
   }
 
@@ -124,23 +135,26 @@ export class SettingsComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private initFormOptions(): void {
-    this.languages = Object.values(SettingsLanguage).map((value: string) => ({
+    this.languages = Object.values(UserSettingsLanguage).map((value: string) => ({
       name: this.translateService.instant(`SETTINGS.FORM.LANGUAGE.OPTION.${value.toUpperCase()}`),
       code: value,
     }));
-    this.dateFormats = Object.values(SettingsDateFormat).map((value: string) => ({ name: value.toLowerCase(), code: value }));
-    this.timeFormats = Object.values(SettingsTimeFormat).map((value: string) => ({ name: value, code: value }));
-    this.themes = Object.values(SettingsTheme).map((value: string) => ({
+    this.dateFormats = Object.values(UserSettingsDateFormat).map((value: string) => ({ name: value.toLowerCase(), code: value }));
+    this.timeFormats = Object.values(UserSettingsTimeFormat).map((value: string) => ({ name: value, code: value }));
+    this.themes = Object.values(UserSettingsTheme).map((value: string) => ({
       name: this.translateService.instant(`SETTINGS.FORM.THEME.OPTION.${value.toUpperCase()}`),
       code: value,
     }));
   }
 
   private initState(): void {
-    this.settings$ = this.store.select(selectSettings);
+    this.userSettings$ = this.userStore.select(selectUserSettings);
     this.subscription.add(
-      this.settings$.subscribe((settings: Settings) => {
-        this.settings = { ...settings };
+      this.userSettings$.subscribe((userSettings: UserSettings | null) => {
+        if (!userSettings) {
+          return;
+        }
+        this.settings = { ...userSettings };
         this.translateService.use(this.settings.language);
         this.translateService.get('APP.TITLE').subscribe(() => {
           this.initFormOptions();
@@ -150,42 +164,29 @@ export class SettingsComponent implements OnInit, AfterViewInit, OnDestroy {
       }),
     );
 
-    this.settingsEvent$ = this.store.select(selectSettingsEvent);
-    this.subscription.add(
-      this.settingsEvent$.subscribe((settingsEvent: SettingsEvent | undefined) => this.handleSettingsEvent(settingsEvent)),
-    );
+    this.userEvent$ = this.userStore.select(selectUserEvent);
+    this.subscription.add(this.userEvent$.subscribe((userEvent: UserEvent | undefined) => this.handleUserEvent(userEvent)));
   }
 
-  private handleSettingsEvent(settingsEvent: SettingsEvent | undefined): void {
-    if (!settingsEvent) {
+  private handleUserEvent(userEvent: UserEvent | undefined): void {
+    if (!userEvent) {
       return;
     }
 
-    switch (settingsEvent?.name) {
-      case SettingsEventName.Load:
-        this.handleSettingsEventLoad(settingsEvent);
-        break;
-      case SettingsEventName.Update:
-        this.handleSettingsEventUpdate(settingsEvent);
+    switch (userEvent?.name) {
+      case UserEventName.UpdateUserSettings:
+        this.handleUserEventUpdateUserSettings(userEvent);
         break;
     }
   }
 
-  private handleSettingsEventLoad(settingsEvent: SettingsEvent): void {
-    switch (settingsEvent.type) {
-      case SettingsEventType.Error:
-        this.showToastError(settingsEvent?.message);
+  private handleUserEventUpdateUserSettings(userEvent: UserEvent): void {
+    switch (userEvent.type) {
+      case UserEventType.Success:
+        this.showToastSuccess(userEvent?.message);
         break;
-    }
-  }
-
-  private handleSettingsEventUpdate(settingsEvent: SettingsEvent): void {
-    switch (settingsEvent.type) {
-      case SettingsEventType.Success:
-        this.showToastSuccess(settingsEvent?.message);
-        break;
-      case SettingsEventType.Error:
-        this.showToastError(settingsEvent?.message);
+      case UserEventType.Error:
+        this.showToastError(userEvent?.message);
         break;
     }
     this.isSubmitInProgress = false;
@@ -193,24 +194,23 @@ export class SettingsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // form
 
-  private processFormValue(): Settings {
+  private processFormValue(): UserSettings {
     const { language, dateFormat, timeFormat, theme } = this.settingsForm.getRawValue();
-    const settings: Settings = {
+
+    return {
       language,
       dateFormat,
       timeFormat,
       theme,
-    };
-
-    return settings;
+    } as UserSettings;
   }
 
   private initForm(): void {
     this.settingsForm = this.formBuilder.group({
-      language: [DEFAULT_LANGUAGE, Validators.required],
-      dateFormat: [DEFAULT_DATE_FORMAT, Validators.required],
-      timeFormat: [DEFAULT_TIME_FORMAT, Validators.required],
-      theme: [DEFAULT_THEME, Validators.required],
+      language: [DEFAULT_USER_LANGUAGE, Validators.required],
+      dateFormat: [DEFAULT_USER_DATE_FORMAT, Validators.required],
+      timeFormat: [DEFAULT_USER_TIME_FORMAT, Validators.required],
+      theme: [DEFAULT_USER_THEME, Validators.required],
     });
   }
 

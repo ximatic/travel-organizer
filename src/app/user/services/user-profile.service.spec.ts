@@ -2,13 +2,13 @@ import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 
-import { UserProfile } from '../models/user.model';
+import { UserProfile } from '../models/user-profile.model';
 
-import { DEFAULT_USER_PROFILE_1, DEFAULT_USER_PROFILE_2 } from '../../common/mocks/user.constants';
+import { MOCK_USER_PROFILE_1, MOCK_USER_PROFILE_2 } from '../../../../__mocks__/user-profile.constants';
 
 import { environment } from '../../../environments/environment';
 
-import { ProfileService } from './profile.service';
+import { ProfileService } from './user-profile.service';
 
 describe('ProfileService', () => {
   let httpMock: HttpTestingController;
@@ -32,15 +32,15 @@ describe('ProfileService', () => {
 
   describe('loadProfile()', () => {
     it('loading profile works', fakeAsync(() => {
-      const mockData: UserProfile = DEFAULT_USER_PROFILE_1;
-      const expectedResponse: UserProfile = DEFAULT_USER_PROFILE_1;
+      const mockData: UserProfile = MOCK_USER_PROFILE_1;
+      const expectedResponse: UserProfile = MOCK_USER_PROFILE_1;
       let serviceResponse!: UserProfile;
 
       service.loadProfile().subscribe((profile: UserProfile) => {
         serviceResponse = profile;
       });
 
-      const req = httpMock.expectOne(`${environment.authApi}/profile`);
+      const req = httpMock.expectOne(`${environment.authApi}/user/profile`);
       req.flush(mockData);
 
       tick();
@@ -54,15 +54,15 @@ describe('ProfileService', () => {
 
   describe('updateProfile()', () => {
     it('update profile works', fakeAsync(() => {
-      const mockData: UserProfile = DEFAULT_USER_PROFILE_2;
-      const expectedResponse: UserProfile = DEFAULT_USER_PROFILE_2;
+      const mockData: UserProfile = MOCK_USER_PROFILE_2;
+      const expectedResponse: UserProfile = MOCK_USER_PROFILE_2;
       let serviceResponse!: UserProfile;
 
-      service.updateProfile(DEFAULT_USER_PROFILE_2).subscribe((profile: UserProfile) => {
+      service.updateProfile(MOCK_USER_PROFILE_2).subscribe((profile: UserProfile) => {
         serviceResponse = profile;
       });
 
-      const req = httpMock.expectOne(`${environment.authApi}/profile`);
+      const req = httpMock.expectOne(`${environment.authApi}/user/profile`);
       req.flush(mockData);
 
       tick();

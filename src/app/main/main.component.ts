@@ -12,21 +12,19 @@ import { DrawerModule } from 'primeng/drawer';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { ToolbarModule } from 'primeng/toolbar';
 
+import { DEFAULT_UX_DELAY } from '../common/constants/common.constants';
+import { DEFAULT_USER_SETTINGS } from '../user/constants/settings.constants';
+
 import { AuthToken } from '../auth/model/auth.model';
 import { authActions } from '../auth/store/auth.actions';
 import { selectAuthEvent, selectAuthToken } from '../auth/store/auth.selectors';
 import { AuthEvent, AuthEventName, AuthEventType, AuthState } from '../auth/store/auth.state';
 
 import { userActions } from '../user/store/user.actions';
-import { UserState } from '../user/store/user.state';
+import { selectUserEvent, selectUserSettings } from '../user/store/user.selectors';
+import { UserEvent, UserEventName, UserState } from '../user/store/user.state';
 
-import { Settings, SettingsLanguage, SettingsTheme } from '../settings/models/settings.model';
-import { settingsActions } from '../settings/store/settings.actions';
-import { selectSettings, selectSettingsEvent } from '../settings/store/settings.selectors';
-import { SettingsEvent, SettingsEventName, SettingsState } from '../settings/store/settings.state';
-
-import { DEFAULT_UX_DELAY } from '../common/constants/common.constants';
-import { DEFAULT_SETTINGS } from '../settings/constants/settings.constants';
+import { UserSettings, UserSettingsLanguage, UserSettingsTheme } from '../user/models/user-settings.model';
 
 @Component({
   selector: 'app-main',
@@ -47,17 +45,17 @@ import { DEFAULT_SETTINGS } from '../settings/constants/settings.constants';
 })
 export class MainComponent implements OnInit, OnDestroy {
   // ngrx
-  settings$!: Observable<Settings>;
-  settingsEvent$!: Observable<SettingsEvent | undefined>;
   authEvent$!: Observable<AuthEvent | undefined>;
   authToken$!: Observable<AuthToken | null>;
+  userSettings$!: Observable<UserSettings | null>;
+  userEvent$!: Observable<UserEvent | undefined>;
 
-  settings: Settings = DEFAULT_SETTINGS;
+  settings: UserSettings = DEFAULT_USER_SETTINGS;
   darkMode = false;
   sidebarVisible = false;
   isLoggedIn = false;
 
-  language = SettingsLanguage;
+  language = UserSettingsLanguage;
 
   // state flag
   isLoading = true;
@@ -70,7 +68,6 @@ export class MainComponent implements OnInit, OnDestroy {
     private translateService: TranslateService,
     private authStore: Store<AuthState>,
     private userStore: Store<UserState>,
-    private settingsStore: Store<SettingsState>,
   ) {}
 
   // lifecycle methods
@@ -90,8 +87,8 @@ export class MainComponent implements OnInit, OnDestroy {
   }
 
   toggleDarkMode(): void {
-    const settings = { ...this.settings, theme: this.darkMode ? SettingsTheme.Light : SettingsTheme.Dark };
-    this.settingsStore.dispatch(settingsActions.updateSettings({ settings }));
+    const userSettings = { ...this.settings, theme: this.darkMode ? UserSettingsTheme.Light : UserSettingsTheme.Dark };
+    this.userStore.dispatch(userActions.updateUserSettings({ userSettings }));
   }
 
   logout(): void {
@@ -101,19 +98,19 @@ export class MainComponent implements OnInit, OnDestroy {
   // language
 
   isLanguageEnglish(): boolean {
-    return this.settings.language === SettingsLanguage.English;
+    return this.settings.language === UserSettingsLanguage.English;
   }
 
   isLanguagePolish(): boolean {
-    return this.settings.language === SettingsLanguage.Polish;
+    return this.settings.language === UserSettingsLanguage.Polish;
   }
 
-  switchLanguage(language: SettingsLanguage): void {
-    const settings = {
+  switchLanguage(language: UserSettingsLanguage): void {
+    const userSettings = {
       ...this.settings,
       language,
     };
-    this.settingsStore.dispatch(settingsActions.updateSettings({ settings }));
+    this.userStore.dispatch(userActions.updateUserSettings({ userSettings }));
   }
 
   // initialization
@@ -124,12 +121,15 @@ export class MainComponent implements OnInit, OnDestroy {
 
   private initState(): void {
     // settings
-    this.settings$ = this.settingsStore.select(selectSettings);
+    this.userSettings$ = this.userStore.select(selectUserSettings);
     this.subscription.add(
-      this.settings$.subscribe((settings: Settings) => {
-        this.settings = { ...settings };
+      this.userSettings$.subscribe((userSettings: UserSettings | null) => {
+        if (!userSettings) {
+          return;
+        }
+        this.settings = { ...userSettings };
         this.translateService.use(this.settings.language);
-        this.darkMode = this.settings.theme === SettingsTheme.Dark;
+        this.darkMode = this.settings.theme === UserSettingsTheme.Dark;
         const htmlElement = document.querySelector('html');
         if (this.darkMode) {
           htmlElement?.classList.add('dark-mode');
@@ -139,10 +139,10 @@ export class MainComponent implements OnInit, OnDestroy {
       }),
     );
 
-    this.settingsEvent$ = this.settingsStore.select(selectSettingsEvent);
+    this.userEvent$ = this.userStore.select(selectUserEvent);
     this.subscription.add(
-      this.settingsEvent$.subscribe((settingsEvent: SettingsEvent | undefined) => {
-        if (settingsEvent?.name === SettingsEventName.Load) {
+      this.userEvent$.subscribe((userEvent: UserEvent | undefined) => {
+        if (userEvent?.name === UserEventName.LoadUserInfo) {
           // artificial delay to improve UX
           of({})
             .pipe(delay(DEFAULT_UX_DELAY))
@@ -169,8 +169,7 @@ export class MainComponent implements OnInit, OnDestroy {
           this.router.navigate(['/auth/login']);
         } else if (authEvent?.name === AuthEventName.Login && authEvent?.type === AuthEventType.Success) {
           this.isLoggedIn = true;
-          this.settingsStore.dispatch(settingsActions.loadSettings());
-          this.userStore.dispatch(userActions.loadUser());
+          this.userStore.dispatch(userActions.loadUserInfo());
         }
       }),
     );

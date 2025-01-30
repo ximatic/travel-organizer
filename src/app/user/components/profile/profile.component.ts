@@ -19,7 +19,7 @@ import { DEFAULT_UX_DELAY } from '../../../common/constants/common.constants';
 import { userActions } from '../../store/user.actions';
 import { selectUserEvent, selectUserProfile } from '../../store/user.selectors';
 import { UserEvent, UserEventName, UserEventType, UserState } from '../../store/user.state';
-import { UserProfile } from '../../models/user.model';
+import { UserProfile } from '../../models/user-profile.model';
 
 @Component({
   selector: 'app-profile',
@@ -105,7 +105,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     of({})
       .pipe(delay(DEFAULT_UX_DELAY))
       .subscribe(() => {
-        this.store.dispatch(userActions.updateUser({ profile: this.processFormValue() }));
+        this.store.dispatch(userActions.updateUserProfile({ userProfile: this.processFormValue() }));
       });
   }
 
@@ -136,7 +136,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     }
 
     switch (event.name) {
-      case UserEventName.Update:
+      case UserEventName.UpdateUserProfile:
         this.handleAuthEventUpdate(event);
         break;
     }
@@ -179,9 +179,9 @@ export class ProfileComponent implements OnInit, OnDestroy {
   }
 
   private fillForm(profile: UserProfile): void {
-    const { email, firstname, lastname } = profile;
+    const { firstname, lastname } = profile;
     this.profileForm.patchValue({
-      email,
+      //email,
       firstname,
       lastname,
     });

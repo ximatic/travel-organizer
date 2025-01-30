@@ -1,9 +1,12 @@
-import { UserProfile } from '../models/user.model';
+import { UserProfile } from '../models/user-profile.model';
+import { UserSettings } from '../models/user-settings.model';
 
 export enum UserEventName {
   Reset = 'reset-user',
-  Load = 'load-user',
-  Update = 'update-user',
+  UpdateUser = 'update-user',
+  LoadUserInfo = 'load-user-info',
+  UpdateUserProfile = 'update-user-profile',
+  UpdateUserSettings = 'update-user-settings',
 }
 
 export enum UserEventType {
@@ -19,6 +22,8 @@ export interface UserEvent {
 }
 
 export interface UserState {
+  email: string | null;
   profile: UserProfile | null;
+  settings: UserSettings | null;
   event?: UserEvent;
 }

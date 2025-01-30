@@ -8,20 +8,17 @@ import { provideTranslateService, TranslateService } from '@ngx-translate/core';
 import { MessageService } from 'primeng/api';
 
 import { DEFAULT_UX_DELAY } from '../../../common/constants/common.constants';
-import {
-  DEFAULT_INITIAL_SETTINGS_STATE,
-  DEFAULT_MOCK_SETTINGS_1,
-  DEFAULT_MOCK_SETTINGS_2,
-} from '../../../common/mocks/settings.constants';
+import { MOCK_INITIAL_USER_STATE } from '../../../../../__mocks__/user.constants';
+import { MOCK_USER_SETTINGS_1, MOCK_USER_SETTINGS_2 } from '../../../../../__mocks__/user-settings.constants';
 
 import { messageServiceMock, translateServiceMock } from '../../../common/mocks/services.mocks';
 
-import { SettingsAction } from '../../store/settings.actions';
-import { selectSettings, selectSettingsEvent } from '../../store/settings.selectors';
-import { SettingsEventName, SettingsEventType } from '../../store/settings.state';
+import { UserEventMessage } from '../../../user/models/user.model';
+import { selectUserEvent, selectUserSettings } from '../../../user/store/user.selectors';
+import { UserAction } from '../../../user/store/user.actions';
+import { UserEventName, UserEventType } from '../../../user/store/user.state';
 
 import { SettingsComponent } from './settings.component';
-import { SettingsEventMessage } from '../../models/settings.model';
 
 describe('SettingsComponent', () => {
   let component: SettingsComponent;
@@ -30,8 +27,8 @@ describe('SettingsComponent', () => {
   let messageService: MessageService;
   let store: MockStore;
 
-  let mockSettingsSelector: any;
-  let mockSettingsEvent: any;
+  let mockUserSettingsSelector: any;
+  let mockUserEventSelector: any;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -39,7 +36,7 @@ describe('SettingsComponent', () => {
       providers: [
         provideNoopAnimations(),
         provideTranslateService(),
-        provideMockStore({ initialState: DEFAULT_INITIAL_SETTINGS_STATE }),
+        provideMockStore({ initialState: MOCK_INITIAL_USER_STATE }),
         TranslateService,
         MessageService,
       ],
@@ -51,10 +48,10 @@ describe('SettingsComponent', () => {
     translateService = TestBed.inject(TranslateService);
     messageService = TestBed.inject(MessageService);
 
-    mockSettingsSelector = store.overrideSelector(selectSettings, DEFAULT_MOCK_SETTINGS_1);
-    mockSettingsEvent = store.overrideSelector(selectSettingsEvent, {
-      name: SettingsEventName.Load,
-      type: SettingsEventType.Success,
+    mockUserSettingsSelector = store.overrideSelector(selectUserSettings, MOCK_USER_SETTINGS_1);
+    mockUserEventSelector = store.overrideSelector(selectUserEvent, {
+      name: UserEventName.LoadUserInfo,
+      type: UserEventType.Success,
     });
   });
 
@@ -78,7 +75,7 @@ describe('SettingsComponent', () => {
     expect(component.submitSettings()).toBeUndefined();
   });
 
-  it('updating settings without changes works', fakeAsync(() => {
+  it('updating User Settings without changes works', fakeAsync(() => {
     const dispatchSpy = jest.spyOn(store, 'dispatch');
 
     fixture.detectChanges();
@@ -91,21 +88,30 @@ describe('SettingsComponent', () => {
     tick(DEFAULT_UX_DELAY);
 
     expect(dispatchSpy).toHaveBeenLastCalledWith({
-      type: SettingsAction.UpdateSettings,
-      settings: DEFAULT_MOCK_SETTINGS_1,
+      type: UserAction.UpdateUserSettings,
+      userSettings: MOCK_USER_SETTINGS_1,
     });
   }));
 
-  it('receiving Settings via selector works', () => {
+  it('receiving User Settings via selector works', () => {
     const useSpy = jest.spyOn(translateService, 'use');
 
     fixture.detectChanges();
 
-    mockSettingsSelector.setResult(DEFAULT_MOCK_SETTINGS_2);
+    mockUserSettingsSelector.setResult(MOCK_USER_SETTINGS_2);
     store.refreshState();
 
-    expect(component.settings).toEqual(DEFAULT_MOCK_SETTINGS_2);
-    expect(useSpy).toHaveBeenLastCalledWith(DEFAULT_MOCK_SETTINGS_2.language);
+    expect(component.settings).toEqual(MOCK_USER_SETTINGS_2);
+    expect(useSpy).toHaveBeenLastCalledWith(MOCK_USER_SETTINGS_2.language);
+  });
+
+  it('receiving null User Settings via selector does not change anything', () => {
+    fixture.detectChanges();
+
+    mockUserSettingsSelector.setResult(null);
+    store.refreshState();
+
+    expect(component.settings).toEqual(MOCK_USER_SETTINGS_1);
   });
 
   // toast testing
@@ -115,22 +121,22 @@ describe('SettingsComponent', () => {
 
     fixture.detectChanges();
 
-    mockSettingsEvent.setResult(null);
+    mockUserEventSelector.setResult(null);
 
     store.refreshState();
 
     expect(messageAddSpy).toHaveBeenCalledTimes(0);
   });
 
-  it('toast is visible after receiving Settings Action State with Load Settings Error', () => {
+  it('toast is visible after receiving User event with Update User Settings / Error', () => {
     const messageAddSpy = jest.spyOn(messageService, 'add');
 
     fixture.detectChanges();
 
-    mockSettingsEvent.setResult({
-      name: SettingsEventName.Load,
-      type: SettingsEventType.Error,
-      message: SettingsEventMessage.LOAD_SETTINGS_ERROR,
+    mockUserEventSelector.setResult({
+      name: UserEventName.UpdateUserSettings,
+      type: UserEventType.Error,
+      message: UserEventMessage.UPDATE_USER_SETTINGS_ERROR,
     });
 
     store.refreshState();
@@ -138,43 +144,21 @@ describe('SettingsComponent', () => {
     expect(messageAddSpy).toHaveBeenCalledWith({
       severity: 'error',
       summary: 'EVENT.TYPE.ERROR',
-      detail: `EVENT.MESSAGE.${SettingsEventMessage.LOAD_SETTINGS_ERROR}`,
+      detail: `EVENT.MESSAGE.${UserEventMessage.UPDATE_USER_SETTINGS_ERROR}`,
       key: 'toast',
       life: 3000,
     });
   });
 
-  it('toast is visible after receiving Settings Action State with Update Settings Error', () => {
+  it('toast is visible after receiving User event with Update User Settings / Success', () => {
     const messageAddSpy = jest.spyOn(messageService, 'add');
 
     fixture.detectChanges();
 
-    mockSettingsEvent.setResult({
-      name: SettingsEventName.Update,
-      type: SettingsEventType.Error,
-      message: SettingsEventMessage.UPDATE_SETTINGS_ERROR,
-    });
-
-    store.refreshState();
-
-    expect(messageAddSpy).toHaveBeenCalledWith({
-      severity: 'error',
-      summary: 'EVENT.TYPE.ERROR',
-      detail: `EVENT.MESSAGE.${SettingsEventMessage.UPDATE_SETTINGS_ERROR}`,
-      key: 'toast',
-      life: 3000,
-    });
-  });
-
-  it('toast is visible after receiving Settings Action State with Update Settings Success', () => {
-    const messageAddSpy = jest.spyOn(messageService, 'add');
-
-    fixture.detectChanges();
-
-    mockSettingsEvent.setResult({
-      name: SettingsEventName.Update,
-      type: SettingsEventType.Success,
-      message: SettingsEventMessage.UPDATE_SETTINGS_SUCCESS,
+    mockUserEventSelector.setResult({
+      name: UserEventName.UpdateUserSettings,
+      type: UserEventType.Success,
+      message: UserEventMessage.UPDATE_USER_SETTINGS_SUCCESS,
     });
 
     store.refreshState();
@@ -182,7 +166,7 @@ describe('SettingsComponent', () => {
     expect(messageAddSpy).toHaveBeenCalledWith({
       severity: 'success',
       summary: 'EVENT.TYPE.SUCCESS',
-      detail: `EVENT.MESSAGE.${SettingsEventMessage.UPDATE_SETTINGS_SUCCESS}`,
+      detail: `EVENT.MESSAGE.${UserEventMessage.UPDATE_USER_SETTINGS_SUCCESS}`,
       key: 'toast',
       life: 3000,
     });

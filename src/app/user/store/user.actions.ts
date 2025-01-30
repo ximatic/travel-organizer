@@ -1,38 +1,80 @@
 import { createAction, props } from '@ngrx/store';
 
-import { UserProfile } from '../models/user.model';
+import { UserProfile } from '../models/user-profile.model';
+import { UserInfo, UserRequest } from '../models/user.model';
+import { UserSettings } from '../models/user-settings.model';
 
 export enum UserAction {
   Reset = 'user/reset',
-  LoadUser = 'user/load',
-  LoadUserSuccess = 'user/loadSuccess',
-  LoadUserError = 'user/loadError',
-  UpdateUser = 'user/update',
-  UpdateUserSuccess = 'user/updateSuccess',
-  UpdateUserError = 'user/updateError',
+  LoadUserInfo = 'user/loadUserInfo',
+  LoadUserInfoSuccess = 'user/loadUserInfoSuccess',
+  LoadUserInfoError = 'user/loadUserInfoError',
+  UpdateUser = 'user/updateUser',
+  UpdateUserSuccess = 'user/updateUserSuccess',
+  UpdateUserError = 'user/updateUserError',
+  UpdateUserProfile = 'user/updateUserProfile',
+  UpdateUserProfileSuccess = 'user/updateUserProfileSuccess',
+  UpdateUserProfileError = 'user/updateUserProfileError',
+  UpdateUserSettings = 'user/updateUserSettings',
+  UpdateUserSettingsSuccess = 'user/updateUserSettingsSuccess',
+  UpdateUserSettingsError = 'user/updateUserSettingsError',
 }
 
-export interface ActionPropsUser {
-  profile: UserProfile;
-}
+// common
 
-export interface ActionPropsUserSuccess {
-  profile: UserProfile | null;
+export interface ActionPropsSuccess {
   message?: string;
 }
 
-export interface ActionPropsUserError {
+export interface ActionPropsError {
   message: string;
+}
+
+// user
+
+export interface ActionPropsUser {
+  userRequest: UserRequest;
+}
+
+// user info
+
+export interface ActionPropsUserInfoSuccess {
+  userInfo: UserInfo | null;
+  message?: string;
+}
+
+// user profile
+
+export interface ActionPropsUserProfile {
+  userProfile: UserProfile;
+}
+
+export interface ActionPropsUserProfileSuccess {
+  userProfile: UserProfile | null;
+}
+
+// user settings
+
+export interface ActionPropsUserSettings {
+  userSettings: UserSettings;
+}
+
+export interface ActionPropsUserSettingsSuccess {
+  userSettings: UserSettings | null;
 }
 
 export const userActions = {
   reset: createAction(UserAction.Reset),
-  resetSuccess: createAction(UserAction.LoadUserSuccess, props<ActionPropsUserSuccess>()),
-  tesetError: createAction(UserAction.LoadUserError, props<ActionPropsUserError>()),
-  loadUser: createAction(UserAction.LoadUser),
-  loadUserSuccess: createAction(UserAction.LoadUserSuccess, props<ActionPropsUserSuccess>()),
-  loadUserError: createAction(UserAction.LoadUserError, props<ActionPropsUserError>()),
+  loadUserInfo: createAction(UserAction.LoadUserInfo),
+  loadUserInfoSuccess: createAction(UserAction.LoadUserInfoSuccess, props<ActionPropsUserInfoSuccess>()),
+  loadUserInfoError: createAction(UserAction.LoadUserInfoError, props<ActionPropsError>()),
   updateUser: createAction(UserAction.UpdateUser, props<ActionPropsUser>()),
-  updateUserSuccess: createAction(UserAction.UpdateUserSuccess, props<ActionPropsUserSuccess>()),
-  updateUserError: createAction(UserAction.UpdateUserError, props<ActionPropsUserError>()),
+  updateUserSuccess: createAction(UserAction.UpdateUserSuccess, props<ActionPropsSuccess>()),
+  updateUserError: createAction(UserAction.UpdateUserError, props<ActionPropsError>()),
+  updateUserProfile: createAction(UserAction.UpdateUserProfile, props<ActionPropsUserProfile>()),
+  updateUserProfileSuccess: createAction(UserAction.UpdateUserProfileSuccess, props<ActionPropsUserProfileSuccess>()),
+  updateUserProfileError: createAction(UserAction.UpdateUserProfileError, props<ActionPropsError>()),
+  updateUserSettings: createAction(UserAction.UpdateUserSettings, props<ActionPropsUserSettings>()),
+  updateUserSettingsSuccess: createAction(UserAction.UpdateUserSettingsSuccess, props<ActionPropsUserSettingsSuccess>()),
+  updateUserSettingsError: createAction(UserAction.UpdateUserSettingsError, props<ActionPropsError>()),
 };

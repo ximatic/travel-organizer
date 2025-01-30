@@ -1,17 +1,29 @@
+import { UserProfile } from './user-profile.model';
+import { UserSettings } from './user-settings.model';
+
 export enum UserEventMessage {
-  LOAD_USER_SUCCESS = 'LOAD_USER_SUCCESS',
-  LOAD_USER_ERROR = 'LOAD_USER_ERROR',
+  LOAD_USER_INFO_SUCCESS = 'LOAD_USER_INFO_SUCCESS',
+  LOAD_USER_INFO_ERROR = 'LOAD_USER_INFO_ERROR',
   UPDATE_USER_SUCCESS = 'UPDATE_USER_SUCCESS',
   UPDATE_USER_ERROR = 'UPDATE_USER_ERROR',
+  UPDATE_USER_PROFILE_SUCCESS = 'UPDATE_USER_PROFILE_SUCCESS',
+  UPDATE_USER_PROFILE_ERROR = 'UPDATE_USER_PROFILE_ERROR',
+  UPDATE_USER_SETTINGS_SUCCESS = 'UPDATE_USER_SETTING_SUCCESS',
+  UPDATE_USER_SETTINGS_ERROR = 'UPDATE_USER_SETTING_ERROR',
 }
 
-// user profile
-
-export interface UserProfile {
-  _id?: string;
+export interface UserInfo {
   email: string;
-  firstname: string;
-  lastname: string;
+  profile: UserProfile;
+  settings: UserSettings;
+}
+
+export interface User {
+  email: string;
+}
+
+export interface UserRequest {
+  email: string;
   password?: string;
   passwordRepeat?: string;
 }

@@ -11,25 +11,23 @@ import {
   DEFAULT_MOCK_AUTH_EVENT_LOGOUT_LOADING,
   DEFAULT_MOCK_AUTH_EVENT_LOGOUT_SUCCESS,
 } from '../common/mocks/auth.constants';
+import { MOCK_INITIAL_USER_STATE, MOCK_USER_EVENT_LOAD_USER_INFO_SUCCESS } from '../../../__mocks__/user.constants';
 import {
-  DEFAULT_INITIAL_SETTINGS_STATE,
-  DEFAULT_MOCK_SETTINGS_1,
-  DEFAULT_MOCK_SETTINGS_2,
-  DEFAULT_MOCK_SETTINGS_EVENT_LOAD_LOADING,
-  DEFAULT_MOCK_SETTINGS_EVENT_LOAD_SUCCESS,
-  DEFAULT_MOCK_SETTINGS_EVENT_UPDATE_SUCCESS,
-} from '../common/mocks/settings.constants';
-import { DEFAULT_UX_DELAY } from '../common/constants/common.constants';
+  MOCK_USER_EVENT_UPDATE_USER_SETTINGS_PROCESSING,
+  MOCK_USER_EVENT_UPDATE_USER_SETTINGS_SUCCESS,
+  MOCK_USER_SETTINGS_1,
+  MOCK_USER_SETTINGS_2,
+} from '../../../__mocks__/user-settings.constants';
 
-import { DEFAULT_SETTINGS } from '../settings/constants/settings.constants';
-import { SettingsLanguage, SettingsTheme } from '../settings/models/settings.model';
-import { SettingsAction } from '../settings/store/settings.actions';
-import { selectSettings, selectSettingsEvent } from '../settings/store/settings.selectors';
+import { DEFAULT_UX_DELAY } from '../common/constants/common.constants';
+import { DEFAULT_USER_SETTINGS } from '../user/constants/settings.constants';
 
 import { AuthAction } from '../auth/store/auth.actions';
 import { selectAuthEvent, selectAuthToken } from '../auth/store/auth.selectors';
 
+import { UserSettingsLanguage, UserSettingsTheme } from '../user/models/user-settings.model';
 import { UserAction } from '../user/store/user.actions';
+import { selectUserEvent, selectUserSettings } from '../user/store/user.selectors';
 
 import { MainComponent } from './main.component';
 
@@ -39,26 +37,25 @@ describe('MainComponent', () => {
   let router: Router;
   let store: MockStore;
 
-  let mockSettingsSelector: any;
-  let mockSettingsEventSelector: any;
+  let mockUserSettingsSelector: any;
+  let mockUserSettingsSelmockUserEventSelectorector: any;
   let mockAuthTokenSelector: any;
   let mockAuthEventSelector: any;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [MainComponent],
-      providers: [
-        provideRouter([]),
-        provideTranslateService(),
-        provideMockStore({ initialState: DEFAULT_INITIAL_SETTINGS_STATE }),
-      ],
+      providers: [provideRouter([]), provideTranslateService(), provideMockStore({ initialState: MOCK_INITIAL_USER_STATE })],
     }).compileComponents();
 
     router = TestBed.inject(Router);
     store = TestBed.inject(MockStore);
 
-    mockSettingsSelector = store.overrideSelector(selectSettings, DEFAULT_MOCK_SETTINGS_1);
-    mockSettingsEventSelector = store.overrideSelector(selectSettingsEvent, DEFAULT_MOCK_SETTINGS_EVENT_LOAD_LOADING);
+    mockUserSettingsSelector = store.overrideSelector(selectUserSettings, MOCK_USER_SETTINGS_1);
+    mockUserSettingsSelmockUserEventSelectorector = store.overrideSelector(
+      selectUserEvent,
+      MOCK_USER_EVENT_UPDATE_USER_SETTINGS_PROCESSING,
+    );
     mockAuthTokenSelector = store.overrideSelector(selectAuthToken, null);
     mockAuthEventSelector = store.overrideSelector(selectAuthEvent, DEFAULT_MOCK_AUTH_EVENT_LOGOUT_LOADING);
   });
@@ -75,40 +72,50 @@ describe('MainComponent', () => {
   // settings
 
   it('initial settings are default', () => {
-    expect(component.settings).toEqual(DEFAULT_SETTINGS);
+    expect(component.settings).toEqual(DEFAULT_USER_SETTINGS);
+  });
+
+  it('receiving null settings does not change current settings', () => {
+    fixture.detectChanges();
+
+    mockUserSettingsSelector.setResult(null);
+
+    store.refreshState();
+
+    expect(component.settings).toEqual(DEFAULT_USER_SETTINGS);
   });
 
   it('loading settings works for light theme', () => {
     fixture.detectChanges();
 
-    mockSettingsSelector.setResult(DEFAULT_MOCK_SETTINGS_1);
+    mockUserSettingsSelector.setResult(MOCK_USER_SETTINGS_1);
 
     store.refreshState();
 
     expect(component.darkMode).toEqual(false);
-    expect(component.settings).toEqual(DEFAULT_MOCK_SETTINGS_1);
+    expect(component.settings).toEqual(MOCK_USER_SETTINGS_1);
     expect(document.querySelector('html')?.classList.contains('dark-mode')).toBeFalsy();
   });
 
   it('loading settings works for dark theme', () => {
     fixture.detectChanges();
 
-    mockSettingsSelector.setResult(DEFAULT_MOCK_SETTINGS_2);
+    mockUserSettingsSelector.setResult(MOCK_USER_SETTINGS_2);
 
     store.refreshState();
 
     expect(component.darkMode).toEqual(true);
-    expect(component.settings).toEqual(DEFAULT_MOCK_SETTINGS_2);
+    expect(component.settings).toEqual(MOCK_USER_SETTINGS_2);
     expect(document.querySelector('html')?.classList.contains('dark-mode')).toBeTruthy();
   });
 
-  // settings events
+  // user events
 
-  it('getting settings event works for event Load', fakeAsync(() => {
+  it('getting user event works for User Load Info event', fakeAsync(() => {
     fixture.detectChanges();
 
     expect(component.isLoading).toEqual(true);
-    mockSettingsEventSelector.setResult(DEFAULT_MOCK_SETTINGS_EVENT_LOAD_SUCCESS);
+    mockUserSettingsSelmockUserEventSelectorector.setResult(MOCK_USER_EVENT_LOAD_USER_INFO_SUCCESS);
 
     store.refreshState();
 
@@ -118,11 +125,11 @@ describe('MainComponent', () => {
     expect(component.isLoading).toEqual(false);
   }));
 
-  it("getting settings event doesn't work for event Update", fakeAsync(() => {
+  it("getting user event doesn't work for Update User Settings event", fakeAsync(() => {
     fixture.detectChanges();
 
     expect(component.isLoading).toEqual(true);
-    mockSettingsEventSelector.setResult(DEFAULT_MOCK_SETTINGS_EVENT_UPDATE_SUCCESS);
+    mockUserSettingsSelmockUserEventSelectorector.setResult(MOCK_USER_EVENT_UPDATE_USER_SETTINGS_SUCCESS);
 
     store.refreshState();
 
@@ -137,7 +144,7 @@ describe('MainComponent', () => {
   it('checking if language is English works', () => {
     fixture.detectChanges();
 
-    component.settings.language = SettingsLanguage.English;
+    component.settings.language = UserSettingsLanguage.English;
     expect(component.isLanguageEnglish()).toBeTruthy();
     expect(component.isLanguagePolish()).toBeFalsy();
   });
@@ -145,7 +152,7 @@ describe('MainComponent', () => {
   it('checking if language is Polish works', () => {
     fixture.detectChanges();
 
-    component.settings.language = SettingsLanguage.Polish;
+    component.settings.language = UserSettingsLanguage.Polish;
     expect(component.isLanguageEnglish()).toBeFalsy();
     expect(component.isLanguagePolish()).toBeTruthy();
   });
@@ -155,10 +162,10 @@ describe('MainComponent', () => {
 
     fixture.detectChanges();
 
-    component.switchLanguage(SettingsLanguage.English);
+    component.switchLanguage(UserSettingsLanguage.English);
     expect(dispatchSpy).toHaveBeenLastCalledWith({
-      type: SettingsAction.UpdateSettings,
-      settings: { ...DEFAULT_MOCK_SETTINGS_1, language: SettingsLanguage.English },
+      type: UserAction.UpdateUserSettings,
+      userSettings: { ...MOCK_USER_SETTINGS_1, language: UserSettingsLanguage.English },
     });
   });
 
@@ -167,10 +174,10 @@ describe('MainComponent', () => {
 
     fixture.detectChanges();
 
-    component.switchLanguage(SettingsLanguage.Polish);
+    component.switchLanguage(UserSettingsLanguage.Polish);
     expect(dispatchSpy).toHaveBeenLastCalledWith({
-      type: SettingsAction.UpdateSettings,
-      settings: { ...DEFAULT_MOCK_SETTINGS_1, language: SettingsLanguage.Polish },
+      type: UserAction.UpdateUserSettings,
+      userSettings: { ...MOCK_USER_SETTINGS_1, language: UserSettingsLanguage.Polish },
     });
   });
 
@@ -194,8 +201,8 @@ describe('MainComponent', () => {
     component.toggleDarkMode();
 
     expect(dispatchSpy).toHaveBeenLastCalledWith({
-      type: SettingsAction.UpdateSettings,
-      settings: { ...component.settings, theme: SettingsTheme.Dark },
+      type: UserAction.UpdateUserSettings,
+      userSettings: { ...component.settings, theme: UserSettingsTheme.Dark },
     });
   });
 
@@ -205,14 +212,14 @@ describe('MainComponent', () => {
     fixture.detectChanges();
     component.settings = {
       ...component.settings,
-      theme: SettingsTheme.Dark,
+      theme: UserSettingsTheme.Dark,
     };
     component.darkMode = true;
     component.toggleDarkMode();
 
     expect(dispatchSpy).toHaveBeenLastCalledWith({
-      type: SettingsAction.UpdateSettings,
-      settings: { ...component.settings, theme: SettingsTheme.Light },
+      type: UserAction.UpdateUserSettings,
+      userSettings: { ...component.settings, theme: UserSettingsTheme.Light },
     });
   });
 
@@ -278,11 +285,8 @@ describe('MainComponent', () => {
     store.refreshState();
 
     expect(component.isLoggedIn).toBe(true);
-    expect(dispatchSpy).toHaveBeenCalledWith({
-      type: SettingsAction.LoadSettings,
-    });
     expect(dispatchSpy).toHaveBeenLastCalledWith({
-      type: UserAction.LoadUser,
+      type: UserAction.LoadUserInfo,
     });
   }));
 });

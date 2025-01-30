@@ -6,9 +6,6 @@ import { AuthGuard } from './auth/utils/auth.guard';
 import { AuthEffects } from './auth/store/auth.effects';
 import { AuthService } from './auth/services/auth.service';
 
-import { UserEffects } from './user/store/user.effects';
-import { ProfileService } from './user/services/profile.service';
-
 import { TripsEffects } from './trips/store/trips.effects';
 import { TripsService } from './trips/services/trips.service';
 import { TripsHttpService } from './trips/services/trips-http.service';
@@ -41,8 +38,8 @@ export const routes: Routes = [
   },
   {
     path: 'profile',
+    canActivate: [AuthGuard],
     loadChildren: () => import('./user/user.routes').then((m) => m.userRoutes),
-    providers: [provideEffects([UserEffects]), ProfileService],
   },
   {
     path: 'trips',

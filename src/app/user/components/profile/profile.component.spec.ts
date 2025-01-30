@@ -8,7 +8,8 @@ import { provideTranslateService } from '@ngx-translate/core';
 import { MessageService } from 'primeng/api';
 
 import { DEFAULT_UX_DELAY } from '../../../common/constants/common.constants';
-import { DEFAULT_INITIAL_USER_STATE, DEFAULT_USER_PROFILE_1 } from '../../../common/mocks/user.constants';
+import { MOCK_INITIAL_USER_STATE } from '../../../../../__mocks__/user.constants';
+import { MOCK_USER_PROFILE_1 } from '../../../../../__mocks__/user-profile.constants';
 
 import { messageServiceMock } from '../../../common/mocks/services.mocks';
 
@@ -18,7 +19,7 @@ import { UserEventName, UserEventType } from '../../store/user.state';
 
 import { ProfileComponent } from './profile.component';
 import { UserEventMessage } from '../../models/user.model';
-import { DEFAULT_PASSWORD_1 } from '../../../common/mocks/auth.constants';
+import { DEFAULT_EMAIL_1, DEFAULT_PASSWORD_1 } from '../../../common/mocks/auth.constants';
 
 describe('ProfileComponent', () => {
   let component: ProfileComponent;
@@ -35,7 +36,7 @@ describe('ProfileComponent', () => {
       providers: [
         provideNoopAnimations(),
         provideTranslateService(),
-        provideMockStore({ initialState: DEFAULT_INITIAL_USER_STATE }),
+        provideMockStore({ initialState: MOCK_INITIAL_USER_STATE }),
         MessageService,
       ],
     }).compileComponents();
@@ -46,7 +47,7 @@ describe('ProfileComponent', () => {
 
     mockProfileSelector = store.overrideSelector(selectUserProfile, null);
     mockUserEvent = store.overrideSelector(selectUserEvent, {
-      name: UserEventName.Load,
+      name: UserEventName.LoadUserInfo,
       type: UserEventType.Success,
     });
   });
@@ -77,7 +78,8 @@ describe('ProfileComponent', () => {
     fixture.detectChanges();
 
     component.profileForm.patchValue({
-      ...DEFAULT_USER_PROFILE_1,
+      email: DEFAULT_EMAIL_1,
+      ...MOCK_USER_PROFILE_1,
       password: DEFAULT_PASSWORD_1,
       passwordRepeat: DEFAULT_PASSWORD_1,
     });
@@ -90,22 +92,28 @@ describe('ProfileComponent', () => {
     tick(DEFAULT_UX_DELAY);
 
     expect(dispatchSpy).toHaveBeenLastCalledWith({
-      type: UserAction.UpdateUser,
-      profile: {
-        ...DEFAULT_USER_PROFILE_1,
+      type: UserAction.UpdateUserProfile,
+      userProfile: {
+        email: DEFAULT_EMAIL_1,
+        ...MOCK_USER_PROFILE_1,
         password: DEFAULT_PASSWORD_1,
         passwordRepeat: DEFAULT_PASSWORD_1,
       },
     });
   }));
 
-  it('receiving Settings via selector works', () => {
+  it('receiving profile via selector works', () => {
     fixture.detectChanges();
 
-    mockProfileSelector.setResult(DEFAULT_USER_PROFILE_1);
+    mockProfileSelector.setResult(MOCK_USER_PROFILE_1);
     store.refreshState();
 
-    expect(component.profileForm.getRawValue()).toEqual(DEFAULT_USER_PROFILE_1);
+    expect(component.profileForm.getRawValue()).toEqual({
+      email: '',
+      ...MOCK_USER_PROFILE_1,
+      password: '',
+      passwordRepeat: '',
+    });
   });
 
   // toast testing
@@ -128,7 +136,7 @@ describe('ProfileComponent', () => {
     fixture.detectChanges();
 
     mockUserEvent.setResult({
-      name: UserEventName.Update,
+      name: UserEventName.UpdateUserProfile,
       type: UserEventType.Error,
       message: UserEventMessage.UPDATE_USER_ERROR,
     });
@@ -150,7 +158,7 @@ describe('ProfileComponent', () => {
     fixture.detectChanges();
 
     mockUserEvent.setResult({
-      name: UserEventName.Update,
+      name: UserEventName.UpdateUserProfile,
       type: UserEventType.Success,
       message: UserEventMessage.UPDATE_USER_SUCCESS,
     });
