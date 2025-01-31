@@ -9,8 +9,12 @@ import { of } from 'rxjs';
 
 import { MessageService } from 'primeng/api';
 
-import { DEFAULT_INITIAL_TRIPS_STATE, DEFAULT_TRIP_1, DEFAULT_TRIP_ITEM_1 } from '../../../common/mocks/trips.constants';
-import { messageServiceMock } from '../../../common/mocks/services.mocks';
+import {
+  DEFAULT_INITIAL_TRIPS_STATE,
+  DEFAULT_TRIP_1,
+  DEFAULT_TRIP_ITEM_1,
+} from '../../../../../__mocks__/constants/trips.constants';
+import { messageServiceMock } from '../../../../../__mocks__/services.mocks';
 
 import { DEFAULT_UX_DELAY } from '../../../common/constants/common.constants';
 

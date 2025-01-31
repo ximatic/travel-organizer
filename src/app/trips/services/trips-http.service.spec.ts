@@ -4,7 +4,7 @@ import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 
 import { Trip } from '../models/trip.model';
 
-import { DEFAULT_TRIP_1, DEFAULT_TRIP_2, DEFAULT_TRIP_ITEM_1 } from '../../common/mocks/trips.constants';
+import { DEFAULT_TRIP_1, DEFAULT_TRIP_2, DEFAULT_TRIP_ITEM_1 } from '../../../../__mocks__/constants/trips.constants';
 
 import { TripsHttpService } from './trips-http.service';
 import { environment } from '../../../environments/environment';

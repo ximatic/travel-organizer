@@ -8,7 +8,7 @@ import {
   DEFAULT_FIRSTNAME_1,
   DEFAULT_LASTNAME_1,
   DEFAULT_PASSWORD_1,
-} from '../../common/mocks/auth.constants';
+} from '../../../../__mocks__/constants/auth.constants';
 import { AuthToken, SignupPayload } from '../model/auth.model';
 
 import { environment } from '../../../environments/environment';

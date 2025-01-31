@@ -8,10 +8,10 @@ import { provideTranslateService } from '@ngx-translate/core';
 import { MessageService } from 'primeng/api';
 
 import { DEFAULT_UX_DELAY } from '../../../common/constants/common.constants';
-import { MOCK_INITIAL_USER_STATE } from '../../../../../__mocks__/user.constants';
-import { MOCK_USER_PROFILE_1 } from '../../../../../__mocks__/user-profile.constants';
+import { MOCK_INITIAL_USER_STATE } from '../../../../../__mocks__/constants/user.constants';
+import { MOCK_USER_PROFILE_1 } from '../../../../../__mocks__/constants/user-profile.constants';
 
-import { messageServiceMock } from '../../../common/mocks/services.mocks';
+import { messageServiceMock } from '../../../../../__mocks__/services.mocks';
 
 import { UserAction } from '../../store/user.actions';
 import { selectUserProfile, selectUserEvent } from '../../store/user.selectors';
@@ -19,7 +19,7 @@ import { UserEventName, UserEventType } from '../../store/user.state';
 
 import { ProfileComponent } from './profile.component';
 import { UserEventMessage } from '../../models/user.model';
-import { DEFAULT_EMAIL_1, DEFAULT_PASSWORD_1 } from '../../../common/mocks/auth.constants';
+import { DEFAULT_EMAIL_1, DEFAULT_PASSWORD_1 } from '../../../../../__mocks__/constants/auth.constants';
 
 describe('ProfileComponent', () => {
   let component: ProfileComponent;

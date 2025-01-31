@@ -8,10 +8,10 @@ import { provideTranslateService, TranslateService } from '@ngx-translate/core';
 import { MessageService } from 'primeng/api';
 
 import { DEFAULT_UX_DELAY } from '../../../common/constants/common.constants';
-import { MOCK_INITIAL_USER_STATE } from '../../../../../__mocks__/user.constants';
-import { MOCK_USER_SETTINGS_1, MOCK_USER_SETTINGS_2 } from '../../../../../__mocks__/user-settings.constants';
+import { MOCK_INITIAL_USER_STATE } from '../../../../../__mocks__/constants/user.constants';
+import { MOCK_USER_SETTINGS_1, MOCK_USER_SETTINGS_2 } from '../../../../../__mocks__/constants/user-settings.constants';
 
-import { messageServiceMock, translateServiceMock } from '../../../common/mocks/services.mocks';
+import { messageServiceMock, translateServiceMock } from '../../../../../__mocks__/services.mocks';
 
 import { UserEventMessage } from '../../models/user.model';
 import { selectUserEvent, selectUserSettings } from '../../store/user.selectors';

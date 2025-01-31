@@ -2,7 +2,7 @@ import { HttpErrorResponse, provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 
-import { MOCK_USER_SETTINGS_1, MOCK_USER_SETTINGS_2 } from '../../../../__mocks__/user-settings.constants';
+import { MOCK_USER_SETTINGS_1, MOCK_USER_SETTINGS_2 } from '../../../../__mocks__/constants/user-settings.constants';
 
 import { DEFAULT_USER_SETTINGS } from '../constants/settings.constants';
 import { UserSettings } from '../models/user-settings.model';

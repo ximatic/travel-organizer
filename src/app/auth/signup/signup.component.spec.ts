@@ -15,7 +15,7 @@ import {
   DEFAULT_LASTNAME_1,
   DEFAULT_INITIAL_AUTH_STATE,
   DEFAULT_MOCK_AUTH_EVENT_SIGNUP_LOADING,
-} from '../../common/mocks/auth.constants';
+} from '../../../../__mocks__/constants/auth.constants';
 
 import { DEFAULT_UX_DELAY } from '../../common/constants/common.constants';
 
@@ -25,7 +25,7 @@ import { AuthEventName, AuthEventType } from '../store/auth.state';
 
 import { AuthEventMessage } from '../model/auth.model';
 
-import { messageServiceMock } from '../../common/mocks/services.mocks';
+import { messageServiceMock } from '../../../../__mocks__/services.mocks';
 
 import { SignupComponent } from './signup.component';
 

@@ -8,8 +8,8 @@ import { provideTranslateService } from '@ngx-translate/core';
 
 import { MessageService } from 'primeng/api';
 
-import { DEFAULT_INITIAL_TRIPS_STATE, DEFAULT_TRIP_1, DEFAULT_TRIP_2 } from '../../../common/mocks/trips.constants';
-import { messageServiceMock } from '../../../common/mocks/services.mocks';
+import { DEFAULT_INITIAL_TRIPS_STATE, DEFAULT_TRIP_1, DEFAULT_TRIP_2 } from '../../../../../__mocks__/constants/trips.constants';
+import { messageServiceMock } from '../../../../../__mocks__/services.mocks';
 
 import { TripsEventMessage } from '../../models/trip.model';
 import { TripAction } from '../../store/trips.actions';

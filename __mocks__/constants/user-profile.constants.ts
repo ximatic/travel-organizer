@@ -1,12 +1,7 @@
-import {
-  DEFAULT_FIRSTNAME_1,
-  DEFAULT_FIRSTNAME_2,
-  DEFAULT_LASTNAME_1,
-  DEFAULT_LASTNAME_2,
-} from '../src/app/common/mocks/auth.constants';
+import { DEFAULT_FIRSTNAME_1, DEFAULT_FIRSTNAME_2, DEFAULT_LASTNAME_1, DEFAULT_LASTNAME_2 } from './auth.constants';
 
-import { UserProfile } from '../src/app/user/models/user-profile.model';
-import { UserEvent, UserEventName, UserEventType } from '../src/app/user/store/user.state';
+import { UserProfile } from '../../src/app/user/models/user-profile.model';
+import { UserEvent, UserEventName, UserEventType } from '../../src/app/user/store/user.state';
 
 // user profile mocks
 

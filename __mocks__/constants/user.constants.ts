@@ -1,4 +1,4 @@
-import { UserEvent, UserEventName, UserEventType, UserState } from '../src/app/user/store/user.state';
+import { UserEvent, UserEventName, UserEventType, UserState } from '../../src/app/user/store/user.state';
 
 // user events mock
 

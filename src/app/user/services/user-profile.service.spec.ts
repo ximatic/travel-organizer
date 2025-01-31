@@ -4,7 +4,7 @@ import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 
 import { UserProfile } from '../models/user-profile.model';
 
-import { MOCK_USER_PROFILE_1, MOCK_USER_PROFILE_2 } from '../../../../__mocks__/user-profile.constants';
+import { MOCK_USER_PROFILE_1, MOCK_USER_PROFILE_2 } from '../../../../__mocks__/constants/user-profile.constants';
 
 import { environment } from '../../../environments/environment';
 

@@ -16,8 +16,8 @@ import {
   DEFAULT_TRIP_2,
   DEFAULT_TRIP_3,
   DEFAULT_TRIP_4,
-} from '../../../common/mocks/trips.constants';
-import { messageServiceMock } from '../../../common/mocks/services.mocks';
+} from '../../../../../__mocks__/constants/trips.constants';
+import { messageServiceMock } from '../../../../../__mocks__/services.mocks';
 
 import { TripsEventMessage } from '../../models/trip.model';
 import { TripAction } from '../../store/trips.actions';

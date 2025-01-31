@@ -4,7 +4,7 @@ import { provideRouter } from '@angular/router';
 import { provideMockStore } from '@ngrx/store/testing';
 import { provideTranslateService } from '@ngx-translate/core';
 
-import { MOCK_INITIAL_USER_STATE } from '../../__mocks__/user.constants';
+import { MOCK_INITIAL_USER_STATE } from '../../__mocks__/constants/user.constants';
 
 import { AppComponent } from './app.component';
 

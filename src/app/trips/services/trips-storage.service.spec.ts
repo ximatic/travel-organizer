@@ -11,7 +11,7 @@ import {
   DEFAULT_TRIP_ITEM_0,
   DEFAULT_TRIP_ITEM_1,
   DEFAULT_TRIP_ITEM_2,
-} from '../../common/mocks/trips.constants';
+} from '../../../../__mocks__/constants/trips.constants';
 
 import { TripsStorageService } from './trips-storage.service';
 

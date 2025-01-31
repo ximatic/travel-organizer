@@ -1,5 +1,5 @@
-import { Trip, TripItem } from '../../trips/models/trip.model';
-import { TripsState } from '../../trips/store/trips.state';
+import { Trip, TripItem } from '../../src/app/trips/models/trip.model';
+import { TripsState } from '../../src/app/trips/store/trips.state';
 
 // trip mocks
 

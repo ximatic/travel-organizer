@@ -4,7 +4,7 @@ import { provideRouter, Router } from '@angular/router';
 
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 
-import { DEFAULT_AUTH_TOKEN_1, DEFAULT_INITIAL_AUTH_STATE } from '../../common/mocks/auth.constants';
+import { DEFAULT_AUTH_TOKEN_1, DEFAULT_INITIAL_AUTH_STATE } from '../../../../__mocks__/constants/auth.constants';
 
 import { selectAuthToken } from '../store/auth.selectors';
 

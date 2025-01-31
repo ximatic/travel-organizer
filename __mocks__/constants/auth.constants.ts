@@ -1,5 +1,5 @@
-import { AuthToken } from '../../auth/model/auth.model';
-import { AuthEventName, AuthEventType } from '../../auth/store/auth.state';
+import { AuthToken } from '../../src/app/auth/model/auth.model';
+import { AuthEventName, AuthEventType } from '../../src/app/auth/store/auth.state';
 
 // login && signup mocks
 

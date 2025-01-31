@@ -10,14 +10,14 @@ import {
   DEFAULT_MOCK_AUTH_EVENT_LOGIN_SUCCESS,
   DEFAULT_MOCK_AUTH_EVENT_LOGOUT_LOADING,
   DEFAULT_MOCK_AUTH_EVENT_LOGOUT_SUCCESS,
-} from '../common/mocks/auth.constants';
-import { MOCK_INITIAL_USER_STATE, MOCK_USER_EVENT_LOAD_USER_INFO_SUCCESS } from '../../../__mocks__/user.constants';
+} from '../../../__mocks__/constants/auth.constants';
+import { MOCK_INITIAL_USER_STATE, MOCK_USER_EVENT_LOAD_USER_INFO_SUCCESS } from '../../../__mocks__/constants/user.constants';
 import {
   MOCK_USER_EVENT_UPDATE_USER_SETTINGS_PROCESSING,
   MOCK_USER_EVENT_UPDATE_USER_SETTINGS_SUCCESS,
   MOCK_USER_SETTINGS_1,
   MOCK_USER_SETTINGS_2,
-} from '../../../__mocks__/user-settings.constants';
+} from '../../../__mocks__/constants/user-settings.constants';
 
 import { DEFAULT_UX_DELAY } from '../common/constants/common.constants';
 import { DEFAULT_USER_SETTINGS } from '../user/constants/settings.constants';

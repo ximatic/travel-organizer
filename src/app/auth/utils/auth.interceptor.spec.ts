@@ -2,7 +2,7 @@ import { HttpClient, provideHttpClient, withInterceptors } from '@angular/common
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 
-import { DEFAULT_AUTH_TOKEN_1 } from '../../common/mocks/auth.constants';
+import { DEFAULT_AUTH_TOKEN_1 } from '../../../../__mocks__/constants/auth.constants';
 
 import { AuthService } from '../services/auth.service';
 

@@ -1,7 +1,7 @@
-import { DEFAULT_USER_SETTINGS } from '../src/app/user/constants/settings.constants';
+import { DEFAULT_USER_SETTINGS } from '../../src/app/user/constants/settings.constants';
 
-import { UserSettings, UserSettingsTheme } from '../src/app/user/models/user-settings.model';
-import { UserEvent, UserEventName, UserEventType } from '../src/app/user/store/user.state';
+import { UserSettings, UserSettingsTheme } from '../../src/app/user/models/user-settings.model';
+import { UserEvent, UserEventName, UserEventType } from '../../src/app/user/store/user.state';
 
 // user settings mocks
 
