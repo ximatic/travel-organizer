@@ -29,6 +29,7 @@
             id="password"
             type="text"
             formControlName="password"
+            [feedback]="false"
             class="block w-full"
             [ngClass]="{ 'ng-invalid': passwordControl?.invalid, 'ng-dirty': passwordControl?.dirty }"
           />
@@ -50,6 +51,11 @@
         >
           <i class="pi pi-spin pi-spinner mr-1" *ngIf="isSubmitInProgress"></i>
           <span pButtonLabel>{{ 'COMMON.BUTTON.SUBMIT' | translate }}</span>
+        </button>
+      </div>
+      <div class="mt-2">
+        <button pButton pRipple severity="secondary" class="block w-full" routerLink="/auth/signup">
+          <span pButtonLabel>{{ 'LOGIN.BUTTON.SIGNUP' | translate }}</span>
         </button>
       </div>
     </div>

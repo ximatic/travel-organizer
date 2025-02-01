@@ -33,7 +33,7 @@
 
       <!-- regular menu -->
 
-      <div class="menu border-b hidden md:block px-3">
+      <div class="menu border-b hidden md:block px-3" *ngIf="isLoggedIn">
         <div class="flex">
           <div>
             <p-button
@@ -65,7 +65,7 @@
               [label]="'MENU.PROFILE' | translate"
             />
           </div>
-          <div class="grow flex justify-end">
+          <div class="flex justify-end">
             <p-button
               icon="pi pi-cog"
               text

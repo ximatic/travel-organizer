@@ -67,6 +67,14 @@ describe('SignupComponent', () => {
     expect(component).toBeTruthy();
   });
 
+  it('validating form works', () => {
+    fixture.detectChanges();
+    const formValidationSpy = jest.spyOn(component.signupForm, 'updateValueAndValidity');
+
+    component.validateForm();
+    expect(formValidationSpy).toHaveBeenCalled();
+  });
+
   it("submitForm doesn't work for an empty form", () => {
     const dispatchSpy = jest.spyOn(store, 'dispatch');
 

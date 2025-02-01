@@ -16,6 +16,7 @@ import { PasswordModule } from 'primeng/password';
 import { ToastModule } from 'primeng/toast';
 
 import { DEFAULT_UX_DELAY } from '../../common/constants/common.constants';
+import { valueMatchValidator } from '../../common/utils/custom-form.validators';
 
 import { SignupPayload } from '../model/auth.model';
 
@@ -95,7 +96,7 @@ export class SignupComponent implements OnInit, OnDestroy {
     return this.signupForm.get('lastname');
   }
 
-  // trip
+  // form
 
   submitForm(): void {
     if (this.signupForm.invalid) {
@@ -110,6 +111,12 @@ export class SignupComponent implements OnInit, OnDestroy {
       .subscribe(() => {
         this.store.dispatch(authActions.signup({ ...this.processFormValue() }));
       });
+  }
+
+  validateForm(): void {
+    this.signupForm.updateValueAndValidity();
+    this.passwordControl?.updateValueAndValidity();
+    this.passwordRepeatControl?.updateValueAndValidity();
   }
 
   // initialization
@@ -164,11 +171,11 @@ export class SignupComponent implements OnInit, OnDestroy {
 
   private initForm(): void {
     this.signupForm = this.formBuilder.group({
-      email: ['', Validators.required],
-      password: ['', Validators.required],
-      passwordRepeat: ['', Validators.required],
-      firstname: [''],
-      lastname: [''],
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, valueMatchValidator('passwordRepeat')]],
+      passwordRepeat: ['', [Validators.required, valueMatchValidator('password')]],
+      firstname: ['', Validators.required],
+      lastname: ['', Validators.required],
     });
   }
 
