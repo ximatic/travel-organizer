@@ -27,7 +27,6 @@ import { TripsEvent, TripsEventName, TripsEventType, TripsState } from '../../st
   selector: 'app-trip-add',
   templateUrl: './trip-add.component.html',
   styleUrl: './trip-add.component.scss',
-  standalone: true,
   imports: [
     CommonModule,
     RouterModule,

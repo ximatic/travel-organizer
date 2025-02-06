@@ -28,7 +28,6 @@ import { AuthEvent, AuthEventName, AuthEventType, AuthState } from '../store/aut
   selector: 'app-signup',
   templateUrl: './signup.component.html',
   styleUrl: './signup.component.scss',
-  standalone: true,
   imports: [
     CommonModule,
     RouterModule,

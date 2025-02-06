@@ -6,7 +6,6 @@ import { MainComponent } from './main/main.component';
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
-  standalone: true,
   imports: [MainComponent],
 })
 export class AppComponent {}

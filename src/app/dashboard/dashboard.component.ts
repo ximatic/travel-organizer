@@ -10,7 +10,6 @@ import { CardModule } from 'primeng/card';
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
-  standalone: true,
   imports: [RouterModule, TranslatePipe, ButtonModule, CardModule],
 })
 export class DashboardComponent {}

@@ -25,7 +25,6 @@ import { TripItemsComponent } from '../trip-items/trip-items.component';
   selector: 'app-trip',
   templateUrl: './trip.component.html',
   styleUrl: './trip.component.scss',
-  standalone: true,
   imports: [
     CommonModule,
     RouterModule,

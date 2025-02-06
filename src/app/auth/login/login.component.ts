@@ -27,7 +27,6 @@ import { AuthEvent, AuthEventName, AuthEventType, AuthState } from '../store/aut
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
-  standalone: true,
   imports: [
     CommonModule,
     RouterModule,

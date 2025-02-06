@@ -23,7 +23,6 @@ import { TripPanelComponent } from '../trip-panel/trip-panel.component';
   selector: 'app-trips',
   templateUrl: './trips.component.html',
   styleUrl: './trips.component.scss',
-  standalone: true,
   imports: [
     CommonModule,
     RouterModule,

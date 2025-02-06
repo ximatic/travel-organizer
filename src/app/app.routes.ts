@@ -22,14 +22,14 @@ export const routes: Routes = [
     redirectTo: 'dashboard',
   },
   {
-    path: 'dashboard',
-    canActivate: [AuthGuard],
-    component: DashboardComponent,
-  },
-  {
     path: 'auth',
     loadChildren: () => import('./auth/auth.routes').then((m) => m.authRoutes),
     providers: [provideEffects([AuthEffects]), AuthService],
+  },
+  {
+    path: 'dashboard',
+    canActivate: [AuthGuard],
+    component: DashboardComponent,
   },
   {
     path: 'user',

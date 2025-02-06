@@ -17,7 +17,6 @@ import { DEFAULT_USER_SETTINGS } from '../../../user/constants/settings.constant
   selector: 'app-trip-panel',
   templateUrl: './trip-panel.component.html',
   styleUrl: './trip-panel.component.scss',
-  standalone: true,
   imports: [CommonModule, PanelModule],
 })
 export class TripPanelComponent implements OnInit, OnDestroy {

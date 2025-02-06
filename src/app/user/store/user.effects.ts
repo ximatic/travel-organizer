@@ -31,7 +31,6 @@ export class UserEffects {
     this.actions$.pipe(
       ofType(UserAction.UpdateUser),
       exhaustMap((action: ActionPropsUser) => {
-        console.log(action);
         return this.userService.updateUser(action.userRequest).pipe(
           map(() => userActions.updateUserSuccess({ message: UserEventMessage.UPDATE_USER_SUCCESS })),
           catchError(() => of(userActions.updateUserError({ message: UserEventMessage.UPDATE_USER_ERROR }))),
@@ -44,7 +43,6 @@ export class UserEffects {
     this.actions$.pipe(
       ofType(UserAction.UpdateUserProfile),
       exhaustMap((action: ActionPropsUserProfile) => {
-        console.log(action);
         return this.userProfileService.updateProfile(action.userProfile).pipe(
           map((userProfile: UserProfile) => userActions.updateUserProfileSuccess({ userProfile })),
           catchError(() => of(userActions.updateUserProfileError({ message: UserEventMessage.UPDATE_USER_PROFILE_ERROR }))),
@@ -57,7 +55,6 @@ export class UserEffects {
     this.actions$.pipe(
       ofType(UserAction.UpdateUserSettings),
       exhaustMap((action: ActionPropsUserSettings) => {
-        console.log(action);
         return this.userSettingsService.updateSettings(action.userSettings).pipe(
           map((userSettings: UserSettings) => userActions.updateUserSettingsSuccess({ userSettings })),
           catchError(() => of(userActions.updateUserSettingsError({ message: UserEventMessage.UPDATE_USER_SETTINGS_ERROR }))),

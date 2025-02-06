@@ -30,7 +30,6 @@ import { UserSettings, UserSettingsLanguage, UserSettingsTheme } from '../user/m
   selector: 'app-main',
   templateUrl: './main.component.html',
   styleUrl: './main.component.scss',
-  standalone: true,
   imports: [
     CommonModule,
     RouterModule,

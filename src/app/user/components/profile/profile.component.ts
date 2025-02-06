@@ -25,7 +25,6 @@ import { UserProfile } from '../../models/user-profile.model';
   selector: 'app-profile',
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss',
-  standalone: true,
   imports: [
     CommonModule,
     ReactiveFormsModule,
