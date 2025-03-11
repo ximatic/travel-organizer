@@ -1,4 +1,17 @@
-# Travel Organizer
+# Travel Organizer (Angular)
+
+## TODOs
+
+- Login flow
+- Signup flow
+- Password recovery flow
+- User settings flow
+- User profile flow
+- User password flow
+- User roles (user/viewer/admin)
+- User administration
+
+# Standard README
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.0.2.
 
