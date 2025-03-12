@@ -84,7 +84,7 @@ describe('LoginComponent', () => {
 
     expect(component.loginForm.invalid).toBeFalsy();
     component.submitForm();
-    expect(component.isSubmitInProgress).toBeTruthy();
+    expect(component.isSubmitInProgress()).toBeTruthy();
 
     // artificial delay as in component
     tick(DEFAULT_UX_DELAY);
@@ -123,7 +123,7 @@ describe('LoginComponent', () => {
 
     store.refreshState();
 
-    expect(component.isSubmitInProgress).toBeFalsy();
+    expect(component.isSubmitInProgress()).toBeFalsy();
     expect(messageAddSpy).toHaveBeenCalledTimes(0);
     expect(navigateSpy).toHaveBeenCalledWith([`/dashboard`]);
   });
@@ -141,7 +141,7 @@ describe('LoginComponent', () => {
 
     store.refreshState();
 
-    expect(component.isSubmitInProgress).toBeFalsy();
+    expect(component.isSubmitInProgress()).toBeFalsy();
     expect(messageAddSpy).toHaveBeenCalledWith({
       severity: 'error',
       summary: 'EVENT.TYPE.ERROR',

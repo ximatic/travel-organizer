@@ -19,7 +19,7 @@
           />
           <label for="email">{{ 'LOGIN.FORM.EMAIL.LABEL' | translate }}</label>
         </p-floatlabel>
-        <small *ngIf="emailControl?.invalid && emailControl?.dirty" class="ml-1 LOGIN-error">
+        <small *ngIf="emailControl?.invalid && emailControl?.dirty" class="ml-1 login__form-error">
           {{ 'LOGIN.FORM.EMAIL.ERROR' | translate }}
         </small>
       </div>
@@ -35,7 +35,7 @@
           />
           <label for="password">{{ 'LOGIN.FORM.PASSWORD.LABEL' | translate }}</label>
         </p-floatlabel>
-        <small *ngIf="passwordControl?.invalid && passwordControl?.dirty" class="ml-1 login__form-error">
+        <small *ngIf="passwordControl?.invalid && passwordControl?.dirty" class="ml-1 login__form-error text-error">
           {{ 'LOGIN.FORM.PASSWORD.ERROR' | translate }}
         </small>
       </div>
@@ -45,11 +45,11 @@
           pButton
           pRipple
           severity="primary"
-          [disabled]="loginForm.invalid || isSubmitInProgress"
+          [disabled]="loginForm.invalid || isSubmitInProgress()"
           class="block w-full"
           (click)="submitForm()"
         >
-          <i class="pi pi-spin pi-spinner mr-1" *ngIf="isSubmitInProgress"></i>
+          <i class="pi pi-spin pi-spinner mr-1" *ngIf="isSubmitInProgress()"></i>
           <span pButtonLabel>{{ 'COMMON.BUTTON.SUBMIT' | translate }}</span>
         </button>
       </div>
