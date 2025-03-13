@@ -20,9 +20,11 @@
             />
             <label for="email">{{ 'SIGNUP.FORM.EMAIL.LABEL' | translate }}</label>
           </p-floatlabel>
-          <small *ngIf="emailControl?.invalid && emailControl?.dirty" class="ml-1 signup__form-error">
-            {{ 'SIGNUP.FORM.EMAIL.ERROR' | translate }}
-          </small>
+          @if (emailControl?.invalid && emailControl?.dirty) {
+            <small class="ml-1 text-error">
+              {{ 'SIGNUP.FORM.EMAIL.ERROR' | translate }}
+            </small>
+          }
         </div>
         <div class="mb-3">
           <p-floatlabel variant="on">
@@ -40,12 +42,11 @@
             />
             <label for="password">{{ 'SIGNUP.FORM.PASSWORD.LABEL' | translate }}</label>
           </p-floatlabel>
-          <small
-            *ngIf="passwordControl?.invalid && passwordControl?.dirty && passwordControl?.hasError('required')"
-            class="ml-1 signup__form-error"
-          >
-            {{ 'SIGNUP.FORM.PASSWORD.ERROR' | translate }}
-          </small>
+          @if (passwordControl?.invalid && passwordControl?.dirty && passwordControl?.hasError('required')) {
+            <small class="ml-1 text-error">
+              {{ 'SIGNUP.FORM.PASSWORD.ERROR' | translate }}
+            </small>
+          }
         </div>
         <div class="mb-3">
           <p-floatlabel variant="on">
@@ -63,14 +64,16 @@
             />
             <label for="passwordRepeat">{{ 'SIGNUP.FORM.PASSWORD_REPEAT.LABEL' | translate }}</label>
           </p-floatlabel>
-          <small *ngIf="passwordRepeatControl?.invalid && passwordRepeatControl?.dirty" class="block ml-1 signup__form-error">
-            @if (passwordRepeatControl?.hasError('required')) {
-              {{ 'SIGNUP.FORM.PASSWORD_REPEAT.ERROR' | translate }}
-            }
-            @if (passwordRepeatControl?.hasError('valueMatch')) {
-              {{ 'SIGNUP.FORM.PASSWORDS_NO_MATCH.ERROR' | translate }}
-            }
-          </small>
+          @if (passwordRepeatControl?.invalid && passwordRepeatControl?.dirty) {
+            <small class="block ml-1 text-error">
+              @if (passwordRepeatControl?.hasError('required')) {
+                {{ 'SIGNUP.FORM.PASSWORD_REPEAT.ERROR' | translate }}
+              }
+              @if (passwordRepeatControl?.hasError('valueMatch')) {
+                {{ 'SIGNUP.FORM.PASSWORDS_NO_MATCH.ERROR' | translate }}
+              }
+            </small>
+          }
         </div>
         <div class="mb-3">
           <p-floatlabel variant="on">
@@ -84,9 +87,11 @@
             />
             <label for="firstname">{{ 'SIGNUP.FORM.FIRSTNAME.LABEL' | translate }}</label>
           </p-floatlabel>
-          <small *ngIf="firstnameControl?.invalid && firstnameControl?.dirty" class="ml-1 signup__form-error">
-            {{ 'SIGNUP.FORM.FIRSTNAME.ERROR' | translate }}
-          </small>
+          @if (firstnameControl?.invalid && firstnameControl?.dirty) {
+            <small class="ml-1 text-error">
+              {{ 'SIGNUP.FORM.FIRSTNAME.ERROR' | translate }}
+            </small>
+          }
         </div>
         <div class="mb-3">
           <p-floatlabel variant="on">
@@ -100,9 +105,11 @@
             />
             <label for="lastname">{{ 'SIGNUP.FORM.LASTNAME.LABEL' | translate }}</label>
           </p-floatlabel>
-          <small *ngIf="lastnameControl?.invalid && lastnameControl?.dirty" class="ml-1 signup__form-error">
-            {{ 'SIGNUP.FORM.LASTNAME.ERROR' | translate }}
-          </small>
+          @if (lastnameControl?.invalid && lastnameControl?.dirty) {
+            <small class="ml-1 text-error">
+              {{ 'SIGNUP.FORM.LASTNAME.ERROR' | translate }}
+            </small>
+          }
         </div>
       </form>
 
@@ -111,11 +118,13 @@
           pButton
           pRipple
           severity="primary"
-          [disabled]="signupForm.invalid || isSubmitInProgress"
+          [disabled]="signupForm.invalid || isSubmitInProgress()"
           class="block w-full"
           (click)="submitForm()"
         >
-          <i class="pi pi-spin pi-spinner mr-1" *ngIf="isSubmitInProgress"></i>
+          @if (isSubmitInProgress()) {
+            <i class="pi pi-spin pi-spinner mr-1"></i>
+          }
           <span pButtonLabel>{{ 'COMMON.BUTTON.SUBMIT' | translate }}</span>
         </button>
       </div>

@@ -64,6 +64,7 @@
       }
     },
     "BUTTON": {
+      "LOGIN": "Login",
       "SIGNUP": "Create account"
     }
   },
@@ -97,26 +98,34 @@
   },
   "PROFILE": {
     "TITLE": "User Profile",
-    "FORM": {
-      "EMAIL": {
-        "LABEL": "Email",
-        "ERROR": "Email is required"
-      },
-      "PASSWORD": {
-        "LABEL": "Password",
-        "ERROR": "Password is required"
-      },
-      "PASSWORD_REPEAT": {
-        "LABEL": "Repeat password",
-        "ERROR": "Repeat password is required"
-      },
-      "FIRSTNAME": {
-        "LABEL": "Name",
-        "ERROR": "Name is required"
-      },
-      "LASTNAME": {
-        "LABEL": "Surname",
-        "ERROR": "Surname is required"
+    "PROFILE": {
+      "TITLE": "Update Profile",
+      "FORM": {
+        "EMAIL": {
+          "LABEL": "Email",
+          "ERROR": "Email is required"
+        },
+        "FIRSTNAME": {
+          "LABEL": "Name",
+          "ERROR": "Name is required"
+        },
+        "LASTNAME": {
+          "LABEL": "Surname",
+          "ERROR": "Surname is required"
+        }
+      }
+    },
+    "PASSWORD": {
+      "TITLE": "Update Password",
+      "FORM": {
+        "PASSWORD": {
+          "LABEL": "Password",
+          "ERROR": "Password is required"
+        },
+        "PASSWORD_REPEAT": {
+          "LABEL": "Repeat password",
+          "ERROR": "Repeat password is required"
+        }
       }
     }
   },
@@ -182,7 +191,8 @@
       "CHECK_TRIP_ITEM_SUCCESS": "Trip item toggled",
       "CHECK_TRIP_ITEM_ERROR": "Can't toggle trip item. Please try again later.",
       "REMOVE_TRIP_ITEM_SUCCESS": "Trip item removed",
-      "REMOVE_TRIP_ITEM_ERROR": "Can't remove trip item. Please try again later."
+      "REMOVE_TRIP_ITEM_ERROR": "Can't remove trip item. Please try again later.",
+      "LOGIN_ERROR": "Provided email and password are incorrect. Please provide valid values or try again later."
     }
   }
 }

@@ -19,6 +19,10 @@ body {
   padding: 0;
 }
 
+.text-error {
+  color: var(--p-red-400);
+}
+
 .p-toolbar {
   border-top: 0 !important;
   border-left: 0 !important;

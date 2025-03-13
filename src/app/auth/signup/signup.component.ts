@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, signal } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 
@@ -28,6 +28,7 @@ import { AuthEvent, AuthEventName, AuthEventType, AuthState } from '../store/aut
   selector: 'app-signup',
   templateUrl: './signup.component.html',
   styleUrl: './signup.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     CommonModule,
     RouterModule,
@@ -47,7 +48,7 @@ export class SignupComponent implements OnInit, OnDestroy {
   authEvent$!: Observable<AuthEvent | undefined>;
 
   // state flags
-  isSubmitInProgress = false;
+  isSubmitInProgress = signal(false);
 
   // form
   signupForm!: FormGroup;
@@ -103,7 +104,7 @@ export class SignupComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.isSubmitInProgress = true;
+    this.isSubmitInProgress.set(true);
     // artificial delay to improve UX
     of({})
       .pipe(delay(DEFAULT_UX_DELAY))
@@ -151,7 +152,7 @@ export class SignupComponent implements OnInit, OnDestroy {
         this.showToastError(event?.message);
         break;
     }
-    this.isSubmitInProgress = false;
+    this.isSubmitInProgress.set(false);
   }
 
   // form

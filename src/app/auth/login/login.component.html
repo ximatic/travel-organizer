@@ -6,7 +6,7 @@
       </div>
     </ng-template>
 
-    <div [formGroup]="loginForm">
+    <form [formGroup]="loginForm">
       <div class="mb-3">
         <p-floatlabel variant="on">
           <input
@@ -19,9 +19,11 @@
           />
           <label for="email">{{ 'LOGIN.FORM.EMAIL.LABEL' | translate }}</label>
         </p-floatlabel>
-        <small *ngIf="emailControl?.invalid && emailControl?.dirty" class="ml-1 login__form-error">
-          {{ 'LOGIN.FORM.EMAIL.ERROR' | translate }}
-        </small>
+        @if (emailControl?.invalid && emailControl?.dirty) {
+          <small class="ml-1 text-error">
+            {{ 'LOGIN.FORM.EMAIL.ERROR' | translate }}
+          </small>
+        }
       </div>
       <div class="mb-3">
         <p-floatlabel variant="on">
@@ -35,9 +37,11 @@
           />
           <label for="password">{{ 'LOGIN.FORM.PASSWORD.LABEL' | translate }}</label>
         </p-floatlabel>
-        <small *ngIf="passwordControl?.invalid && passwordControl?.dirty" class="ml-1 login__form-error text-error">
-          {{ 'LOGIN.FORM.PASSWORD.ERROR' | translate }}
-        </small>
+        @if (passwordControl?.invalid && passwordControl?.dirty) {
+          <small class="ml-1 text-error">
+            {{ 'LOGIN.FORM.PASSWORD.ERROR' | translate }}
+          </small>
+        }
       </div>
 
       <div class="mt-4">
@@ -49,8 +53,10 @@
           class="block w-full"
           (click)="submitForm()"
         >
-          <i class="pi pi-spin pi-spinner mr-1" *ngIf="isSubmitInProgress()"></i>
-          <span pButtonLabel>{{ 'COMMON.BUTTON.SUBMIT' | translate }}</span>
+          @if (isSubmitInProgress()) {
+            <i class="pi pi-spin pi-spinner mr-1"></i>
+          }
+          <span pButtonLabel>{{ 'LOGIN.BUTTON.LOGIN' | translate }}</span>
         </button>
       </div>
       <div class="mt-2">
@@ -58,7 +64,7 @@
           <span pButtonLabel>{{ 'LOGIN.BUTTON.SIGNUP' | translate }}</span>
         </button>
       </div>
-    </div>
+    </form>
   </p-panel>
 
   <p-toast position="bottom-center" key="toast" />
