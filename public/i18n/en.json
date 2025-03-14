@@ -90,9 +90,6 @@
           "LIGHT": "Light",
           "DARK": "Dark"
         }
-      },
-      "ERROR": {
-        "NAME": "Name is required"
       }
     }
   },
@@ -118,13 +115,17 @@
     "PASSWORD": {
       "TITLE": "Update Password",
       "FORM": {
-        "PASSWORD": {
-          "LABEL": "Password",
-          "ERROR": "Password is required"
+        "CURRENT_PASSWORD": {
+          "LABEL": "Current password",
+          "ERROR": "Current password is required"
         },
-        "PASSWORD_REPEAT": {
-          "LABEL": "Repeat password",
-          "ERROR": "Repeat password is required"
+        "NEW_PASSWORD": {
+          "LABEL": "New password",
+          "ERROR": "New password is required"
+        },
+        "NEW_PASSWORD_REPEAT": {
+          "LABEL": "Repeat new password",
+          "ERROR": "Repeat new password is required"
         }
       }
     }
@@ -176,8 +177,8 @@
     },
     "MESSAGE": {
       "LOAD_SETTINGS_ERROR": "Can't load settings. Default settings will be used.",
-      "UPDATE_SETTINGS_SUCCESS": "Settings updated",
-      "UPDATE_SETTINGS_ERROR": "Can't update settings. Please try again later.",
+      "UPDATE_USER_SETTINGS_SUCCESS": "Settings updated",
+      "UPDATE_USER_SETTINGS_ERROR": "Can't update settings. Please try again later.",
       "LOAD_TRIPS_ERROR": "Can't load trips. Please try again later.",
       "LOAD_TRIP_ERROR": "Can't load trip. Please try again later.",
       "CREATE_TRIP_SUCCESS": "Trip ({{trip}}) added",

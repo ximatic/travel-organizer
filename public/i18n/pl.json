@@ -8,13 +8,15 @@
       "UPDATE": "Aktualizuj",
       "BACK": "Powrót",
       "NEW_TRIP": "Nowa Podróż",
-      "ALL_TRIPS": "Wszystkie Podróże"
+      "ALL_TRIPS": "Wszystkie Podróże",
+      "SUBMIT": "Wyślij"
     }
   },
   "MENU": {
     "TITLE": "Menu",
     "DASHBOARD": "Dashboard",
     "TRIPS": "Podróże",
+    "PROFILE": "Profil",
     "SETTINGS": "Ustawienia"
   },
   "DASHBOARD": {
@@ -60,6 +62,10 @@
         "LABEL": "Hasło",
         "ERROR": "Hasło nie może być puste."
       }
+    },
+    "BUTTON": {
+      "LOGIN": "Login",
+      "SIGNUP": "Załóż konto"
     }
   },
   "SETTINGS": {
@@ -83,6 +89,43 @@
         "OPTION": {
           "LIGHT": "Jasny",
           "DARK": "Ciemny"
+        }
+      }
+    }
+  },
+  "PROFILE": {
+    "TITLE": "Profil Użytkownika",
+    "PROFILE": {
+      "TITLE": "Aktualizuj profil",
+      "FORM": {
+        "EMAIL": {
+          "LABEL": "Email",
+          "ERROR": "Podaj poprawny adres email."
+        },
+        "FIRSTNAME": {
+          "LABEL": "Imię",
+          "ERROR": "Imię nie może być puste."
+        },
+        "LASTNAME": {
+          "LABEL": "Nazwisko",
+          "ERROR": "Nazwisko nie może być puste."
+        }
+      }
+    },
+    "PASSWORD": {
+      "TITLE": "Aktualizuj Hasło",
+      "FORM": {
+        "CURRENT_PASSWORD": {
+          "LABEL": "Aktualne hasło",
+          "ERROR": "Aktualne hasło nie może być puste."
+        },
+        "NEW_PASSWORD": {
+          "LABEL": "Nowe hasło",
+          "ERROR": "Nowe hasło nie może być puste."
+        },
+        "NEW_PASSWORD_REPEAT": {
+          "LABEL": "Powtórz nowe hasło",
+          "ERROR": "Hasło nie może być puste."
         }
       }
     }
@@ -134,8 +177,8 @@
     },
     "MESSAGE": {
       "LOAD_SETTINGS_ERROR": "Nie można wczytać ustawień. Domyślne ustawienia będą użyte.",
-      "UPDATE_SETTINGS_SUCCESS": "Ustawienia zaktualizowane",
-      "UPDATE_SETTINGS_ERROR": "Nie można zaktualizować ustawień. Spróbuj ponownie póżniej.",
+      "UPDATE_USER_SETTINGS_SUCCESS": "Ustawienia zaktualizowane",
+      "UPDATE_USER_SETTINGS_ERROR": "Nie można zaktualizować ustawień. Spróbuj ponownie póżniej.",
       "LOAD_TRIPS_ERROR": "Nie można wczytać wszystkich podróży. Spróbuj ponownie póżniej.",
       "LOAD_TRIP_ERROR": "Nie można wczytać podróż. Spróbuj ponownie póżniej.",
       "CREATE_TRIP_SUCCESS": "Podróż ({{trip}}) dodana",
@@ -149,7 +192,8 @@
       "CHECK_TRIP_ITEM_SUCCESS": "Element podróży zaznaczony",
       "CHECK_TRIP_ITEM_ERROR": "Nie można zaznaczyć elementu podróży. Spróbuj ponownie póżniej.",
       "REMOVE_TRIP_ITEM_SUCCESS": "Element podróży usunięty",
-      "REMOVE_TRIP_ITEM_ERROR": "Nie można usunąć elementu podróży. Spróbuj ponownie póżniej."
+      "REMOVE_TRIP_ITEM_ERROR": "Nie można usunąć elementu podróży. Spróbuj ponownie póżniej.",
+      "LOGIN_ERROR": "Podany adres e-mail i hasło są nieprawidłowe. Podaj prawidłowe wartości lub spróbuj ponownie później."
     }
   }
 }

@@ -12,30 +12,6 @@ export const initialState: UserState = {
 export const userReducer = createReducer(
   initialState,
   on(userActions.reset, () => initialState),
-  // update user
-  on(userActions.updateUser, (state: UserState) => ({
-    ...state,
-    event: {
-      name: UserEventName.UpdateUser,
-      type: UserEventType.Processing,
-    },
-  })),
-  on(userActions.updateUserSuccess, (state: UserState, { message }) => ({
-    ...state,
-    event: {
-      name: UserEventName.UpdateUser,
-      type: UserEventType.Success,
-      message,
-    },
-  })),
-  on(userActions.updateUserError, (state: UserState, { message }) => ({
-    ...state,
-    event: {
-      name: UserEventName.UpdateUser,
-      type: UserEventType.Error,
-      message,
-    },
-  })),
   // load user info
   on(userActions.loadUserInfo, (state: UserState) => ({
     ...state,
@@ -60,26 +36,52 @@ export const userReducer = createReducer(
       message,
     },
   })),
-  // update user profile
-  on(userActions.updateUserProfile, (state: UserState) => ({
+  // update user data
+  on(userActions.updateUserData, (state: UserState) => ({
     ...state,
     event: {
-      name: UserEventName.UpdateUserProfile,
+      name: UserEventName.UpdateUserData,
       type: UserEventType.Processing,
     },
   })),
-  on(userActions.updateUserProfileSuccess, (state: UserState, { userProfile }) => ({
+  on(userActions.updateUserDataSuccess, (state: UserState, { userData, message }) => ({
     ...state,
-    profile: userProfile,
+    email: userData?.email || null,
+    profile: userData?.profile || null,
     event: {
-      name: UserEventName.UpdateUserProfile,
+      name: UserEventName.UpdateUserData,
       type: UserEventType.Success,
+      message,
     },
   })),
-  on(userActions.updateUserProfileError, (state: UserState, { message }) => ({
+  on(userActions.updateUserDataError, (state: UserState, { message }) => ({
     ...state,
     event: {
-      name: UserEventName.UpdateUserProfile,
+      name: UserEventName.UpdateUserData,
+      type: UserEventType.Error,
+      message,
+    },
+  })),
+  // update user password
+  on(userActions.updateUserPassword, (state: UserState) => ({
+    ...state,
+    event: {
+      name: UserEventName.UpdateUserPassword,
+      type: UserEventType.Processing,
+    },
+  })),
+  on(userActions.updateUserPasswordSuccess, (state: UserState, { message }) => ({
+    ...state,
+    event: {
+      name: UserEventName.UpdateUserPassword,
+      type: UserEventType.Success,
+      message,
+    },
+  })),
+  on(userActions.updateUserPasswordError, (state: UserState, { message }) => ({
+    ...state,
+    event: {
+      name: UserEventName.UpdateUserPassword,
       type: UserEventType.Error,
       message,
     },
@@ -92,12 +94,13 @@ export const userReducer = createReducer(
       type: UserEventType.Processing,
     },
   })),
-  on(userActions.updateUserSettingsSuccess, (state: UserState, { userSettings }) => ({
+  on(userActions.updateUserSettingsSuccess, (state: UserState, { userSettings, message }) => ({
     ...state,
     settings: userSettings,
     event: {
       name: UserEventName.UpdateUserSettings,
       type: UserEventType.Success,
+      message,
     },
   })),
   on(userActions.updateUserSettingsError, (state: UserState, { message }) => ({

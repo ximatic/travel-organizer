@@ -3,9 +3,11 @@ import { UserSettings } from '../models/user-settings.model';
 
 export enum UserEventName {
   Reset = 'reset-user',
-  UpdateUser = 'update-user',
+  //UpdateUser = 'update-user',
   LoadUserInfo = 'load-user-info',
-  UpdateUserProfile = 'update-user-profile',
+  //UpdateUserProfile = 'update-user-profile',
+  UpdateUserData = 'update-user-data',
+  UpdateUserPassword = 'update-user-password',
   UpdateUserSettings = 'update-user-settings',
 }
 

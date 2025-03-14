@@ -1,12 +1,12 @@
 <div class="profile">
-  <p-panel class="profile__panel">
+  <p-panel class="profile__panel block">
     <ng-template pTemplate="header">
       <div class="flex grid justify-items-center w-full">
-        <span class="grow font-bold">{{ 'PROFILE.TITLE' | translate }}</span>
+        <span class="grow font-bold">{{ 'PROFILE.PROFILE.TITLE' | translate }}</span>
       </div>
     </ng-template>
 
-    <div [formGroup]="profileForm">
+    <form [formGroup]="profileForm">
       <div class="mb-3">
         <p-floatlabel variant="on">
           <input
@@ -17,41 +17,13 @@
             class="w-full"
             [ngClass]="{ 'ng-invalid': emailControl?.invalid, 'ng-dirty': emailControl?.dirty }"
           />
-          <label for="email">{{ 'PROFILE.FORM.EMAIL.LABEL' | translate }}</label>
+          <label for="email">{{ 'PROFILE.PROFILE.FORM.EMAIL.LABEL' | translate }}</label>
         </p-floatlabel>
-        <small *ngIf="emailControl?.invalid && emailControl?.dirty" class="ml-1 profile__form-error">
-          {{ 'PROFILE.FORM.EMAIL.ERROR' | translate }}
-        </small>
-      </div>
-      <div class="mb-3">
-        <p-floatlabel variant="on">
-          <p-password
-            id="password"
-            type="text"
-            formControlName="password"
-            class="block w-full"
-            [ngClass]="{ 'ng-invalid': passwordControl?.invalid, 'ng-dirty': passwordControl?.dirty }"
-          />
-          <label for="password">{{ 'PROFILE.FORM.PASSWORD.LABEL' | translate }}</label>
-        </p-floatlabel>
-        <small *ngIf="passwordControl?.invalid && passwordControl?.dirty" class="ml-1 profile__form-error">
-          {{ 'PROFILE.FORM.PASSWORD.ERROR' | translate }}
-        </small>
-      </div>
-      <div class="mb-3">
-        <p-floatlabel variant="on">
-          <p-password
-            id="passwordRepeat"
-            type="text"
-            formControlName="passwordRepeat"
-            class="block w-full"
-            [ngClass]="{ 'ng-invalid': passwordRepeatControl?.invalid, 'ng-dirty': passwordRepeatControl?.dirty }"
-          />
-          <label for="passwordRepeat">{{ 'PROFILE.FORM.PASSWORD_REPEAT.LABEL' | translate }}</label>
-        </p-floatlabel>
-        <small *ngIf="passwordRepeatControl?.invalid && passwordRepeatControl?.dirty" class="ml-1 profile__form-error">
-          {{ 'PROFILE.FORM.PASSWORD_REPEAT.ERROR' | translate }}
-        </small>
+        @if (emailControl?.invalid && emailControl?.dirty) {
+          <small class="ml-1 text-error">
+            {{ 'PROFILE.PROFILE.FORM.EMAIL.ERROR' | translate }}
+          </small>
+        }
       </div>
       <div class="mb-3">
         <p-floatlabel variant="on">
@@ -63,11 +35,13 @@
             class="block w-full"
             [ngClass]="{ 'ng-invalid': firstnameControl?.invalid, 'ng-dirty': firstnameControl?.dirty }"
           />
-          <label for="firstname">{{ 'PROFILE.FORM.FIRSTNAME.LABEL' | translate }}</label>
+          <label for="firstname">{{ 'PROFILE.PROFILE.FORM.FIRSTNAME.LABEL' | translate }}</label>
         </p-floatlabel>
-        <small *ngIf="firstnameControl?.invalid && firstnameControl?.dirty" class="ml-1 profile__form-error">
-          {{ 'PROFILE.FORM.FIRSTNAME.ERROR' | translate }}
-        </small>
+        @if (firstnameControl?.invalid && firstnameControl?.dirty) {
+          <small class="ml-1 text-error">
+            {{ 'PROFILE.PROFILE.FORM.FIRSTNAME.ERROR' | translate }}
+          </small>
+        }
       </div>
       <div class="mb-3">
         <p-floatlabel variant="on">
@@ -79,11 +53,13 @@
             class="block w-full"
             [ngClass]="{ 'ng-invalid': lastnameControl?.invalid, 'ng-dirty': lastnameControl?.dirty }"
           />
-          <label for="lastname">{{ 'PROFILE.FORM.LASTNAME.LABEL' | translate }}</label>
+          <label for="lastname">{{ 'PROFILE.PROFILE.FORM.LASTNAME.LABEL' | translate }}</label>
         </p-floatlabel>
-        <small *ngIf="lastnameControl?.invalid && lastnameControl?.dirty" class="ml-1 profile__form-error">
-          {{ 'PROFILE.FORM.LASTNAME.ERROR' | translate }}
-        </small>
+        @if (lastnameControl?.invalid && lastnameControl?.dirty) {
+          <small class="ml-1 text-error">
+            {{ 'PROFILE.PROFILE.FORM.LASTNAME.ERROR' | translate }}
+          </small>
+        }
       </div>
 
       <div class="mt-4">
@@ -91,20 +67,99 @@
           pButton
           pRipple
           severity="primary"
-          [disabled]="profileForm.invalid || isSubmitInProgress"
+          [disabled]="profileForm.invalid || isSubmitInProgress()"
           class="block w-full"
-          (click)="submitForm()"
+          (click)="submitProfileForm()"
         >
-          <i class="pi pi-spin pi-spinner mr-1" *ngIf="isSubmitInProgress"></i>
+          @if (isSubmitInProgress()) {
+            <i class="pi pi-spin pi-spinner mr-1"></i>
+          }
           <span pButtonLabel>{{ 'COMMON.BUTTON.SUBMIT' | translate }}</span>
         </button>
       </div>
-      <div class="mt-2">
-        <button pButton pRipple severity="secondary" class="block w-full" routerLink="/auth/login">
-          <span pButtonLabel>{{ 'COMMON.BUTTON.BACK' | translate }}</span>
+    </form>
+  </p-panel>
+
+  <p-panel class="profile__panel block mt-4">
+    <ng-template pTemplate="header">
+      <div class="flex grid justify-items-center w-full">
+        <span class="grow font-bold">{{ 'PROFILE.PASSWORD.TITLE' | translate }}</span>
+      </div>
+    </ng-template>
+
+    <form [formGroup]="passwordForm">
+      <div class="mb-3">
+        <p-floatlabel variant="on">
+          <p-password
+            id="currentPassword"
+            type="text"
+            formControlName="currentPassword"
+            autocomplete="off"
+            [feedback]="false"
+            class="block w-full"
+            [ngClass]="{ 'ng-invalid': currentPasswordControl?.invalid, 'ng-dirty': currentPasswordControl?.dirty }"
+          />
+          <label for="currentPassword">{{ 'PROFILE.PASSWORD.FORM.CURRENT_PASSWORD.LABEL' | translate }}</label>
+        </p-floatlabel>
+        @if (currentPasswordControl?.invalid && currentPasswordControl?.dirty) {
+          <small class="ml-1 text-error">
+            {{ 'PROFILE.PASSWORD.FORM.CURRENT_PASSWORD.ERROR' | translate }}
+          </small>
+        }
+      </div>
+      <div class="mb-3">
+        <p-floatlabel variant="on">
+          <p-password
+            id="newPassword"
+            type="text"
+            formControlName="newPassword"
+            autocomplete="off"
+            class="block w-full"
+            [ngClass]="{ 'ng-invalid': newPasswordControl?.invalid, 'ng-dirty': newPasswordControl?.dirty }"
+          />
+          <label for="newPassword">{{ 'PROFILE.PASSWORD.FORM.NEW_PASSWORD.LABEL' | translate }}</label>
+        </p-floatlabel>
+        @if (newPasswordControl?.invalid && newPasswordControl?.dirty) {
+          <small class="ml-1 text-error">
+            {{ 'PROFILE.PASSWORD.FORM.NEW_PASSWORD.ERROR' | translate }}
+          </small>
+        }
+      </div>
+      <div class="mb-3">
+        <p-floatlabel variant="on">
+          <p-password
+            id="newPasswordRepeat"
+            type="text"
+            formControlName="newPasswordRepeat"
+            autocomplete="off"
+            class="block w-full"
+            [ngClass]="{ 'ng-invalid': newPasswordRepeatControl?.invalid, 'ng-dirty': newPasswordRepeatControl?.dirty }"
+          />
+          <label for="passwordRepeat">{{ 'PROFILE.PASSWORD.FORM.NEW_PASSWORD_REPEAT.LABEL' | translate }}</label>
+        </p-floatlabel>
+        @if (newPasswordRepeatControl?.invalid && newPasswordRepeatControl?.dirty) {
+          <small class="ml-1 text-error">
+            {{ 'PROFILE.PASSWORD.FORM.NEW_PASSWORD_REPEAT.ERROR' | translate }}
+          </small>
+        }
+      </div>
+
+      <div class="mt-4">
+        <button
+          pButton
+          pRipple
+          severity="primary"
+          [disabled]="passwordForm.invalid || isSubmitInProgress()"
+          class="block w-full"
+          (click)="submitPasswordForm()"
+        >
+          @if (isSubmitInProgress()) {
+            <i class="pi pi-spin pi-spinner mr-1"></i>
+          }
+          <span pButtonLabel>{{ 'COMMON.BUTTON.SUBMIT' | translate }}</span>
         </button>
       </div>
-    </div>
+    </form>
   </p-panel>
 
   <p-toast position="bottom-center" key="toast" />

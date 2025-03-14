@@ -5,9 +5,9 @@ import { of } from 'rxjs';
 import { map, exhaustMap, catchError } from 'rxjs/operators';
 
 import { ProfileService } from '../services/user-profile.service';
-import { ActionPropsUser, ActionPropsUserProfile, ActionPropsUserSettings, UserAction, userActions } from './user.actions';
+import { ActionPropsUserData, ActionPropsUserPassword, ActionPropsUserSettings, UserAction, userActions } from './user.actions';
 
-import { UserEventMessage, UserInfo } from '../models/user.model';
+import { UserData, UserEventMessage, UserInfo } from '../models/user.model';
 import { UserService } from '../services/user.service';
 import { UserSettingsService } from '../services/user-settings.service';
 import { UserSettings } from '../models/user-settings.model';
@@ -27,25 +27,27 @@ export class UserEffects {
     ),
   );
 
-  updateUser$ = createEffect(() =>
+  updateUserData$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(UserAction.UpdateUser),
-      exhaustMap((action: ActionPropsUser) => {
-        return this.userService.updateUser(action.userRequest).pipe(
-          map(() => userActions.updateUserSuccess({ message: UserEventMessage.UPDATE_USER_SUCCESS })),
-          catchError(() => of(userActions.updateUserError({ message: UserEventMessage.UPDATE_USER_ERROR }))),
+      ofType(UserAction.UpdateUserData),
+      exhaustMap((action: ActionPropsUserData) => {
+        return this.userService.updateUserData(action.userData).pipe(
+          map((userData: UserData) =>
+            userActions.updateUserDataSuccess({ userData, message: UserEventMessage.UPDATE_USER_DATA_SUCCESS }),
+          ),
+          catchError(() => of(userActions.updateUserDataError({ message: UserEventMessage.UPDATE_USER_DATA_ERROR }))),
         );
       }),
     ),
   );
 
-  updateUserProfile$ = createEffect(() =>
+  updateUserPassword$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(UserAction.UpdateUserProfile),
-      exhaustMap((action: ActionPropsUserProfile) => {
-        return this.userProfileService.updateProfile(action.userProfile).pipe(
-          map((userProfile: UserProfile) => userActions.updateUserProfileSuccess({ userProfile })),
-          catchError(() => of(userActions.updateUserProfileError({ message: UserEventMessage.UPDATE_USER_PROFILE_ERROR }))),
+      ofType(UserAction.UpdateUserPassword),
+      exhaustMap((action: ActionPropsUserPassword) => {
+        return this.userService.updateUserPassword(action.userPassword).pipe(
+          map(() => userActions.updateUserPasswordSuccess({ message: UserEventMessage.UPDATE_USER_PASSWORD_SUCCESS })),
+          catchError(() => of(userActions.updateUserPasswordError({ message: UserEventMessage.UPDATE_USER_PASSWORD_ERROR }))),
         );
       }),
     ),
@@ -56,7 +58,9 @@ export class UserEffects {
       ofType(UserAction.UpdateUserSettings),
       exhaustMap((action: ActionPropsUserSettings) => {
         return this.userSettingsService.updateSettings(action.userSettings).pipe(
-          map((userSettings: UserSettings) => userActions.updateUserSettingsSuccess({ userSettings })),
+          map((userSettings: UserSettings) =>
+            userActions.updateUserSettingsSuccess({ userSettings, message: UserEventMessage.UPDATE_USER_SETTINGS_SUCCESS }),
+          ),
           catchError(() => of(userActions.updateUserSettingsError({ message: UserEventMessage.UPDATE_USER_SETTINGS_ERROR }))),
         );
       }),

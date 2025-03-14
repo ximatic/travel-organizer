@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, signal } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { Store } from '@ngrx/store';
@@ -17,9 +17,11 @@ import { ToastModule } from 'primeng/toast';
 import { DEFAULT_UX_DELAY } from '../../../common/constants/common.constants';
 
 import { userActions } from '../../store/user.actions';
-import { selectUserEvent, selectUserProfile } from '../../store/user.selectors';
+import { selectUserData, selectUserEvent } from '../../store/user.selectors';
 import { UserEvent, UserEventName, UserEventType, UserState } from '../../store/user.state';
+
 import { UserProfile } from '../../models/user-profile.model';
+import { UserData, UserPassword } from '../../models/user.model';
 
 @Component({
   selector: 'app-profile',
@@ -40,14 +42,15 @@ import { UserProfile } from '../../models/user-profile.model';
 })
 export class ProfileComponent implements OnInit, OnDestroy {
   // ngrx
-  userProfile$!: Observable<UserProfile | null>;
+  userData$!: Observable<UserData | null>;
   userEvent$!: Observable<UserEvent | undefined>;
 
   // state flags
-  isSubmitInProgress = false;
+  isSubmitInProgress = signal(false);
 
   // form
   profileForm!: FormGroup;
+  passwordForm!: FormGroup;
 
   // other
   private subscription = new Subscription();
@@ -75,14 +78,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
     return this.profileForm.get('email');
   }
 
-  get passwordControl(): AbstractControl | null {
-    return this.profileForm.get('password');
-  }
-
-  get passwordRepeatControl(): AbstractControl | null {
-    return this.profileForm.get('passwordRepeat');
-  }
-
   get firstnameControl(): AbstractControl | null {
     return this.profileForm.get('firstname');
   }
@@ -91,20 +86,48 @@ export class ProfileComponent implements OnInit, OnDestroy {
     return this.profileForm.get('lastname');
   }
 
+  get currentPasswordControl(): AbstractControl | null {
+    return this.passwordForm.get('currentPassword');
+  }
+
+  get newPasswordControl(): AbstractControl | null {
+    return this.passwordForm.get('newPassword');
+  }
+
+  get newPasswordRepeatControl(): AbstractControl | null {
+    return this.passwordForm.get('newPasswordRepeat');
+  }
+
   // trip
 
-  submitForm(): void {
+  submitProfileForm(): void {
     if (this.profileForm.invalid) {
       // TODO - show error?
       return;
     }
 
-    this.isSubmitInProgress = true;
+    this.isSubmitInProgress.set(true);
     // artificial delay to improve UX
     of({})
       .pipe(delay(DEFAULT_UX_DELAY))
       .subscribe(() => {
-        this.store.dispatch(userActions.updateUserProfile({ userProfile: this.processFormValue() }));
+        this.store.dispatch(userActions.updateUserData({ userData: this.processProfileFormValue() }));
+      });
+  }
+
+  submitPasswordForm(): void {
+    if (this.passwordForm.invalid) {
+      // TODO - show error?
+      return;
+    }
+
+    // TODO - add dispatch action
+    this.isSubmitInProgress.set(true);
+    // artificial delay to improve UX
+    of({})
+      .pipe(delay(DEFAULT_UX_DELAY))
+      .subscribe(() => {
+        this.store.dispatch(userActions.updateUserPassword({ userPassword: this.processPasswordFormValue() }));
       });
   }
 
@@ -116,11 +139,11 @@ export class ProfileComponent implements OnInit, OnDestroy {
   }
 
   private initState(): void {
-    this.userProfile$ = this.store.select(selectUserProfile);
+    this.userData$ = this.store.select(selectUserData);
     this.subscription.add(
-      this.userProfile$.subscribe((profile: UserProfile | null) => {
-        if (profile) {
-          this.fillForm(profile);
+      this.userData$.subscribe((data: UserData | null) => {
+        if (data) {
+          this.fillProfileForm(data);
         }
       }),
     );
@@ -135,13 +158,16 @@ export class ProfileComponent implements OnInit, OnDestroy {
     }
 
     switch (event.name) {
-      case UserEventName.UpdateUserProfile:
-        this.handleAuthEventUpdate(event);
+      case UserEventName.UpdateUserData:
+        this.handleUserEventUpdateUserData(event);
+        break;
+      case UserEventName.UpdateUserPassword:
+        this.handleUserEventUpdateUserPassword(event);
         break;
     }
   }
 
-  private handleAuthEventUpdate(event: UserEvent): void {
+  private handleUserEventUpdateUserData(event: UserEvent): void {
     switch (event.type) {
       case UserEventType.Success:
         this.showToastSuccess(event?.message);
@@ -150,39 +176,66 @@ export class ProfileComponent implements OnInit, OnDestroy {
         this.showToastError(event?.message);
         break;
     }
-    this.isSubmitInProgress = false;
+    this.isSubmitInProgress.set(false);
+  }
+
+  private handleUserEventUpdateUserPassword(event: UserEvent): void {
+    switch (event.type) {
+      case UserEventType.Success:
+        this.showToastSuccess(event?.message);
+        break;
+      case UserEventType.Error:
+        this.showToastError(event?.message);
+        break;
+    }
+    this.isSubmitInProgress.set(false);
   }
 
   // form
 
-  private processFormValue(): UserProfile {
-    const { email, password, passwordRepeat, firstname, lastname } = this.profileForm.getRawValue();
+  private processProfileFormValue(): UserData {
+    const { email, firstname, lastname } = this.profileForm.getRawValue();
 
     return {
       email,
-      password,
-      passwordRepeat,
-      firstname,
-      lastname,
-    } as UserProfile;
+      profile: {
+        firstname,
+        lastname,
+      } as UserProfile,
+    } as UserData;
+  }
+
+  // TODO - update types
+  private processPasswordFormValue(): UserPassword {
+    const { currentPassword, newPassword, newPasswordRepeat } = this.passwordForm.getRawValue();
+
+    return {
+      currentPassword,
+      newPassword,
+      newPasswordRepeat,
+    } as UserPassword;
   }
 
   private initForm(): void {
     this.profileForm = this.formBuilder.group({
-      email: ['', Validators.required],
-      password: ['', Validators.required],
-      passwordRepeat: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
       firstname: ['', Validators.required],
       lastname: ['', Validators.required],
     });
+
+    this.passwordForm = this.formBuilder.group({
+      currentPassword: ['', Validators.required],
+      newPassword: ['', Validators.required],
+      newPasswordRepeat: ['', Validators.required],
+    });
   }
 
-  private fillForm(profile: UserProfile): void {
-    const { firstname, lastname } = profile;
+  private fillProfileForm(data: UserData): void {
+    const { email, profile } = data;
     this.profileForm.patchValue({
-      //email,
-      firstname,
-      lastname,
+      email,
+      firstname: profile?.firstname,
+      lastname: profile?.lastname,
     });
   }
 

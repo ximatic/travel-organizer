@@ -9,12 +9,12 @@ import { MessageService } from 'primeng/api';
 
 import { DEFAULT_UX_DELAY } from '../../../common/constants/common.constants';
 import { MOCK_INITIAL_USER_STATE } from '../../../../../__mocks__/constants/user.constants';
-import { MOCK_USER_PROFILE_1 } from '../../../../../__mocks__/constants/user-profile.constants';
+import { MOCK_USER_DATA_1, MOCK_USER_PASSWORD_1 } from '../../../../../__mocks__/constants/user-profile.constants';
 
 import { messageServiceMock } from '../../../../../__mocks__/services.mocks';
 
 import { UserAction } from '../../store/user.actions';
-import { selectUserProfile, selectUserEvent } from '../../store/user.selectors';
+import { selectUserEvent, selectUserData } from '../../store/user.selectors';
 import { UserEventName, UserEventType } from '../../store/user.state';
 
 import { ProfileComponent } from './profile.component';
@@ -27,7 +27,7 @@ describe('ProfileComponent', () => {
   let messageService: MessageService;
   let store: MockStore;
 
-  let mockProfileSelector: any;
+  let mockUserDataSelector: any;
   let mockUserEvent: any;
 
   beforeEach(async () => {
@@ -45,7 +45,7 @@ describe('ProfileComponent', () => {
     store = TestBed.inject(MockStore);
     messageService = TestBed.inject(MessageService);
 
-    mockProfileSelector = store.overrideSelector(selectUserProfile, null);
+    mockUserDataSelector = store.overrideSelector(selectUserData, null);
     mockUserEvent = store.overrideSelector(selectUserEvent, {
       name: UserEventName.LoadUserInfo,
       type: UserEventType.Success,
@@ -61,7 +61,9 @@ describe('ProfileComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('user form is invalid with empty email', () => {
+  // user data
+
+  it('user data form is invalid with empty email', () => {
     fixture.detectChanges();
 
     component.profileForm.patchValue({
@@ -69,52 +71,88 @@ describe('ProfileComponent', () => {
     });
 
     expect(component.profileForm.invalid).toBeTruthy();
-    expect(component.submitForm()).toBeUndefined();
+    expect(component.submitProfileForm()).toBeUndefined();
   });
 
-  it('updating user works', fakeAsync(() => {
+  it('updating user data works', fakeAsync(() => {
     const dispatchSpy = jest.spyOn(store, 'dispatch');
 
     fixture.detectChanges();
 
     component.profileForm.patchValue({
-      email: DEFAULT_EMAIL_1,
-      ...MOCK_USER_PROFILE_1,
-      password: DEFAULT_PASSWORD_1,
-      passwordRepeat: DEFAULT_PASSWORD_1,
+      email: MOCK_USER_DATA_1.email,
+      firstname: MOCK_USER_DATA_1.profile?.firstname,
+      lastname: MOCK_USER_DATA_1.profile?.lastname,
     });
 
+    fixture.detectChanges();
+
     expect(component.profileForm.valid).toBeTruthy();
-    component.submitForm();
-    expect(component.isSubmitInProgress).toBeTruthy();
+    component.submitProfileForm();
+    expect(component.isSubmitInProgress()).toBeTruthy();
 
     // artificial delay as in component
     tick(DEFAULT_UX_DELAY);
 
     expect(dispatchSpy).toHaveBeenLastCalledWith({
-      type: UserAction.UpdateUserProfile,
-      userProfile: {
-        email: DEFAULT_EMAIL_1,
-        ...MOCK_USER_PROFILE_1,
-        password: DEFAULT_PASSWORD_1,
-        passwordRepeat: DEFAULT_PASSWORD_1,
+      type: UserAction.UpdateUserData,
+      userData: {
+        ...MOCK_USER_DATA_1,
       },
     });
   }));
 
-  it('receiving profile via selector works', () => {
+  it('receiving user data via selector works', () => {
     fixture.detectChanges();
 
-    mockProfileSelector.setResult(MOCK_USER_PROFILE_1);
+    mockUserDataSelector.setResult(MOCK_USER_DATA_1);
     store.refreshState();
 
     expect(component.profileForm.getRawValue()).toEqual({
-      email: '',
-      ...MOCK_USER_PROFILE_1,
-      password: '',
-      passwordRepeat: '',
+      email: MOCK_USER_DATA_1.email,
+      firstname: MOCK_USER_DATA_1.profile?.firstname,
+      lastname: MOCK_USER_DATA_1.profile?.lastname,
     });
   });
+
+  // user password
+
+  it('user password form is invalid with empty current password', () => {
+    fixture.detectChanges();
+
+    component.passwordForm.patchValue({
+      currentPassword: '',
+    });
+
+    expect(component.passwordForm.invalid).toBeTruthy();
+    expect(component.submitPasswordForm()).toBeUndefined();
+  });
+
+  it('updating user password works', fakeAsync(() => {
+    const dispatchSpy = jest.spyOn(store, 'dispatch');
+
+    fixture.detectChanges();
+
+    component.passwordForm.patchValue({
+      ...MOCK_USER_PASSWORD_1,
+    });
+
+    fixture.detectChanges();
+
+    expect(component.passwordForm.valid).toBeTruthy();
+    component.submitPasswordForm();
+    expect(component.isSubmitInProgress()).toBeTruthy();
+
+    // artificial delay as in component
+    tick(DEFAULT_UX_DELAY);
+
+    expect(dispatchSpy).toHaveBeenLastCalledWith({
+      type: UserAction.UpdateUserPassword,
+      userPassword: {
+        ...MOCK_USER_PASSWORD_1,
+      },
+    });
+  }));
 
   // toast testing
 
@@ -130,15 +168,15 @@ describe('ProfileComponent', () => {
     expect(messageAddSpy).toHaveBeenCalledTimes(0);
   });
 
-  it('toast is visible after receiving User Action State with Update User Error', () => {
+  it('toast is visible after receiving User Action State with Update User Data Error', () => {
     const messageAddSpy = jest.spyOn(messageService, 'add');
 
     fixture.detectChanges();
 
     mockUserEvent.setResult({
-      name: UserEventName.UpdateUserProfile,
+      name: UserEventName.UpdateUserData,
       type: UserEventType.Error,
-      message: UserEventMessage.UPDATE_USER_ERROR,
+      message: UserEventMessage.UPDATE_USER_DATA_ERROR,
     });
 
     store.refreshState();
@@ -146,21 +184,21 @@ describe('ProfileComponent', () => {
     expect(messageAddSpy).toHaveBeenCalledWith({
       severity: 'error',
       summary: 'EVENT.TYPE.ERROR',
-      detail: `EVENT.MESSAGE.${UserEventMessage.UPDATE_USER_ERROR}`,
+      detail: `EVENT.MESSAGE.${UserEventMessage.UPDATE_USER_DATA_ERROR}`,
       key: 'toast',
       life: 3000,
     });
   });
 
-  it('toast is visible after receiving User Action State with Update User Success', () => {
+  it('toast is visible after receiving User Action State with Update User Data Success', () => {
     const messageAddSpy = jest.spyOn(messageService, 'add');
 
     fixture.detectChanges();
 
     mockUserEvent.setResult({
-      name: UserEventName.UpdateUserProfile,
+      name: UserEventName.UpdateUserData,
       type: UserEventType.Success,
-      message: UserEventMessage.UPDATE_USER_SUCCESS,
+      message: UserEventMessage.UPDATE_USER_DATA_SUCCESS,
     });
 
     store.refreshState();
@@ -168,7 +206,51 @@ describe('ProfileComponent', () => {
     expect(messageAddSpy).toHaveBeenCalledWith({
       severity: 'success',
       summary: 'EVENT.TYPE.SUCCESS',
-      detail: `EVENT.MESSAGE.${UserEventMessage.UPDATE_USER_SUCCESS}`,
+      detail: `EVENT.MESSAGE.${UserEventMessage.UPDATE_USER_DATA_SUCCESS}`,
+      key: 'toast',
+      life: 3000,
+    });
+  });
+
+  it('toast is visible after receiving User Action State with Update User Password Error', () => {
+    const messageAddSpy = jest.spyOn(messageService, 'add');
+
+    fixture.detectChanges();
+
+    mockUserEvent.setResult({
+      name: UserEventName.UpdateUserPassword,
+      type: UserEventType.Error,
+      message: UserEventMessage.UPDATE_USER_PASSWORD_ERROR,
+    });
+
+    store.refreshState();
+
+    expect(messageAddSpy).toHaveBeenCalledWith({
+      severity: 'error',
+      summary: 'EVENT.TYPE.ERROR',
+      detail: `EVENT.MESSAGE.${UserEventMessage.UPDATE_USER_PASSWORD_ERROR}`,
+      key: 'toast',
+      life: 3000,
+    });
+  });
+
+  it('toast is visible after receiving User Action State with Update User Password Success', () => {
+    const messageAddSpy = jest.spyOn(messageService, 'add');
+
+    fixture.detectChanges();
+
+    mockUserEvent.setResult({
+      name: UserEventName.UpdateUserPassword,
+      type: UserEventType.Success,
+      message: UserEventMessage.UPDATE_USER_PASSWORD_SUCCESS,
+    });
+
+    store.refreshState();
+
+    expect(messageAddSpy).toHaveBeenCalledWith({
+      severity: 'success',
+      summary: 'EVENT.TYPE.SUCCESS',
+      detail: `EVENT.MESSAGE.${UserEventMessage.UPDATE_USER_PASSWORD_SUCCESS}`,
       key: 'toast',
       life: 3000,
     });
