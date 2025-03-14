@@ -6,7 +6,7 @@
       </div>
     </ng-template>
 
-    <div [formGroup]="settingsForm">
+    <form [formGroup]="settingsForm">
       <div class="mb-4">
         <p-floatlabel variant="on">
           <p-select
@@ -19,9 +19,6 @@
           />
           <label for="language">{{ 'SETTINGS.FORM.LANGUAGE.LABEL' | translate }}</label>
         </p-floatlabel>
-        <small *ngIf="nameControl?.invalid && nameControl?.dirty" class="ml-1 trip__form-error">{{
-          'SETTINGS.FORM.ERROR.NAME' | translate
-        }}</small>
       </div>
       <div class="mb-3">
         <p-floatlabel variant="on">
@@ -61,15 +58,17 @@
           pButton
           pRipple
           severity="primary"
-          [disabled]="settingsForm.invalid || isSubmitInProgress"
+          [disabled]="settingsForm.invalid || isSubmitInProgress()"
           class="block w-full"
           (click)="submitSettings()"
         >
-          <i class="pi pi-spin pi-spinner mr-1" *ngIf="isSubmitInProgress"></i>
+          @if (isSubmitInProgress()) {
+            <i class="pi pi-spin pi-spinner mr-1"></i>
+          }
           <span pButtonLabel>{{ 'COMMON.BUTTON.UPDATE' | translate }}</span>
         </button>
       </div>
-    </div>
+    </form>
   </p-panel>
 
   <p-toast position="bottom-center" key="toast" />

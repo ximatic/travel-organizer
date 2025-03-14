@@ -82,7 +82,7 @@ describe('SettingsComponent', () => {
 
     expect(component.settingsForm.valid).toBeTruthy();
     component.submitSettings();
-    expect(component.isSubmitInProgress).toBeTruthy();
+    expect(component.isSubmitInProgress()).toBeTruthy();
 
     // artificial delay as in component
     tick(DEFAULT_UX_DELAY);

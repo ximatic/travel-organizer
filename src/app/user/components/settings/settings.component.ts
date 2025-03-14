@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AfterViewInit, ChangeDetectionStrategy, Component, OnDestroy, OnInit, signal } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { Store } from '@ngrx/store';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
@@ -43,6 +43,7 @@ export interface SettingsFormOption {
   selector: 'app-settings',
   templateUrl: './settings.component.html',
   styleUrl: './settings.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     CommonModule,
     ReactiveFormsModule,
@@ -69,7 +70,7 @@ export class SettingsComponent implements OnInit, AfterViewInit, OnDestroy {
   settingsForm!: FormGroup;
 
   // state flags
-  isSubmitInProgress = false;
+  isSubmitInProgress = signal(false);
 
   // form options
   languages: SettingsFormOption[] = [];
@@ -103,12 +104,6 @@ export class SettingsComponent implements OnInit, AfterViewInit, OnDestroy {
     this.subscription.unsubscribe();
   }
 
-  // controls
-
-  get nameControl(): AbstractControl | null {
-    return this.settingsForm.get('name');
-  }
-
   // settings
 
   submitSettings(): void {
@@ -117,7 +112,7 @@ export class SettingsComponent implements OnInit, AfterViewInit, OnDestroy {
       return;
     }
 
-    this.isSubmitInProgress = true;
+    this.isSubmitInProgress.set(true);
     // artificial delay to improve UX
     of({})
       .pipe(delay(DEFAULT_UX_DELAY))
@@ -159,7 +154,7 @@ export class SettingsComponent implements OnInit, AfterViewInit, OnDestroy {
           this.initFormOptions();
         });
         this.fillForm();
-        this.isSubmitInProgress = false;
+        this.isSubmitInProgress.set(false);
       }),
     );
 
@@ -188,7 +183,7 @@ export class SettingsComponent implements OnInit, AfterViewInit, OnDestroy {
         this.showToastError(userEvent?.message);
         break;
     }
-    this.isSubmitInProgress = false;
+    this.isSubmitInProgress.set(false);
   }
 
   // form
