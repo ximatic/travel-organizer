@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, signal } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 
 import { Store } from '@ngrx/store';
@@ -57,7 +57,7 @@ export class MainComponent implements OnInit, OnDestroy {
   language = UserSettingsLanguage;
 
   // state flag
-  isLoading = true;
+  isLoading = signal(true);
 
   // other
   private subscription = new Subscription();
@@ -146,7 +146,7 @@ export class MainComponent implements OnInit, OnDestroy {
           of({})
             .pipe(delay(DEFAULT_UX_DELAY))
             .subscribe(() => {
-              this.isLoading = false;
+              this.isLoading.set(false);
             });
         }
       }),

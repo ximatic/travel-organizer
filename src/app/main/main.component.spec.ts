@@ -114,7 +114,7 @@ describe('MainComponent', () => {
   it('getting user event works for User Load Info event', fakeAsync(() => {
     fixture.detectChanges();
 
-    expect(component.isLoading).toEqual(true);
+    expect(component.isLoading()).toEqual(true);
     mockUserSettingsSelmockUserEventSelectorector.setResult(MOCK_USER_EVENT_LOAD_USER_INFO_SUCCESS);
 
     store.refreshState();
@@ -122,13 +122,13 @@ describe('MainComponent', () => {
     // artificial delay as in component
     tick(DEFAULT_UX_DELAY);
 
-    expect(component.isLoading).toEqual(false);
+    expect(component.isLoading()).toEqual(false);
   }));
 
   it("getting user event doesn't work for Update User Settings event", fakeAsync(() => {
     fixture.detectChanges();
 
-    expect(component.isLoading).toEqual(true);
+    expect(component.isLoading()).toEqual(true);
     mockUserSettingsSelmockUserEventSelectorector.setResult(MOCK_USER_EVENT_UPDATE_USER_SETTINGS_SUCCESS);
 
     store.refreshState();
@@ -136,7 +136,7 @@ describe('MainComponent', () => {
     // artificial delay as in component
     tick(DEFAULT_UX_DELAY);
 
-    expect(component.isLoading).toEqual(true);
+    expect(component.isLoading()).toEqual(true);
   }));
 
   // language

@@ -1,40 +1,90 @@
 <div class="flex h-full w-full items-center justify-center">
   <div class="main flex flex-col h-screen w-full max-w-7xl xl:border-x">
-    <div class="grid place-items-center h-full w-full" *ngIf="isLoading; else mainContent">
-      <p-progress-spinner />
-    </div>
-
-    <ng-template #mainContent>
-      <!-- header -->
-      <div>
-        <p-toolbar>
-          <ng-template #start>
-            <p-button
-              *ngIf="isLoggedIn"
-              icon="pi pi-bars"
-              text
-              severity="secondary"
-              (click)="toggleSidebar()"
-              class="md:hidden"
-            />
-            <span class="hidden md:flex ml-2">
-              <span class="pi pi-globe pr-2 main__logo"></span>{{ 'APP.TITLE' | translate }}
-            </span>
-          </ng-template>
-          <ng-template #center>
-            <span class="flex md:hidden"><span class="pi pi-globe pr-2 main__logo"></span>{{ 'APP.TITLE' | translate }}</span>
-          </ng-template>
-          <ng-template #end>
-            <p-button icon="pi pi-palette" text severity="secondary" (click)="toggleDarkMode()" />
-            <p-button *ngIf="isLoggedIn" icon="pi pi-power-off" text severity="secondary" (click)="logout()" />
-          </ng-template>
-        </p-toolbar>
+    @if (isLoading()) {
+      <div class="grid place-items-center h-full w-full">
+        <p-progress-spinner />
       </div>
+    } @else {
+      <main>
+        <!-- header -->
+        <div>
+          <p-toolbar>
+            <ng-template #start>
+              @if (isLoggedIn) {
+                <p-button icon="pi pi-bars" text severity="secondary" (click)="toggleSidebar()" class="md:hidden" />
+              }
+              <span class="hidden md:flex ml-2">
+                <span class="pi pi-globe pr-2 main__logo"></span>{{ 'APP.TITLE' | translate }}
+              </span>
+            </ng-template>
+            <ng-template #center>
+              <span class="flex md:hidden"><span class="pi pi-globe pr-2 main__logo"></span>{{ 'APP.TITLE' | translate }}</span>
+            </ng-template>
+            <ng-template #end>
+              <p-button icon="pi pi-palette" text severity="secondary" (click)="toggleDarkMode()" />
+              @if (isLoggedIn) {
+                <p-button icon="pi pi-power-off" text severity="secondary" (click)="logout()" />
+              }
+            </ng-template>
+          </p-toolbar>
+        </div>
 
-      <!-- regular menu -->
+        <!-- regular menu -->
 
-      <div class="menu border-b hidden md:block px-3" *ngIf="isLoggedIn">
-        <div class="flex">
+        @if (isLoggedIn) {
+          <div class="menu border-b hidden md:block px-3">
+            <div class="flex">
+              <div>
+                <p-button
+                  icon="pi pi-th-large"
+                  text
+                  severity="secondary"
+                  [link]="true"
+                  routerLink="/dashboard"
+                  [label]="'MENU.DASHBOARD' | translate"
+                />
+              </div>
+              <div>
+                <p-button
+                  icon="pi pi-map"
+                  text
+                  severity="secondary"
+                  [link]="true"
+                  routerLink="/trips"
+                  [label]="'MENU.TRIPS' | translate"
+                />
+              </div>
+              <div class="grow flex justify-end">
+                <p-button
+                  icon="pi pi-user"
+                  text
+                  severity="secondary"
+                  [link]="true"
+                  routerLink="/user/profile"
+                  [label]="'MENU.PROFILE' | translate"
+                />
+              </div>
+              <div class="flex justify-end">
+                <p-button
+                  icon="pi pi-cog"
+                  text
+                  severity="secondary"
+                  [link]="true"
+                  routerLink="/user/settings"
+                  [label]="'MENU.SETTINGS' | translate"
+                />
+              </div>
+            </div>
+          </div>
+        }
+
+        <!-- content -->
+        <div class="grow p-3 md:p-5">
+          <router-outlet />
+        </div>
+
+        <!-- mobile menu -->
+        <p-drawer [(visible)]="sidebarVisible" [header]="'MENU.TITLE' | translate" class="md:hidden">
           <div>
             <p-button
               icon="pi pi-th-large"
@@ -43,6 +93,7 @@
               [link]="true"
               routerLink="/dashboard"
               [label]="'MENU.DASHBOARD' | translate"
+              (onClick)="toggleSidebar()"
             />
           </div>
           <div>
@@ -53,9 +104,10 @@
               [link]="true"
               routerLink="/trips"
               [label]="'MENU.TRIPS' | translate"
+              (onClick)="toggleSidebar()"
             />
           </div>
-          <div class="grow flex justify-end">
+          <div>
             <p-button
               icon="pi pi-user"
               text
@@ -63,9 +115,10 @@
               [link]="true"
               routerLink="/user/profile"
               [label]="'MENU.PROFILE' | translate"
+              (onClick)="toggleSidebar()"
             />
           </div>
-          <div class="flex justify-end">
+          <div>
             <p-button
               icon="pi pi-cog"
               text
@@ -73,81 +126,29 @@
               [link]="true"
               routerLink="/user/settings"
               [label]="'MENU.SETTINGS' | translate"
+              (onClick)="toggleSidebar()"
             />
           </div>
-        </div>
-      </div>
 
-      <!-- content -->
-      <div class="grow p-3 md:p-5">
-        <router-outlet />
-      </div>
-
-      <!-- mobile menu -->
-      <p-drawer [(visible)]="sidebarVisible" [header]="'MENU.TITLE' | translate" class="md:hidden">
-        <div>
-          <p-button
-            icon="pi pi-th-large"
-            text
-            severity="secondary"
-            [link]="true"
-            routerLink="/dashboard"
-            [label]="'MENU.DASHBOARD' | translate"
-            (onClick)="toggleSidebar()"
-          />
-        </div>
-        <div>
-          <p-button
-            icon="pi pi-map"
-            text
-            severity="secondary"
-            [link]="true"
-            routerLink="/trips"
-            [label]="'MENU.TRIPS' | translate"
-            (onClick)="toggleSidebar()"
-          />
-        </div>
-        <div>
-          <p-button
-            icon="pi pi-user"
-            text
-            severity="secondary"
-            [link]="true"
-            routerLink="/user/profile"
-            [label]="'MENU.PROFILE' | translate"
-            (onClick)="toggleSidebar()"
-          />
-        </div>
-        <div>
-          <p-button
-            icon="pi pi-cog"
-            text
-            severity="secondary"
-            [link]="true"
-            routerLink="/user/settings"
-            [label]="'MENU.SETTINGS' | translate"
-            (onClick)="toggleSidebar()"
-          />
-        </div>
-
-        <ng-template #footer>
-          <p-divider />
-          <p-button
-            [icon]="isLanguageEnglish() ? 'pi pi-flag-fill' : 'pi pi-flag'"
-            text
-            severity="secondary"
-            label="EN"
-            (onClick)="switchLanguage(language.English)"
-          />
-          <p-button
-            [icon]="isLanguagePolish() ? 'pi pi-flag-fill' : 'pi pi-flag'"
-            text
-            severity="secondary"
-            label="PL"
-            (onClick)="switchLanguage(language.Polish)"
-          />
-        </ng-template>
-      </p-drawer>
-    </ng-template>
+          <ng-template #footer>
+            <p-divider />
+            <p-button
+              [icon]="isLanguageEnglish() ? 'pi pi-flag-fill' : 'pi pi-flag'"
+              text
+              severity="secondary"
+              label="EN"
+              (onClick)="switchLanguage(language.English)"
+            />
+            <p-button
+              [icon]="isLanguagePolish() ? 'pi pi-flag-fill' : 'pi pi-flag'"
+              text
+              severity="secondary"
+              label="PL"
+              (onClick)="switchLanguage(language.Polish)"
+            />
+          </ng-template>
+        </p-drawer>
+      </main>
+    }
   </div>
 </div>
