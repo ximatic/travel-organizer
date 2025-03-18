@@ -69,7 +69,7 @@ describe('TripComponent', () => {
 
     fixture.detectChanges();
 
-    expect(component.isLoading).toBeTruthy();
+    expect(component.isLoading()).toBeTruthy();
     expect(dispatchSpy).toHaveBeenCalledWith({ type: TripAction.LoadTrip, id: DEFAULT_TRIP_1._id });
   });
 
@@ -99,7 +99,7 @@ describe('TripComponent', () => {
 
     store.refreshState();
 
-    expect(component.isLoading).toBeTruthy();
+    expect(component.isLoading()).toBeTruthy();
     expect(messageAddSpy).toHaveBeenCalledTimes(0);
   });
 
@@ -116,7 +116,7 @@ describe('TripComponent', () => {
 
     store.refreshState();
 
-    expect(component.isLoading).toBeFalsy();
+    expect(component.isLoading()).toBeFalsy();
     expect(component.trip).toEqual(DEFAULT_TRIP_2);
     expect(messageAddSpy).toHaveBeenCalledTimes(0);
   });
@@ -135,7 +135,7 @@ describe('TripComponent', () => {
 
     store.refreshState();
 
-    expect(component.isLoading).toBeFalsy();
+    expect(component.isLoading()).toBeFalsy();
     expect(messageAddSpy).toHaveBeenCalledWith({
       severity: 'error',
       summary: 'EVENT.TYPE.ERROR',

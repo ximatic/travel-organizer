@@ -78,7 +78,7 @@ describe('TripsComponent', () => {
     store.refreshState();
 
     expect(component.trips).toEqual([DEFAULT_TRIP_1, DEFAULT_TRIP_2]);
-    expect(component.isLoading).toBeFalsy();
+    expect(component.isLoading()).toBeFalsy();
   });
 
   it('opening trip works', () => {
@@ -120,7 +120,7 @@ describe('TripsComponent', () => {
 
     store.refreshState();
 
-    expect(component.isLoading).toBeTruthy();
+    expect(component.isLoading()).toBeTruthy();
     expect(messageAddSpy).toHaveBeenCalledTimes(0);
   });
 
@@ -136,7 +136,7 @@ describe('TripsComponent', () => {
 
     store.refreshState();
 
-    expect(component.isLoading).toBeFalsy();
+    expect(component.isLoading()).toBeFalsy();
     expect(messageAddSpy).toHaveBeenCalledTimes(0);
   });
 
@@ -153,7 +153,7 @@ describe('TripsComponent', () => {
 
     store.refreshState();
 
-    expect(component.isLoading).toBeFalsy();
+    expect(component.isLoading()).toBeFalsy();
     expect(messageAddSpy).toHaveBeenLastCalledWith({
       severity: 'error',
       summary: 'EVENT.TYPE.ERROR',

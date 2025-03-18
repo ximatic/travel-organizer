@@ -6,11 +6,15 @@
     </div>
   </ng-template>
   <p class="m-0 text-xs">
-    <span *ngIf="trip.location">{{ trip.location }}</span>
-    <span *ngIf="trip.location && trip.startDate && trip.endDate" class="px-1">|</span>
-    <span *ngIf="trip.startDate && trip.endDate">
-      {{ trip.startDate | date: userSettings?.dateFormat }} - {{ trip.endDate | date: userSettings?.dateFormat }}
-    </span>
+    @if (trip.location) {
+      <span>{{ trip.location }}</span>
+      @if (trip.location && trip.startDate && trip.endDate) {
+        <span class="px-1">|</span>
+      }
+    }
+    @if (trip.startDate && trip.endDate) {
+      <span> {{ trip.startDate | date: userSettings?.dateFormat }} - {{ trip.endDate | date: userSettings?.dateFormat }} </span>
+    }
   </p>
   <p class="m-0">
     {{ trip.description }}

@@ -1,10 +1,10 @@
 <div class="trip h-full">
-  <div class="grid place-items-center h-full w-full" *ngIf="isLoading; else loadedTrip">
-    <p-progress-spinner />
-  </div>
-
-  <ng-template #loadedTrip>
-    <ng-container *ngIf="trip; else noTrip">
+  @if (isLoading()) {
+    <div class="grid place-items-center h-full w-full">
+      <p-progress-spinner />
+    </div>
+  } @else {
+    @if (trip) {
       <div class="grid gap-4 grid-cols-1 md:grid-cols-2">
         <div>
           <app-trip-panel [trip]="trip">
@@ -22,9 +22,7 @@
           <app-trip-items [trip]="trip"></app-trip-items>
         </div>
       </div>
-    </ng-container>
-
-    <ng-template #noTrip>
+    } @else {
       <div>
         <p-panel>
           <div class="grid place-items-center">
@@ -35,14 +33,14 @@
           </div>
         </p-panel>
       </div>
-    </ng-template>
+    }
 
     <div class="mt-4">
       <button pButton pRipple severity="secondary" size="large" class="block w-full" routerLink="/trips">
         <span pButtonLabel>{{ 'COMMON.BUTTON.ALL_TRIPS' | translate }}</span>
       </button>
     </div>
-  </ng-template>
+  }
 
   <p-toast position="bottom-center" key="toast" />
 </div>

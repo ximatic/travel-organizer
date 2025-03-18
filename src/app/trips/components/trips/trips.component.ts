@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit, signal } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 
 import { Store } from '@ngrx/store';
@@ -42,7 +42,7 @@ export class TripsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // data
   trips: Trip[] = [];
-  isLoading = true;
+  isLoading = signal(true);
 
   // other
   private subscription = new Subscription();
@@ -89,7 +89,7 @@ export class TripsComponent implements OnInit, AfterViewInit, OnDestroy {
     this.subscription.add(
       this.trips$.pipe(skip(1)).subscribe((trips: Trip[]) => {
         this.trips = trips;
-        this.isLoading = false;
+        this.isLoading.set(false);
       }),
     );
 
@@ -115,13 +115,13 @@ export class TripsComponent implements OnInit, AfterViewInit, OnDestroy {
   private handleTripsEventLoadAll(event: TripsEvent): void {
     switch (event.type) {
       case TripsEventType.Loading:
-        this.isLoading = true;
+        this.isLoading.set(true);
         break;
       case TripsEventType.Success:
-        this.isLoading = false;
+        this.isLoading.set(false);
         break;
       case TripsEventType.Error:
-        this.isLoading = false;
+        this.isLoading.set(false);
         this.showToastError(event?.message);
         break;
     }

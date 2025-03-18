@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, Params, RouterModule } from '@angular/router';
 
 import { Store } from '@ngrx/store';
@@ -47,7 +47,7 @@ export class TripComponent implements OnInit, AfterViewInit, OnDestroy {
   trip!: Trip | null;
 
   // state flags
-  isLoading = true;
+  isLoading = signal(true);
 
   private subscription = new Subscription();
 
@@ -104,16 +104,16 @@ export class TripComponent implements OnInit, AfterViewInit, OnDestroy {
   private handleTripsEventLoad(event: TripsEvent): void {
     switch (event.type) {
       case TripsEventType.Loading:
-        this.isLoading = true;
+        this.isLoading.set(true);
         break;
       case TripsEventType.Success:
         if (event.trip) {
           this.trip = event.trip;
         }
-        this.isLoading = false;
+        this.isLoading.set(false);
         break;
       case TripsEventType.Error:
-        this.isLoading = false;
+        this.isLoading.set(false);
         this.showToastError(event?.message);
         break;
     }

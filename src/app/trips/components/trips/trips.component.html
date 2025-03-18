@@ -1,23 +1,23 @@
 <div class="trips h-full">
-  <div class="grid place-items-center h-full w-full" *ngIf="isLoading; else loadedTrips">
-    <p-progress-spinner />
-  </div>
-
-  <ng-template #loadedTrips>
-    <div *ngIf="trips && trips.length > 0; else noTrips">
-      <div class="grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
-        <app-trip-panel
-          [trip]="trip"
-          (click)="openTrip(trip)"
-          *ngFor="let trip of trips"
-          class="full-height grow hover:cursor-pointer"
-        >
-          <p-button icon="pi pi-trash" severity="secondary" text class="flex-none" (onClick)="removeTrip($event, trip)" />
-        </app-trip-panel>
-      </div>
+  @if (isLoading()) {
+    <div class="grid place-items-center h-full w-full">
+      <p-progress-spinner />
     </div>
-
-    <ng-template #noTrips>
+  } @else {
+    @if (trips && trips.length > 0) {
+      <div>
+        <div class="grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+          <app-trip-panel
+            [trip]="trip"
+            (click)="openTrip(trip)"
+            *ngFor="let trip of trips"
+            class="full-height grow hover:cursor-pointer"
+          >
+            <p-button icon="pi pi-trash" severity="secondary" text class="flex-none" (onClick)="removeTrip($event, trip)" />
+          </app-trip-panel>
+        </div>
+      </div>
+    } @else {
       <div>
         <p-panel>
           <div class="grid place-items-center">
@@ -29,14 +29,14 @@
           </div>
         </p-panel>
       </div>
-    </ng-template>
+    }
 
     <div class="mt-4">
       <button pButton pRipple severity="primary" size="large" class="block w-full" routerLink="/trips/add">
         <span pButtonLabel>{{ 'COMMON.BUTTON.NEW_TRIP' | translate }}</span>
       </button>
     </div>
-  </ng-template>
+  }
 
   <p-toast position="bottom-center" key="toast" />
 </div>
