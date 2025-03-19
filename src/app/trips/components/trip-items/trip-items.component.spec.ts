@@ -106,7 +106,7 @@ describe('TripItemsComponent', () => {
 
     expect(component.tripItemForm.invalid).toBeTruthy();
     expect(component.submitTripItem()).toBeUndefined();
-    expect(component.isSubmitInProgress).toBeFalsy();
+    expect(component.isSubmitInProgress()).toBeFalsy();
 
     // artificial delay as in component
     tick(DEFAULT_UX_DELAY);
@@ -125,7 +125,7 @@ describe('TripItemsComponent', () => {
 
     expect(component.tripItemForm.invalid).toBeFalsy();
     component.submitTripItem();
-    expect(component.isSubmitInProgress).toBeTruthy();
+    expect(component.isSubmitInProgress()).toBeTruthy();
 
     // artificial delay as in component
     tick(DEFAULT_UX_DELAY);
@@ -165,7 +165,7 @@ describe('TripItemsComponent', () => {
     store.refreshState();
 
     expect(component.tripItemForm.invalid).toBeTruthy();
-    expect(component.isSubmitInProgress).toBeFalsy();
+    expect(component.isSubmitInProgress()).toBeFalsy();
     expect(component.trip).toEqual({ ...DEFAULT_TRIP_1, items: [DEFAULT_TRIP_ITEM_1] });
     expect(messageAddSpy).toHaveBeenCalledTimes(0);
   });
@@ -183,7 +183,7 @@ describe('TripItemsComponent', () => {
 
     store.refreshState();
 
-    expect(component.isSubmitInProgress).toBeFalsy();
+    expect(component.isSubmitInProgress()).toBeFalsy();
     expect(messageAddSpy).toHaveBeenCalledWith({
       severity: 'error',
       summary: 'EVENT.TYPE.ERROR',

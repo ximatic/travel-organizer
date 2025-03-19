@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, Component, Input, OnDestroy, OnInit, signal } from '@angular/core';
 import { ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
@@ -50,7 +50,7 @@ export class TripItemsComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() trip!: Trip;
 
   // state flags
-  isSubmitInProgress = false;
+  isSubmitInProgress = signal(false);
 
   // form
   tripItemForm!: FormGroup;
@@ -93,7 +93,7 @@ export class TripItemsComponent implements OnInit, AfterViewInit, OnDestroy {
       return;
     }
 
-    this.isSubmitInProgress = true;
+    this.isSubmitInProgress.set(true);
     // artificial delay to improve UX
     of({})
       .pipe(delay(DEFAULT_UX_DELAY))
@@ -144,7 +144,7 @@ export class TripItemsComponent implements OnInit, AfterViewInit, OnDestroy {
         this.showToastError(event?.message);
         break;
     }
-    this.isSubmitInProgress = false;
+    this.isSubmitInProgress.set(false);
   }
 
   private handleTripsEvenCheckItem(event: TripsEvent): void {

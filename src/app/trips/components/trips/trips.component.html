@@ -4,21 +4,16 @@
       <p-progress-spinner />
     </div>
   } @else {
-    @if (trips && trips.length > 0) {
-      <div>
+    <div>
+      @if (trips && trips.length > 0) {
         <div class="grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
-          <app-trip-panel
-            [trip]="trip"
-            (click)="openTrip(trip)"
-            *ngFor="let trip of trips"
-            class="full-height grow hover:cursor-pointer"
-          >
-            <p-button icon="pi pi-trash" severity="secondary" text class="flex-none" (onClick)="removeTrip($event, trip)" />
-          </app-trip-panel>
+          @for (trip of trips; track trip) {
+            <app-trip-panel [trip]="trip" (click)="openTrip(trip)" class="full-height grow hover:cursor-pointer">
+              <p-button icon="pi pi-trash" severity="secondary" text class="flex-none" (onClick)="removeTrip($event, trip)" />
+            </app-trip-panel>
+          }
         </div>
-      </div>
-    } @else {
-      <div>
+      } @else {
         <p-panel>
           <div class="grid place-items-center">
             <p>
@@ -28,8 +23,8 @@
             <p class="mt-2" [innerHTML]="'TRIPS.NO_TRIPS.SUBTITLE' | translate"></p>
           </div>
         </p-panel>
-      </div>
-    }
+      }
+    </div>
 
     <div class="mt-4">
       <button pButton pRipple severity="primary" size="large" class="block w-full" routerLink="/trips/add">

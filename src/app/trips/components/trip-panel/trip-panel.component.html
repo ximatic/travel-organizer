@@ -1,22 +1,24 @@
 <p-panel class="full-height">
   <ng-template pTemplate="header">
     <div class="flex items-center gap-2 w-full">
-      <span class="grow font-bold">{{ trip.name }}</span>
+      <span class="grow font-bold">{{ trip().name }}</span>
       <ng-content></ng-content>
     </div>
   </ng-template>
   <p class="m-0 text-xs">
-    @if (trip.location) {
-      <span>{{ trip.location }}</span>
-      @if (trip.location && trip.startDate && trip.endDate) {
+    @if (trip().location) {
+      <span>{{ trip().location }}</span>
+      @if (trip().location && trip().startDate && trip().endDate) {
         <span class="px-1">|</span>
       }
     }
-    @if (trip.startDate && trip.endDate) {
-      <span> {{ trip.startDate | date: userSettings?.dateFormat }} - {{ trip.endDate | date: userSettings?.dateFormat }} </span>
+    @if (trip().startDate && trip().endDate) {
+      <span>
+        {{ trip().startDate | date: userSettings?.dateFormat }} - {{ trip().endDate | date: userSettings?.dateFormat }}
+      </span>
     }
   </p>
   <p class="m-0">
-    {{ trip.description }}
+    {{ trip().description }}
   </p>
 </p-panel>

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, input } from '@angular/core';
 
 import { Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
@@ -20,7 +20,7 @@ import { DEFAULT_USER_SETTINGS } from '../../../user/constants/settings.constant
   imports: [CommonModule, PanelModule],
 })
 export class TripPanelComponent implements OnInit, OnDestroy {
-  @Input() trip!: Trip;
+  trip = input.required<Trip>();
 
   // ngrx
   userSettings$!: Observable<UserSettings | null>;

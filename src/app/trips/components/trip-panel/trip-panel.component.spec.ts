@@ -33,7 +33,7 @@ describe('TripPanelComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(TripPanelComponent);
     component = fixture.componentInstance;
-    component.trip = DEFAULT_TRIP_0;
+    fixture.componentRef.setInput('trip', DEFAULT_TRIP_0);
   });
 
   it('should be created', () => {

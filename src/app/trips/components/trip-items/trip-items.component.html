@@ -5,20 +5,22 @@
     </div>
   </ng-template>
   <div>
-    <div class="trip__item flex" *ngFor="let item of trip.items">
-      <div>
-        <p-button
-          [icon]="item.checked ? 'pi pi-star-fill' : 'pi pi-star'"
-          severity="contrast"
-          text
-          (onClick)="checkTripItem(item)"
-        />
+    @for (item of trip.items; track item) {
+      <div class="trip__item flex">
+        <div>
+          <p-button
+            [icon]="item.checked ? 'pi pi-star-fill' : 'pi pi-star'"
+            severity="contrast"
+            text
+            (onClick)="checkTripItem(item)"
+          />
+        </div>
+        <div class="flex items-center grow">{{ item.name }}</div>
+        <div>
+          <p-button icon="pi pi-times-circle" severity="danger" text (onClick)="removeTripItem(item)" />
+        </div>
       </div>
-      <div class="flex items-center grow">{{ item.name }}</div>
-      <div>
-        <p-button icon="pi pi-times-circle" severity="danger" text (onClick)="removeTripItem(item)" />
-      </div>
-    </div>
+    }
   </div>
   <p-divider class="mt-4 mb-4" />
   <div [formGroup]="tripItemForm" class="flex gap-2">
@@ -33,7 +35,7 @@
         icon="pi pi-plus"
         severity="primary"
         class="flex-none"
-        [disabled]="tripItemForm.invalid || isSubmitInProgress"
+        [disabled]="tripItemForm.invalid || isSubmitInProgress()"
         (onClick)="submitTripItem()"
       />
     </div>
