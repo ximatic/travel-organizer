@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, signal } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Params, Router, RouterModule } from '@angular/router';
 
@@ -50,8 +50,8 @@ export class TripAddComponent implements OnInit, OnDestroy {
   trip?: Trip | null;
 
   // state flags
-  isLoading = true;
-  isSubmitInProgress = false;
+  isLoading = signal(true);
+  isSubmitInProgress = signal(false);
 
   // form
   tripForm!: FormGroup;
@@ -92,7 +92,7 @@ export class TripAddComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.isSubmitInProgress = true;
+    this.isSubmitInProgress.set(true);
     // artificial delay to improve UX
     of({})
       .pipe(delay(DEFAULT_UX_DELAY))
@@ -150,17 +150,17 @@ export class TripAddComponent implements OnInit, OnDestroy {
   private handleTripsEventLoad(event: TripsEvent): void {
     switch (event.type) {
       case TripsEventType.Loading:
-        this.isLoading = true;
+        this.isLoading.set(true);
         break;
       case TripsEventType.Success:
         if (event.trip) {
           this.trip = event.trip;
           this.fillForm();
         }
-        this.isLoading = false;
+        this.isLoading.set(false);
         break;
       case TripsEventType.Error:
-        this.isLoading = false;
+        this.isLoading.set(false);
         this.showToastError(event?.message);
         break;
     }
@@ -178,7 +178,7 @@ export class TripAddComponent implements OnInit, OnDestroy {
         this.showToastError(event?.message, { trip: event.trip?.name });
         break;
     }
-    this.isSubmitInProgress = false;
+    this.isSubmitInProgress.set(false);
   }
 
   private handleTripsEventUpdate(event: TripsEvent): void {
@@ -193,7 +193,7 @@ export class TripAddComponent implements OnInit, OnDestroy {
         this.showToastError(event?.message, { trip: event.trip?.name });
         break;
     }
-    this.isSubmitInProgress = false;
+    this.isSubmitInProgress.set(false);
   }
 
   // form

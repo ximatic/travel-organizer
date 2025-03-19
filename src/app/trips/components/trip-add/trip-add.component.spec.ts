@@ -98,7 +98,7 @@ describe('TripAddComponent', () => {
 
       expect(component.tripForm.invalid).toBeFalsy();
       component.submitTrip();
-      expect(component.isSubmitInProgress).toBeTruthy();
+      expect(component.isSubmitInProgress()).toBeTruthy();
 
       // artificial delay as in component
       tick(DEFAULT_UX_DELAY);
@@ -138,7 +138,7 @@ describe('TripAddComponent', () => {
 
       store.refreshState();
 
-      expect(component.isSubmitInProgress).toBeFalsy();
+      expect(component.isSubmitInProgress()).toBeFalsy();
       expect(messageAddSpy).toHaveBeenCalledWith({
         severity: 'success',
         summary: 'EVENT.TYPE.SUCCESS',
@@ -163,7 +163,7 @@ describe('TripAddComponent', () => {
 
       store.refreshState();
 
-      expect(component.isSubmitInProgress).toBeFalsy();
+      expect(component.isSubmitInProgress()).toBeFalsy();
       expect(messageAddSpy).toHaveBeenCalledWith({
         severity: 'error',
         summary: 'EVENT.TYPE.ERROR',
@@ -235,7 +235,7 @@ describe('TripAddComponent', () => {
       store.refreshState();
 
       expect(component.trip).toEqual(DEFAULT_TRIP_2);
-      expect(component.isLoading).toBeFalsy();
+      expect(component.isLoading()).toBeFalsy();
     });
 
     it('submitTrip works for an existing trip ', fakeAsync(() => {
@@ -251,7 +251,7 @@ describe('TripAddComponent', () => {
 
       expect(component.tripForm.invalid).toBeFalsy();
       component.submitTrip();
-      expect(component.isSubmitInProgress).toBeTruthy();
+      expect(component.isSubmitInProgress()).toBeTruthy();
 
       // artificial delay as in component
       tick(DEFAULT_UX_DELAY);
@@ -296,7 +296,7 @@ describe('TripAddComponent', () => {
 
       store.refreshState();
 
-      expect(component.isLoading).toBeFalsy();
+      expect(component.isLoading()).toBeFalsy();
       expect(messageAddSpy).toHaveBeenCalledTimes(0);
     });
 
@@ -313,7 +313,7 @@ describe('TripAddComponent', () => {
 
       store.refreshState();
 
-      expect(component.isLoading).toBeFalsy();
+      expect(component.isLoading()).toBeFalsy();
       expect(messageAddSpy).toHaveBeenCalledWith({
         severity: 'error',
         summary: 'EVENT.TYPE.ERROR',
@@ -338,7 +338,7 @@ describe('TripAddComponent', () => {
 
       store.refreshState();
 
-      expect(component.isSubmitInProgress).toBeFalsy();
+      expect(component.isSubmitInProgress()).toBeFalsy();
       expect(messageAddSpy).toHaveBeenCalledWith({
         severity: 'success',
         summary: 'EVENT.TYPE.SUCCESS',
@@ -363,7 +363,7 @@ describe('TripAddComponent', () => {
 
       store.refreshState();
 
-      expect(component.isSubmitInProgress).toBeFalsy();
+      expect(component.isSubmitInProgress()).toBeFalsy();
       expect(messageAddSpy).toHaveBeenCalledWith({
         severity: 'error',
         summary: 'EVENT.TYPE.ERROR',

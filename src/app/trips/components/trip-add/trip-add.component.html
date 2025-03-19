@@ -1,13 +1,14 @@
 <div class="trip">
   <p-panel class="trip__panel">
-    <ng-template pTemplate="header" *ngIf="!trip">
+    <ng-template pTemplate="header">
       <div class="flex grid justify-items-center w-full">
-        <span class="grow font-bold">{{ 'TRIP.FORM.TITLE.ADD' | translate }}</span>
-      </div>
-    </ng-template>
-    <ng-template pTemplate="header" *ngIf="trip">
-      <div class="flex grid justify-items-center w-full">
-        <span class="grow font-bold">{{ 'TRIP.FORM.TITLE.UPDATE' | translate }}</span>
+        <span class="grow font-bold">
+          @if (!trip) {
+            {{ 'TRIP.FORM.TITLE.ADD' | translate }}
+          } @else {
+            {{ 'TRIP.FORM.TITLE.UPDATE' | translate }}
+          }
+        </span>
       </div>
     </ng-template>
 
@@ -24,9 +25,9 @@
           />
           <label for="name">{{ 'TRIP.FORM.FORM.NAME.LABEL' | translate }}</label>
         </p-floatlabel>
-        <small *ngIf="nameControl?.invalid && nameControl?.dirty" class="ml-1 trip__form-error">{{
-          'TRIP.FORM.FORM.ERROR.NAME' | translate
-        }}</small>
+        @if (nameControl?.invalid && nameControl?.dirty) {
+          <small class="ml-1 trip__form-error">{{ 'TRIP.FORM.FORM.ERROR.NAME' | translate }}</small>
+        }
       </div>
       <div class="mb-3">
         <p-floatlabel variant="on">
@@ -59,20 +60,29 @@
           pButton
           pRipple
           severity="primary"
-          [disabled]="tripForm.invalid || isSubmitInProgress"
+          [disabled]="tripForm.invalid || isSubmitInProgress()"
           class="block w-full"
           (click)="submitTrip()"
         >
-          <i class="pi pi-spin pi-spinner mr-1" *ngIf="isSubmitInProgress"></i>
-          <span pButtonLabel *ngIf="!trip">{{ 'COMMON.BUTTON.ADD' | translate }}</span>
-          <span pButtonLabel *ngIf="trip">{{ 'COMMON.BUTTON.UPDATE' | translate }}</span>
+          @if (isSubmitInProgress()) {
+            <i class="pi pi-spin pi-spinner mr-1"></i>
+          }
+          <span pButtonLabel>
+            @if (!trip) {
+              {{ 'COMMON.BUTTON.ADD' | translate }}
+            } @else {
+              {{ 'COMMON.BUTTON.UPDATE' | translate }}
+            }
+          </span>
         </button>
       </div>
-      <div class="mt-2">
-        <button pButton pRipple severity="secondary" *ngIf="trip" class="block w-full" routerLink="/trips/{{ trip._id }}">
-          <span pButtonLabel>{{ 'COMMON.BUTTON.BACK' | translate }}</span>
-        </button>
-      </div>
+      @if (trip) {
+        <div class="mt-2">
+          <button pButton pRipple severity="secondary" class="block w-full" routerLink="/trips/{{ trip._id }}">
+            <span pButtonLabel>{{ 'COMMON.BUTTON.BACK' | translate }}</span>
+          </button>
+        </div>
+      }
     </div>
   </p-panel>
 
