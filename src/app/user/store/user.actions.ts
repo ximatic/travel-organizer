@@ -1,7 +1,6 @@
 import { createAction, props } from '@ngrx/store';
 
-import { UserProfile } from '../models/user-profile.model';
-import { UserData, UserInfo, UserPassword, UserRequest } from '../models/user.model';
+import { UserData, UserInfo, UserPassword } from '../models/user.model';
 import { UserSettings } from '../models/user-settings.model';
 
 export enum UserAction {

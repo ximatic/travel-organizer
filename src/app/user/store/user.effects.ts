@@ -11,7 +11,6 @@ import { UserData, UserEventMessage, UserInfo } from '../models/user.model';
 import { UserService } from '../services/user.service';
 import { UserSettingsService } from '../services/user-settings.service';
 import { UserSettings } from '../models/user-settings.model';
-import { UserProfile } from '../models/user-profile.model';
 
 @Injectable()
 export class UserEffects {

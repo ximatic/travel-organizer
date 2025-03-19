@@ -19,7 +19,6 @@ import { UserEventName, UserEventType } from '../../store/user.state';
 
 import { ProfileComponent } from './profile.component';
 import { UserEventMessage } from '../../models/user.model';
-import { DEFAULT_EMAIL_1, DEFAULT_PASSWORD_1 } from '../../../../../__mocks__/constants/auth.constants';
 
 describe('ProfileComponent', () => {
   let component: ProfileComponent;

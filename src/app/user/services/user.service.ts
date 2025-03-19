@@ -6,7 +6,6 @@ import { map, Observable } from 'rxjs';
 import { UserInfo, UserData, UserPassword } from '../models/user.model';
 
 import { environment } from '../../../environments/environment';
-import { UserProfile } from '../models/user-profile.model';
 
 @Injectable({
   providedIn: 'root',
