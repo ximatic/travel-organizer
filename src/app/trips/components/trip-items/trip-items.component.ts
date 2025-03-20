@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, Component, Input, OnDestroy, OnInit, signal } from '@angular/core';
+import { AfterViewInit, Component, model, OnDestroy, OnInit, signal } from '@angular/core';
 import { ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
@@ -47,7 +47,7 @@ export class TripItemsComponent implements OnInit, AfterViewInit, OnDestroy {
   tripsEvent$!: Observable<TripsEvent | undefined>;
 
   // trip
-  @Input() trip!: Trip;
+  trip = model.required<Trip>();
 
   // state flags
   isSubmitInProgress = signal(false);
@@ -81,11 +81,11 @@ export class TripItemsComponent implements OnInit, AfterViewInit, OnDestroy {
   // trip item
 
   checkTripItem(tripItem: TripItem): void {
-    this.store.dispatch(tripItemActions.checkTripItem({ trip: this.trip, tripItem }));
+    this.store.dispatch(tripItemActions.checkTripItem({ trip: this.trip(), tripItem }));
   }
 
   removeTripItem(tripItem: TripItem): void {
-    this.store.dispatch(tripItemActions.removeTripItem({ trip: this.trip, tripItem }));
+    this.store.dispatch(tripItemActions.removeTripItem({ trip: this.trip(), tripItem }));
   }
 
   submitTripItem(): void {
@@ -99,7 +99,7 @@ export class TripItemsComponent implements OnInit, AfterViewInit, OnDestroy {
       .pipe(delay(DEFAULT_UX_DELAY))
       .subscribe(() => {
         const tripItem = this.processFormValue();
-        this.store.dispatch(tripItemActions.createTripItem({ trip: this.trip, tripItem }));
+        this.store.dispatch(tripItemActions.createTripItem({ trip: this.trip(), tripItem }));
       });
   }
 
@@ -136,7 +136,7 @@ export class TripItemsComponent implements OnInit, AfterViewInit, OnDestroy {
     switch (event.type) {
       case TripsEventType.Success:
         if (event.trip) {
-          this.trip = event.trip;
+          this.trip.set(event.trip);
         }
         this.clearForm();
         break;
@@ -151,7 +151,7 @@ export class TripItemsComponent implements OnInit, AfterViewInit, OnDestroy {
     switch (event.type) {
       case TripsEventType.Success:
         if (event.trip) {
-          this.trip = event.trip;
+          this.trip.set(event.trip);
         }
         this.clearForm();
         break;
@@ -165,7 +165,7 @@ export class TripItemsComponent implements OnInit, AfterViewInit, OnDestroy {
     switch (event.type) {
       case TripsEventType.Success:
         if (event.trip) {
-          this.trip = event.trip;
+          this.trip.set(event.trip);
         }
         break;
       case TripsEventType.Error:

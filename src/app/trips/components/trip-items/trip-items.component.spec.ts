@@ -64,7 +64,7 @@ describe('TripItemsComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(TripItemsComponent);
     component = fixture.componentInstance;
-    component.trip = DEFAULT_TRIP_1;
+    fixture.componentRef.setInput('trip', DEFAULT_TRIP_1);
   });
 
   it('should be created', () => {
@@ -166,7 +166,7 @@ describe('TripItemsComponent', () => {
 
     expect(component.tripItemForm.invalid).toBeTruthy();
     expect(component.isSubmitInProgress()).toBeFalsy();
-    expect(component.trip).toEqual({ ...DEFAULT_TRIP_1, items: [DEFAULT_TRIP_ITEM_1] });
+    expect(component.trip()).toEqual({ ...DEFAULT_TRIP_1, items: [DEFAULT_TRIP_ITEM_1] });
     expect(messageAddSpy).toHaveBeenCalledTimes(0);
   });
 
@@ -206,7 +206,7 @@ describe('TripItemsComponent', () => {
 
     store.refreshState();
 
-    expect(component.trip).toEqual({ ...DEFAULT_TRIP_1, items: [DEFAULT_TRIP_ITEM_1] });
+    expect(component.trip()).toEqual({ ...DEFAULT_TRIP_1, items: [DEFAULT_TRIP_ITEM_1] });
     expect(messageAddSpy).toHaveBeenCalledTimes(0);
   });
 
@@ -245,7 +245,7 @@ describe('TripItemsComponent', () => {
 
     store.refreshState();
 
-    expect(component.trip).toEqual({ ...DEFAULT_TRIP_1, items: [DEFAULT_TRIP_ITEM_1] });
+    expect(component.trip()).toEqual({ ...DEFAULT_TRIP_1, items: [DEFAULT_TRIP_ITEM_1] });
     expect(messageAddSpy).toHaveBeenCalledTimes(0);
   });
 
