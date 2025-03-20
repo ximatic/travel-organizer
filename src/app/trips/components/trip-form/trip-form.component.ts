@@ -24,9 +24,9 @@ import { selectTripsEvent } from '../../store/trips.selectors';
 import { TripsEvent, TripsEventName, TripsEventType, TripsState } from '../../store/trips.state';
 
 @Component({
-  selector: 'app-trip-add',
-  templateUrl: './trip-add.component.html',
-  styleUrl: './trip-add.component.scss',
+  selector: 'app-trip-form',
+  templateUrl: './trip-form.component.html',
+  styleUrl: './trip-form.component.scss',
   imports: [
     CommonModule,
     RouterModule,
@@ -42,7 +42,7 @@ import { TripsEvent, TripsEventName, TripsEventType, TripsState } from '../../st
   ],
   providers: [TranslateService, MessageService],
 })
-export class TripAddComponent implements OnInit, OnDestroy {
+export class TripFormComponent implements OnInit, OnDestroy {
   // ngrx
   tripsEvent$!: Observable<TripsEvent | undefined>;
 

@@ -24,11 +24,11 @@ import { TripAction } from '../../store/trips.actions';
 import { selectTrip, selectTripsEvent } from '../../store/trips.selectors';
 import { TripsEventName, TripsEventType } from '../../store/trips.state';
 
-import { TripAddComponent } from './trip-add.component';
+import { TripFormComponent } from './trip-form.component';
 
-describe('TripAddComponent', () => {
-  let component: TripAddComponent;
-  let fixture: ComponentFixture<TripAddComponent>;
+describe('TripFormComponent', () => {
+  let component: TripFormComponent;
+  let fixture: ComponentFixture<TripFormComponent>;
   let router: Router;
   let store: MockStore;
   let messageService: MessageService;
@@ -39,7 +39,7 @@ describe('TripAddComponent', () => {
   describe('submiting new trip', () => {
     beforeEach(async () => {
       await TestBed.configureTestingModule({
-        imports: [TripAddComponent],
+        imports: [TripFormComponent],
         providers: [
           provideRouter([]),
           provideNoopAnimations(),
@@ -61,7 +61,7 @@ describe('TripAddComponent', () => {
     });
 
     beforeEach(() => {
-      fixture = TestBed.createComponent(TripAddComponent);
+      fixture = TestBed.createComponent(TripFormComponent);
       component = fixture.componentInstance;
     });
 
@@ -177,7 +177,7 @@ describe('TripAddComponent', () => {
   describe('submiting existing trip', () => {
     beforeEach(async () => {
       await TestBed.configureTestingModule({
-        imports: [TripAddComponent],
+        imports: [TripFormComponent],
         providers: [
           provideRouter([]),
           provideNoopAnimations(),
@@ -206,7 +206,7 @@ describe('TripAddComponent', () => {
     });
 
     beforeEach(() => {
-      fixture = TestBed.createComponent(TripAddComponent);
+      fixture = TestBed.createComponent(TripFormComponent);
       component = fixture.componentInstance;
     });
 

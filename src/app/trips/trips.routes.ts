@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
 
 import { TripComponent } from './components/trip/trip.component';
-import { TripAddComponent } from './components/trip-add/trip-add.component';
+import { TripFormComponent } from './components/trip-form/trip-form.component';
 import { TripsComponent } from './components/trips/trips.component';
 
 export const tripsRoutes: Routes = [
@@ -11,11 +11,11 @@ export const tripsRoutes: Routes = [
   },
   {
     path: 'add',
-    component: TripAddComponent,
+    component: TripFormComponent,
   },
   {
     path: 'update/:id',
-    component: TripAddComponent,
+    component: TripFormComponent,
   },
   {
     path: ':id',
