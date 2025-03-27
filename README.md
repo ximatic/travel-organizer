@@ -2,12 +2,7 @@
 
 ## TODOs
 
-- Login flow
-- Signup flow
 - Password recovery flow
-- User settings flow
-- User profile flow
-- User password flow
 - User roles (user/viewer/admin)
 - User administration
 
