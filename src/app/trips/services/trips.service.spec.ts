@@ -6,21 +6,21 @@ import { Trip } from '../models/trip.model';
 
 import { MOCK_TRIP_1, MOCK_TRIP_2, MOCK_TRIP_ITEM_1 } from '../../../../__mocks__/constants/trips.constants';
 
-import { TripsHttpService } from './trips-http.service';
+import { TripsService } from './trips.service';
 import { environment } from '../../../environments/environment';
 
-describe('TripsHttpService', () => {
+describe('TripsService', () => {
   let httpMock: HttpTestingController;
-  let service: TripsHttpService;
+  let service: TripsService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [provideHttpClient(), provideHttpClientTesting(), TripsHttpService],
+      providers: [provideHttpClient(), provideHttpClientTesting(), TripsService],
       teardown: { destroyAfterEach: false },
     });
 
     httpMock = TestBed.inject(HttpTestingController);
-    service = TestBed.inject(TripsHttpService);
+    service = TestBed.inject(TripsService);
   });
 
   it('should be created', () => {

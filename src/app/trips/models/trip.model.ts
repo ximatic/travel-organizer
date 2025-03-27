@@ -1,12 +1,3 @@
-export class TripError extends Error {
-  constructor(
-    msg: string,
-    public trip?: Trip,
-  ) {
-    super(msg);
-  }
-}
-
 export enum TripsEventMessage {
   LOAD_TRIPS_ERROR = 'LOAD_TRIPS_ERROR',
   LOAD_TRIP_ERROR = 'LOAD_TRIP_ERROR',

@@ -8,12 +8,8 @@ import { AuthService } from './auth/services/auth.service';
 
 import { TripsEffects } from './trips/store/trips.effects';
 import { TripsService } from './trips/services/trips.service';
-import { TripsHttpService } from './trips/services/trips-http.service';
-import { TripsStorageService } from './trips/services/trips-storage.service';
 
 import { DashboardComponent } from './dashboard/dashboard.component';
-
-import { environment } from '../environments/environment';
 
 export const routes: Routes = [
   {
@@ -40,10 +36,7 @@ export const routes: Routes = [
     path: 'trips',
     canActivate: [AuthGuard],
     loadChildren: () => import('./trips/trips.routes').then((m) => m.tripsRoutes),
-    providers: [
-      provideEffects([TripsEffects]),
-      { provide: TripsService, useClass: environment.storageMethod === 'http' ? TripsHttpService : TripsStorageService },
-    ],
+    providers: [provideEffects([TripsEffects]), TripsService],
   },
   {
     path: '**',

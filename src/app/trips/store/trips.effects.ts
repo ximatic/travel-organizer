@@ -15,7 +15,7 @@ import {
   tripItemActions,
 } from './trips.actions';
 
-import { Trip, TripError, TripsEventMessage } from '../models/trip.model';
+import { Trip, TripsEventMessage } from '../models/trip.model';
 
 @Injectable()
 export class TripsEffects {
@@ -51,9 +51,7 @@ export class TripsEffects {
       exhaustMap((action: ActionPropsTrip) =>
         this.tripsService.createTrip(action.trip).pipe(
           map((trip: Trip) => tripActions.createTripSuccess({ trip, message: TripsEventMessage.CREATE_TRIP_SUCCESS })),
-          catchError((error: TripError) =>
-            of(tripActions.createTripError({ trip: error.trip, message: TripsEventMessage.CREATE_TRIP_ERROR })),
-          ),
+          catchError(() => of(tripActions.createTripError({ trip: action.trip, message: TripsEventMessage.CREATE_TRIP_ERROR }))),
         ),
       ),
     ),
@@ -65,9 +63,7 @@ export class TripsEffects {
       exhaustMap((action: ActionPropsTrip) =>
         this.tripsService.updateTrip(action.trip).pipe(
           map((trip: Trip) => tripActions.updateTripSuccess({ trip, message: TripsEventMessage.UPDATE_TRIP_SUCCESS })),
-          catchError((error: TripError) =>
-            of(tripActions.updateTripError({ trip: error.trip, message: TripsEventMessage.UPDATE_TRIP_ERROR })),
-          ),
+          catchError(() => of(tripActions.updateTripError({ trip: action.trip, message: TripsEventMessage.UPDATE_TRIP_ERROR }))),
         ),
       ),
     ),
@@ -79,9 +75,7 @@ export class TripsEffects {
       exhaustMap((action: ActionPropsTrip) =>
         this.tripsService.removeTrip(action.trip).pipe(
           map((trip: Trip) => tripActions.removeTripSuccess({ trip, message: TripsEventMessage.REMOVE_TRIP_SUCCESS })),
-          catchError((error: TripError) =>
-            of(tripActions.removeTripError({ trip: error.trip, message: TripsEventMessage.REMOVE_TRIP_ERROR })),
-          ),
+          catchError(() => of(tripActions.removeTripError({ trip: action.trip, message: TripsEventMessage.REMOVE_TRIP_ERROR }))),
         ),
       ),
     ),
