@@ -4,7 +4,7 @@ import { provideRouter, Router } from '@angular/router';
 
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 
-import { DEFAULT_AUTH_TOKEN_1, DEFAULT_INITIAL_AUTH_STATE } from '../../../../__mocks__/constants/auth.constants';
+import { MOCK_AUTH_TOKEN_1, MOCK_INITIAL_AUTH_STATE } from '../../../../__mocks__/constants/auth.constants';
 
 import { selectAuthToken } from '../store/auth.selectors';
 
@@ -19,7 +19,7 @@ describe('AuthGuard', () => {
 
   beforeEach(async () => {
     TestBed.configureTestingModule({
-      providers: [provideRouter([]), provideMockStore({ initialState: DEFAULT_INITIAL_AUTH_STATE }), AuthGuard],
+      providers: [provideRouter([]), provideMockStore({ initialState: MOCK_INITIAL_AUTH_STATE }), AuthGuard],
     });
 
     router = TestBed.inject(Router);
@@ -56,7 +56,7 @@ describe('AuthGuard', () => {
     it('handling exisiting Auth Token works', (done) => {
       const navigateSpy = jest.spyOn(router, 'navigate');
 
-      mockAuthTokenSelector.setResult(DEFAULT_AUTH_TOKEN_1);
+      mockAuthTokenSelector.setResult(MOCK_AUTH_TOKEN_1);
 
       store.refreshState();
 

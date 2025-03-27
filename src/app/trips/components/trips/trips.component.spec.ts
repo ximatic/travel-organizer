@@ -8,7 +8,7 @@ import { provideTranslateService } from '@ngx-translate/core';
 
 import { MessageService } from 'primeng/api';
 
-import { DEFAULT_INITIAL_TRIPS_STATE, DEFAULT_TRIP_1, DEFAULT_TRIP_2 } from '../../../../../__mocks__/constants/trips.constants';
+import { MOCK_INITIAL_TRIPS_STATE, MOCK_TRIP_1, MOCK_TRIP_2 } from '../../../../../__mocks__/constants/trips.constants';
 import { messageServiceMock } from '../../../../../__mocks__/services.mocks';
 
 import { TripsEventMessage } from '../../models/trip.model';
@@ -35,7 +35,7 @@ describe('TripsComponent', () => {
         provideRouter([]),
         provideNoopAnimations(),
         provideTranslateService(),
-        provideMockStore({ initialState: DEFAULT_INITIAL_TRIPS_STATE }),
+        provideMockStore({ initialState: MOCK_INITIAL_TRIPS_STATE }),
         MessageService,
       ],
     }).compileComponents();
@@ -73,24 +73,24 @@ describe('TripsComponent', () => {
   it('loading trips works', () => {
     fixture.detectChanges();
 
-    mockTripsSelector.setResult([DEFAULT_TRIP_1, DEFAULT_TRIP_2]);
+    mockTripsSelector.setResult([MOCK_TRIP_1, MOCK_TRIP_2]);
 
     store.refreshState();
 
-    expect(component.trips).toEqual([DEFAULT_TRIP_1, DEFAULT_TRIP_2]);
+    expect(component.trips).toEqual([MOCK_TRIP_1, MOCK_TRIP_2]);
     expect(component.isLoading()).toBeFalsy();
   });
 
   it('opening trip works', () => {
     const navigateSpy = jest.spyOn(router, 'navigate');
 
-    component.openTrip(DEFAULT_TRIP_1);
-    expect(navigateSpy).toHaveBeenCalledWith([`/trips/${DEFAULT_TRIP_1._id}`]);
+    component.openTrip(MOCK_TRIP_1);
+    expect(navigateSpy).toHaveBeenCalledWith([`/trips/${MOCK_TRIP_1._id}`]);
   });
 
   it('removing trip works', () => {
     // TODO - add proper check for removeTrip
-    component.removeTrip(new MouseEvent('click'), DEFAULT_TRIP_1);
+    component.removeTrip(new MouseEvent('click'), MOCK_TRIP_1);
     expect(component).toBeTruthy();
   });
 
@@ -171,7 +171,7 @@ describe('TripsComponent', () => {
     mockTripsEventSelector.setResult({
       name: TripsEventName.Remove,
       type: TripsEventType.Success,
-      trip: DEFAULT_TRIP_1,
+      trip: MOCK_TRIP_1,
       message: TripsEventMessage.REMOVE_TRIP_SUCCESS,
     });
 
@@ -194,7 +194,7 @@ describe('TripsComponent', () => {
     mockTripsEventSelector.setResult({
       name: TripsEventName.Remove,
       type: TripsEventType.Error,
-      trip: DEFAULT_TRIP_1,
+      trip: MOCK_TRIP_1,
       message: TripsEventMessage.REMOVE_TRIP_ERROR,
     });
 

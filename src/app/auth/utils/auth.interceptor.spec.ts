@@ -2,7 +2,7 @@ import { HttpClient, provideHttpClient, withInterceptors } from '@angular/common
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 
-import { DEFAULT_AUTH_TOKEN_1 } from '../../../../__mocks__/constants/auth.constants';
+import { MOCK_AUTH_TOKEN_1 } from '../../../../__mocks__/constants/auth.constants';
 
 import { AuthService } from '../services/auth.service';
 
@@ -29,7 +29,7 @@ describe('authInterceptor', () => {
   // auth token
 
   it('should not add auth Authorization header with Access Token to URL on excluded list', () => {
-    const getAuthToken = jest.spyOn(authService, 'getAuthToken').mockReturnValue(DEFAULT_AUTH_TOKEN_1);
+    const getAuthToken = jest.spyOn(authService, 'getAuthToken').mockReturnValue(MOCK_AUTH_TOKEN_1);
 
     const url = `${environment.authApi}/auth/login`;
     httpClient.post(url, {}).subscribe();
@@ -40,7 +40,7 @@ describe('authInterceptor', () => {
   });
 
   it('should add auth Authorization header with Access Token to URL not on excluded list', () => {
-    const getAuthToken = jest.spyOn(authService, 'getAuthToken').mockReturnValue(DEFAULT_AUTH_TOKEN_1);
+    const getAuthToken = jest.spyOn(authService, 'getAuthToken').mockReturnValue(MOCK_AUTH_TOKEN_1);
 
     const url = `${environment.authApi}/settings`;
     httpClient.get(url).subscribe();

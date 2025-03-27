@@ -4,7 +4,7 @@ import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 
 import { Trip } from '../models/trip.model';
 
-import { DEFAULT_TRIP_1, DEFAULT_TRIP_2, DEFAULT_TRIP_ITEM_1 } from '../../../../__mocks__/constants/trips.constants';
+import { MOCK_TRIP_1, MOCK_TRIP_2, MOCK_TRIP_ITEM_1 } from '../../../../__mocks__/constants/trips.constants';
 
 import { TripsHttpService } from './trips-http.service';
 import { environment } from '../../../environments/environment';
@@ -50,8 +50,8 @@ describe('TripsHttpService', () => {
   }));
 
   it('loading trips with non-empty result works', fakeAsync(() => {
-    const mockData: Trip[] = [DEFAULT_TRIP_1, DEFAULT_TRIP_2];
-    const expectedResponse: Trip[] = [DEFAULT_TRIP_1, DEFAULT_TRIP_2];
+    const mockData: Trip[] = [MOCK_TRIP_1, MOCK_TRIP_2];
+    const expectedResponse: Trip[] = [MOCK_TRIP_1, MOCK_TRIP_2];
     let serviceResponse!: Trip[];
 
     service.loadTrips().subscribe((trips: Trip[]) => {
@@ -70,15 +70,15 @@ describe('TripsHttpService', () => {
   // loadTrip
 
   it('loading trip with non-empty result works', fakeAsync(() => {
-    const mockData: Trip = DEFAULT_TRIP_1;
-    const expectedResponse: Trip = DEFAULT_TRIP_1;
+    const mockData: Trip = MOCK_TRIP_1;
+    const expectedResponse: Trip = MOCK_TRIP_1;
     let serviceResponse!: Trip;
 
-    service.loadTrip(DEFAULT_TRIP_1._id as string).subscribe((trip: Trip) => {
+    service.loadTrip(MOCK_TRIP_1._id as string).subscribe((trip: Trip) => {
       serviceResponse = trip;
     });
 
-    const req = httpMock.expectOne(`${environment.tripsApi}/${DEFAULT_TRIP_1._id}`);
+    const req = httpMock.expectOne(`${environment.tripsApi}/${MOCK_TRIP_1._id}`);
     req.flush(mockData);
 
     tick();
@@ -90,11 +90,11 @@ describe('TripsHttpService', () => {
   // createTrip
 
   it('creating trip works', fakeAsync(() => {
-    const mockData: Trip = DEFAULT_TRIP_1;
-    const expectedResponse: Trip = DEFAULT_TRIP_1;
+    const mockData: Trip = MOCK_TRIP_1;
+    const expectedResponse: Trip = MOCK_TRIP_1;
     let serviceResponse!: Trip;
 
-    service.createTrip(DEFAULT_TRIP_1).subscribe((trip: Trip) => {
+    service.createTrip(MOCK_TRIP_1).subscribe((trip: Trip) => {
       serviceResponse = trip;
     });
 
@@ -110,15 +110,15 @@ describe('TripsHttpService', () => {
   // updateTrip
 
   it('updating trip works', fakeAsync(() => {
-    const mockData: Trip = DEFAULT_TRIP_1;
-    const expectedResponse: Trip = DEFAULT_TRIP_1;
+    const mockData: Trip = MOCK_TRIP_1;
+    const expectedResponse: Trip = MOCK_TRIP_1;
     let serviceResponse!: Trip;
 
-    service.updateTrip(DEFAULT_TRIP_1).subscribe((trip: Trip) => {
+    service.updateTrip(MOCK_TRIP_1).subscribe((trip: Trip) => {
       serviceResponse = trip;
     });
 
-    const req = httpMock.expectOne(`${environment.tripsApi}/${DEFAULT_TRIP_1._id}`);
+    const req = httpMock.expectOne(`${environment.tripsApi}/${MOCK_TRIP_1._id}`);
     req.flush(mockData);
 
     tick();
@@ -130,15 +130,15 @@ describe('TripsHttpService', () => {
   // deleteTrip
 
   it('deleting trip works', fakeAsync(() => {
-    const mockData: Trip = DEFAULT_TRIP_1;
-    const expectedResponse: Trip = DEFAULT_TRIP_1;
+    const mockData: Trip = MOCK_TRIP_1;
+    const expectedResponse: Trip = MOCK_TRIP_1;
     let serviceResponse!: Trip;
 
-    service.removeTrip(DEFAULT_TRIP_1).subscribe((trip: Trip) => {
+    service.removeTrip(MOCK_TRIP_1).subscribe((trip: Trip) => {
       serviceResponse = trip;
     });
 
-    const req = httpMock.expectOne(`${environment.tripsApi}/${DEFAULT_TRIP_1._id}`);
+    const req = httpMock.expectOne(`${environment.tripsApi}/${MOCK_TRIP_1._id}`);
     req.flush(mockData);
 
     tick();
@@ -152,15 +152,15 @@ describe('TripsHttpService', () => {
   // createTripItem
 
   it('creating trip item works', fakeAsync(() => {
-    const mockData: Trip = { ...DEFAULT_TRIP_1, items: [DEFAULT_TRIP_ITEM_1] };
-    const expectedResponse: Trip = { ...DEFAULT_TRIP_1, items: [DEFAULT_TRIP_ITEM_1] };
+    const mockData: Trip = { ...MOCK_TRIP_1, items: [MOCK_TRIP_ITEM_1] };
+    const expectedResponse: Trip = { ...MOCK_TRIP_1, items: [MOCK_TRIP_ITEM_1] };
     let serviceResponse!: Trip;
 
-    service.createTripItem(DEFAULT_TRIP_1, DEFAULT_TRIP_ITEM_1).subscribe((trip: Trip) => {
+    service.createTripItem(MOCK_TRIP_1, MOCK_TRIP_ITEM_1).subscribe((trip: Trip) => {
       serviceResponse = trip;
     });
 
-    const req = httpMock.expectOne(`${environment.tripsApi}/${DEFAULT_TRIP_1._id}/item`);
+    const req = httpMock.expectOne(`${environment.tripsApi}/${MOCK_TRIP_1._id}/item`);
     req.flush(mockData);
 
     tick();
@@ -172,15 +172,15 @@ describe('TripsHttpService', () => {
   // checkTripItem
 
   it('checking trip item works', fakeAsync(() => {
-    const mockData: Trip = { ...DEFAULT_TRIP_1, items: [{ ...DEFAULT_TRIP_ITEM_1, checked: true }] };
-    const expectedResponse: Trip = { ...DEFAULT_TRIP_1, items: [{ ...DEFAULT_TRIP_ITEM_1, checked: true }] };
+    const mockData: Trip = { ...MOCK_TRIP_1, items: [{ ...MOCK_TRIP_ITEM_1, checked: true }] };
+    const expectedResponse: Trip = { ...MOCK_TRIP_1, items: [{ ...MOCK_TRIP_ITEM_1, checked: true }] };
     let serviceResponse!: Trip;
 
-    service.checkTripItem(DEFAULT_TRIP_1, DEFAULT_TRIP_ITEM_1).subscribe((trip: Trip) => {
+    service.checkTripItem(MOCK_TRIP_1, MOCK_TRIP_ITEM_1).subscribe((trip: Trip) => {
       serviceResponse = trip;
     });
 
-    const req = httpMock.expectOne(`${environment.tripsApi}/${DEFAULT_TRIP_1._id}/item/${DEFAULT_TRIP_ITEM_1._id}`);
+    const req = httpMock.expectOne(`${environment.tripsApi}/${MOCK_TRIP_1._id}/item/${MOCK_TRIP_ITEM_1._id}`);
     req.flush(mockData);
 
     tick();
@@ -192,15 +192,15 @@ describe('TripsHttpService', () => {
   // removeTripItem
 
   it('removing trip item works', fakeAsync(() => {
-    const mockData: Trip = { ...DEFAULT_TRIP_1, items: [] };
-    const expectedResponse: Trip = { ...DEFAULT_TRIP_1, items: [] };
+    const mockData: Trip = { ...MOCK_TRIP_1, items: [] };
+    const expectedResponse: Trip = { ...MOCK_TRIP_1, items: [] };
     let serviceResponse!: Trip;
 
-    service.removeTripItem(DEFAULT_TRIP_1, DEFAULT_TRIP_ITEM_1).subscribe((trip: Trip) => {
+    service.removeTripItem(MOCK_TRIP_1, MOCK_TRIP_ITEM_1).subscribe((trip: Trip) => {
       serviceResponse = trip;
     });
 
-    const req = httpMock.expectOne(`${environment.tripsApi}/${DEFAULT_TRIP_1._id}/item/${DEFAULT_TRIP_ITEM_1._id}`);
+    const req = httpMock.expectOne(`${environment.tripsApi}/${MOCK_TRIP_1._id}/item/${MOCK_TRIP_ITEM_1._id}`);
     req.flush(mockData);
 
     tick();

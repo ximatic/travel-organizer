@@ -9,12 +9,12 @@ import { provideTranslateService } from '@ngx-translate/core';
 import { MessageService } from 'primeng/api';
 
 import {
-  DEFAULT_EMAIL_1,
-  DEFAULT_PASSWORD_1,
-  DEFAULT_FIRSTNAME_1,
-  DEFAULT_LASTNAME_1,
-  DEFAULT_INITIAL_AUTH_STATE,
-  DEFAULT_MOCK_AUTH_EVENT_SIGNUP_LOADING,
+  MOCK_EMAIL_1,
+  MOCK_PASSWORD_1,
+  MOCK_FIRSTNAME_1,
+  MOCK_LASTNAME_1,
+  MOCK_INITIAL_AUTH_STATE,
+  MOCK_AUTH_EVENT_SIGNUP_LOADING,
 } from '../../../../__mocks__/constants/auth.constants';
 
 import { DEFAULT_UX_DELAY } from '../../common/constants/common.constants';
@@ -45,7 +45,7 @@ describe('SignupComponent', () => {
         provideRouter([]),
         provideNoopAnimations(),
         provideTranslateService(),
-        provideMockStore({ initialState: DEFAULT_INITIAL_AUTH_STATE }),
+        provideMockStore({ initialState: MOCK_INITIAL_AUTH_STATE }),
         MessageService,
       ],
     }).compileComponents();
@@ -55,7 +55,7 @@ describe('SignupComponent', () => {
     store = TestBed.inject(MockStore);
     messageService = TestBed.inject(MessageService);
 
-    mockAuthEventSelector = store.overrideSelector(selectAuthEvent, DEFAULT_MOCK_AUTH_EVENT_SIGNUP_LOADING);
+    mockAuthEventSelector = store.overrideSelector(selectAuthEvent, MOCK_AUTH_EVENT_SIGNUP_LOADING);
   });
 
   beforeEach(() => {
@@ -91,11 +91,11 @@ describe('SignupComponent', () => {
     fixture.detectChanges();
 
     component.signupForm.patchValue({
-      email: DEFAULT_EMAIL_1,
-      password: DEFAULT_PASSWORD_1,
-      passwordRepeat: DEFAULT_PASSWORD_1,
-      firstname: DEFAULT_FIRSTNAME_1,
-      lastname: DEFAULT_LASTNAME_1,
+      email: MOCK_EMAIL_1,
+      password: MOCK_PASSWORD_1,
+      passwordRepeat: MOCK_PASSWORD_1,
+      firstname: MOCK_FIRSTNAME_1,
+      lastname: MOCK_LASTNAME_1,
     });
 
     expect(component.signupForm.invalid).toBeFalsy();
@@ -107,11 +107,11 @@ describe('SignupComponent', () => {
 
     expect(dispatchSpy).toHaveBeenCalledWith({
       type: AuthAction.Signup,
-      email: DEFAULT_EMAIL_1,
-      password: DEFAULT_PASSWORD_1,
-      passwordRepeat: DEFAULT_PASSWORD_1,
-      firstname: DEFAULT_FIRSTNAME_1,
-      lastname: DEFAULT_LASTNAME_1,
+      email: MOCK_EMAIL_1,
+      password: MOCK_PASSWORD_1,
+      passwordRepeat: MOCK_PASSWORD_1,
+      firstname: MOCK_FIRSTNAME_1,
+      lastname: MOCK_LASTNAME_1,
     });
   }));
 

@@ -6,10 +6,10 @@ import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { provideTranslateService } from '@ngx-translate/core';
 
 import {
-  DEFAULT_AUTH_TOKEN_1,
-  DEFAULT_MOCK_AUTH_EVENT_LOGIN_SUCCESS,
-  DEFAULT_MOCK_AUTH_EVENT_LOGOUT_LOADING,
-  DEFAULT_MOCK_AUTH_EVENT_LOGOUT_SUCCESS,
+  MOCK_AUTH_TOKEN_1,
+  MOCK_AUTH_EVENT_LOGIN_SUCCESS,
+  MOCK_AUTH_EVENT_LOGOUT_LOADING,
+  MOCK_AUTH_EVENT_LOGOUT_SUCCESS,
 } from '../../../__mocks__/constants/auth.constants';
 import { MOCK_INITIAL_USER_STATE, MOCK_USER_EVENT_LOAD_USER_INFO_SUCCESS } from '../../../__mocks__/constants/user.constants';
 import {
@@ -57,7 +57,7 @@ describe('MainComponent', () => {
       MOCK_USER_EVENT_UPDATE_USER_SETTINGS_PROCESSING,
     );
     mockAuthTokenSelector = store.overrideSelector(selectAuthToken, null);
-    mockAuthEventSelector = store.overrideSelector(selectAuthEvent, DEFAULT_MOCK_AUTH_EVENT_LOGOUT_LOADING);
+    mockAuthEventSelector = store.overrideSelector(selectAuthEvent, MOCK_AUTH_EVENT_LOGOUT_LOADING);
   });
 
   beforeEach(() => {
@@ -251,7 +251,7 @@ describe('MainComponent', () => {
   it('user is logged in when Auth Token is valid', fakeAsync(() => {
     fixture.detectChanges();
 
-    mockAuthTokenSelector.setResult(DEFAULT_AUTH_TOKEN_1.accessToken);
+    mockAuthTokenSelector.setResult(MOCK_AUTH_TOKEN_1.accessToken);
 
     store.refreshState();
 
@@ -268,7 +268,7 @@ describe('MainComponent', () => {
     );
     fixture.detectChanges();
 
-    mockAuthEventSelector.setResult(DEFAULT_MOCK_AUTH_EVENT_LOGOUT_SUCCESS);
+    mockAuthEventSelector.setResult(MOCK_AUTH_EVENT_LOGOUT_SUCCESS);
 
     store.refreshState();
 
@@ -280,7 +280,7 @@ describe('MainComponent', () => {
     const dispatchSpy = jest.spyOn(store, 'dispatch');
     fixture.detectChanges();
 
-    mockAuthEventSelector.setResult(DEFAULT_MOCK_AUTH_EVENT_LOGIN_SUCCESS);
+    mockAuthEventSelector.setResult(MOCK_AUTH_EVENT_LOGIN_SUCCESS);
 
     store.refreshState();
 

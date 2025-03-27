@@ -4,10 +4,11 @@ import { provideNoopAnimations } from '@angular/platform-browser/animations';
 
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 
-import { DEFAULT_USER_SETTINGS } from '../../../user/constants/settings.constants';
 import { MOCK_INITIAL_USER_STATE } from '../../../../../__mocks__/constants/user.constants';
 import { MOCK_USER_SETTINGS_1 } from '../../../../../__mocks__/constants/user-settings.constants';
-import { DEFAULT_TRIP_0 } from '../../../../../__mocks__/constants/trips.constants';
+import { MOCK_TRIP_0 } from '../../../../../__mocks__/constants/trips.constants';
+
+import { DEFAULT_USER_SETTINGS } from '../../../user/constants/settings.constants';
 
 import { selectUserSettings } from '../../../user/store/user.selectors';
 
@@ -33,7 +34,7 @@ describe('TripPanelComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(TripPanelComponent);
     component = fixture.componentInstance;
-    fixture.componentRef.setInput('trip', DEFAULT_TRIP_0);
+    fixture.componentRef.setInput('trip', MOCK_TRIP_0);
   });
 
   it('should be created', () => {

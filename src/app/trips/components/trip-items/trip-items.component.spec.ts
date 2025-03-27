@@ -9,11 +9,7 @@ import { of } from 'rxjs';
 
 import { MessageService } from 'primeng/api';
 
-import {
-  DEFAULT_INITIAL_TRIPS_STATE,
-  DEFAULT_TRIP_1,
-  DEFAULT_TRIP_ITEM_1,
-} from '../../../../../__mocks__/constants/trips.constants';
+import { MOCK_INITIAL_TRIPS_STATE, MOCK_TRIP_1, MOCK_TRIP_ITEM_1 } from '../../../../../__mocks__/constants/trips.constants';
 import { messageServiceMock } from '../../../../../__mocks__/services.mocks';
 
 import { DEFAULT_UX_DELAY } from '../../../common/constants/common.constants';
@@ -40,11 +36,11 @@ describe('TripItemsComponent', () => {
         provideRouter([]),
         provideNoopAnimations(),
         provideTranslateService(),
-        provideMockStore({ initialState: DEFAULT_INITIAL_TRIPS_STATE }),
+        provideMockStore({ initialState: MOCK_INITIAL_TRIPS_STATE }),
         {
           provide: ActivatedRoute,
           useValue: {
-            params: of({ id: DEFAULT_TRIP_1._id }),
+            params: of({ id: MOCK_TRIP_1._id }),
           },
         },
         MessageService,
@@ -64,7 +60,7 @@ describe('TripItemsComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(TripItemsComponent);
     component = fixture.componentInstance;
-    fixture.componentRef.setInput('trip', DEFAULT_TRIP_1);
+    fixture.componentRef.setInput('trip', MOCK_TRIP_1);
   });
 
   it('should be created', () => {
@@ -76,12 +72,12 @@ describe('TripItemsComponent', () => {
 
     fixture.detectChanges();
 
-    component.checkTripItem(DEFAULT_TRIP_ITEM_1);
+    component.checkTripItem(MOCK_TRIP_ITEM_1);
 
     expect(dispatchSpy).toHaveBeenCalledWith({
       type: TripItemAction.CheckTripItem,
-      trip: DEFAULT_TRIP_1,
-      tripItem: DEFAULT_TRIP_ITEM_1,
+      trip: MOCK_TRIP_1,
+      tripItem: MOCK_TRIP_ITEM_1,
     });
   });
 
@@ -90,12 +86,12 @@ describe('TripItemsComponent', () => {
 
     fixture.detectChanges();
 
-    component.removeTripItem(DEFAULT_TRIP_ITEM_1);
+    component.removeTripItem(MOCK_TRIP_ITEM_1);
 
     expect(dispatchSpy).toHaveBeenCalledWith({
       type: TripItemAction.RemoveTripItem,
-      trip: DEFAULT_TRIP_1,
-      tripItem: DEFAULT_TRIP_ITEM_1,
+      trip: MOCK_TRIP_1,
+      tripItem: MOCK_TRIP_ITEM_1,
     });
   });
 
@@ -120,7 +116,7 @@ describe('TripItemsComponent', () => {
     fixture.detectChanges();
 
     component.tripItemForm.patchValue({
-      name: DEFAULT_TRIP_ITEM_1.name,
+      name: MOCK_TRIP_ITEM_1.name,
     });
 
     expect(component.tripItemForm.invalid).toBeFalsy();
@@ -132,8 +128,8 @@ describe('TripItemsComponent', () => {
 
     expect(dispatchSpy).toHaveBeenCalledWith({
       type: TripItemAction.CreateTripItem,
-      trip: DEFAULT_TRIP_1,
-      tripItem: { name: DEFAULT_TRIP_ITEM_1.name, checked: false },
+      trip: MOCK_TRIP_1,
+      tripItem: { name: MOCK_TRIP_ITEM_1.name, checked: false },
     });
   }));
 
@@ -159,14 +155,14 @@ describe('TripItemsComponent', () => {
     mockTripsEventSelector.setResult({
       name: TripsEventName.CreateItem,
       type: TripsEventType.Success,
-      trip: { ...DEFAULT_TRIP_1, items: [DEFAULT_TRIP_ITEM_1] },
+      trip: { ...MOCK_TRIP_1, items: [MOCK_TRIP_ITEM_1] },
     });
 
     store.refreshState();
 
     expect(component.tripItemForm.invalid).toBeTruthy();
     expect(component.isSubmitInProgress()).toBeFalsy();
-    expect(component.trip()).toEqual({ ...DEFAULT_TRIP_1, items: [DEFAULT_TRIP_ITEM_1] });
+    expect(component.trip()).toEqual({ ...MOCK_TRIP_1, items: [MOCK_TRIP_ITEM_1] });
     expect(messageAddSpy).toHaveBeenCalledTimes(0);
   });
 
@@ -201,12 +197,12 @@ describe('TripItemsComponent', () => {
     mockTripsEventSelector.setResult({
       name: TripsEventName.CheckItem,
       type: TripsEventType.Success,
-      trip: { ...DEFAULT_TRIP_1, items: [DEFAULT_TRIP_ITEM_1] },
+      trip: { ...MOCK_TRIP_1, items: [MOCK_TRIP_ITEM_1] },
     });
 
     store.refreshState();
 
-    expect(component.trip()).toEqual({ ...DEFAULT_TRIP_1, items: [DEFAULT_TRIP_ITEM_1] });
+    expect(component.trip()).toEqual({ ...MOCK_TRIP_1, items: [MOCK_TRIP_ITEM_1] });
     expect(messageAddSpy).toHaveBeenCalledTimes(0);
   });
 
@@ -240,12 +236,12 @@ describe('TripItemsComponent', () => {
     mockTripsEventSelector.setResult({
       name: TripsEventName.RemoveItem,
       type: TripsEventType.Success,
-      trip: { ...DEFAULT_TRIP_1, items: [DEFAULT_TRIP_ITEM_1] },
+      trip: { ...MOCK_TRIP_1, items: [MOCK_TRIP_ITEM_1] },
     });
 
     store.refreshState();
 
-    expect(component.trip()).toEqual({ ...DEFAULT_TRIP_1, items: [DEFAULT_TRIP_ITEM_1] });
+    expect(component.trip()).toEqual({ ...MOCK_TRIP_1, items: [MOCK_TRIP_ITEM_1] });
     expect(messageAddSpy).toHaveBeenCalledTimes(0);
   });
 

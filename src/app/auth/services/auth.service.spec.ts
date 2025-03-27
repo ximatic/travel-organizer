@@ -3,11 +3,11 @@ import { HttpTestingController, provideHttpClientTesting } from '@angular/common
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 
 import {
-  DEFAULT_AUTH_TOKEN_1,
-  DEFAULT_EMAIL_1,
-  DEFAULT_FIRSTNAME_1,
-  DEFAULT_LASTNAME_1,
-  DEFAULT_PASSWORD_1,
+  MOCK_AUTH_TOKEN_1,
+  MOCK_EMAIL_1,
+  MOCK_FIRSTNAME_1,
+  MOCK_LASTNAME_1,
+  MOCK_PASSWORD_1,
 } from '../../../../__mocks__/constants/auth.constants';
 import { AuthToken, SignupPayload } from '../model/auth.model';
 
@@ -40,11 +40,11 @@ describe('AuthService', () => {
 
   describe('login()', () => {
     it('login works', fakeAsync(() => {
-      const mockData: AuthToken = DEFAULT_AUTH_TOKEN_1;
-      const expectedResponse: AuthToken = DEFAULT_AUTH_TOKEN_1;
+      const mockData: AuthToken = MOCK_AUTH_TOKEN_1;
+      const expectedResponse: AuthToken = MOCK_AUTH_TOKEN_1;
       let serviceResponse!: AuthToken;
 
-      service.login(DEFAULT_EMAIL_1, DEFAULT_PASSWORD_1).subscribe((authToken: AuthToken) => {
+      service.login(MOCK_EMAIL_1, MOCK_PASSWORD_1).subscribe((authToken: AuthToken) => {
         serviceResponse = authToken;
       });
 
@@ -55,7 +55,7 @@ describe('AuthService', () => {
 
       expect(req.request.method).toEqual('POST');
       expect(serviceResponse).toEqual(expectedResponse);
-      expect(service.getAuthToken()).toEqual(DEFAULT_AUTH_TOKEN_1);
+      expect(service.getAuthToken()).toEqual(MOCK_AUTH_TOKEN_1);
     }));
   });
 
@@ -77,8 +77,8 @@ describe('AuthService', () => {
 
   describe('verify()', () => {
     it('verify works', fakeAsync(() => {
-      const mockData: AuthToken = DEFAULT_AUTH_TOKEN_1;
-      const expectedResponse: AuthToken = DEFAULT_AUTH_TOKEN_1;
+      const mockData: AuthToken = MOCK_AUTH_TOKEN_1;
+      const expectedResponse: AuthToken = MOCK_AUTH_TOKEN_1;
       let serviceResponse!: AuthToken;
 
       service.verify().subscribe((authToken: AuthToken) => {
@@ -92,7 +92,7 @@ describe('AuthService', () => {
 
       expect(req.request.method).toEqual('GET');
       expect(serviceResponse).toEqual(expectedResponse);
-      expect(service.getAuthToken()).toEqual(DEFAULT_AUTH_TOKEN_1);
+      expect(service.getAuthToken()).toEqual(MOCK_AUTH_TOKEN_1);
     }));
   });
 
@@ -100,16 +100,16 @@ describe('AuthService', () => {
 
   describe('signup()', () => {
     it('signup works', fakeAsync(() => {
-      const mockData: AuthToken = DEFAULT_AUTH_TOKEN_1;
-      const expectedResponse: AuthToken = DEFAULT_AUTH_TOKEN_1;
+      const mockData: AuthToken = MOCK_AUTH_TOKEN_1;
+      const expectedResponse: AuthToken = MOCK_AUTH_TOKEN_1;
       let serviceResponse!: AuthToken;
 
       const payload: SignupPayload = {
-        email: DEFAULT_EMAIL_1,
-        password: DEFAULT_PASSWORD_1,
-        passwordRepeat: DEFAULT_PASSWORD_1,
-        firstname: DEFAULT_FIRSTNAME_1,
-        lastname: DEFAULT_LASTNAME_1,
+        email: MOCK_EMAIL_1,
+        password: MOCK_PASSWORD_1,
+        passwordRepeat: MOCK_PASSWORD_1,
+        firstname: MOCK_FIRSTNAME_1,
+        lastname: MOCK_LASTNAME_1,
       };
       service.signup(payload).subscribe((authToken: AuthToken) => {
         serviceResponse = authToken;
@@ -122,7 +122,7 @@ describe('AuthService', () => {
 
       expect(req.request.method).toEqual('POST');
       expect(serviceResponse).toEqual(expectedResponse);
-      expect(service.getAuthToken()).toEqual(DEFAULT_AUTH_TOKEN_1);
+      expect(service.getAuthToken()).toEqual(MOCK_AUTH_TOKEN_1);
     }));
   });
 });

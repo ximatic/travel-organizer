@@ -9,7 +9,7 @@ import { of } from 'rxjs';
 
 import { MessageService } from 'primeng/api';
 
-import { DEFAULT_INITIAL_TRIPS_STATE, DEFAULT_TRIP_1, DEFAULT_TRIP_2 } from '../../../../../__mocks__/constants/trips.constants';
+import { MOCK_INITIAL_TRIPS_STATE, MOCK_TRIP_1, MOCK_TRIP_2 } from '../../../../../__mocks__/constants/trips.constants';
 import { messageServiceMock } from '../../../../../__mocks__/services.mocks';
 
 import { TripAction } from '../../store/trips.actions';
@@ -34,11 +34,11 @@ describe('TripComponent', () => {
         provideRouter([]),
         provideNoopAnimations(),
         provideTranslateService(),
-        provideMockStore({ initialState: DEFAULT_INITIAL_TRIPS_STATE }),
+        provideMockStore({ initialState: MOCK_INITIAL_TRIPS_STATE }),
         {
           provide: ActivatedRoute,
           useValue: {
-            params: of({ id: DEFAULT_TRIP_1._id }),
+            params: of({ id: MOCK_TRIP_1._id }),
           },
         },
         MessageService,
@@ -70,7 +70,7 @@ describe('TripComponent', () => {
     fixture.detectChanges();
 
     expect(component.isLoading()).toBeTruthy();
-    expect(dispatchSpy).toHaveBeenCalledWith({ type: TripAction.LoadTrip, id: DEFAULT_TRIP_1._id });
+    expect(dispatchSpy).toHaveBeenCalledWith({ type: TripAction.LoadTrip, id: MOCK_TRIP_1._id });
   });
 
   // trips event
@@ -111,13 +111,13 @@ describe('TripComponent', () => {
     mockTripsEventSelector.setResult({
       name: TripsEventName.Load,
       type: TripsEventType.Success,
-      trip: DEFAULT_TRIP_2,
+      trip: MOCK_TRIP_2,
     });
 
     store.refreshState();
 
     expect(component.isLoading()).toBeFalsy();
-    expect(component.trip).toEqual(DEFAULT_TRIP_2);
+    expect(component.trip).toEqual(MOCK_TRIP_2);
     expect(messageAddSpy).toHaveBeenCalledTimes(0);
   });
 
@@ -130,7 +130,7 @@ describe('TripComponent', () => {
       name: TripsEventName.Load,
       type: TripsEventType.Error,
       message: TripsEventMessage.LOAD_TRIP_ERROR,
-      trip: DEFAULT_TRIP_1,
+      trip: MOCK_TRIP_1,
     });
 
     store.refreshState();

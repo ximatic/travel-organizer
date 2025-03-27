@@ -1,6 +1,6 @@
 import { UserEvent, UserEventName, UserEventType, UserState } from '../../src/app/user/store/user.state';
 
-import { DEFAULT_EMAIL_1 } from './auth.constants';
+import { MOCK_EMAIL_1 } from './auth.constants';
 import { MOCK_USER_PROFILE_1 } from './user-profile.constants';
 import { MOCK_USER_SETTINGS_1 } from './user-settings.constants';
 
@@ -30,7 +30,7 @@ export const MOCK_INITIAL_USER_STATE: UserState = {
 };
 
 export const MOCK_INITIAL_USER_STATE_1: UserState = {
-  email: DEFAULT_EMAIL_1,
+  email: MOCK_EMAIL_1,
   profile: MOCK_USER_PROFILE_1,
   settings: MOCK_USER_SETTINGS_1,
 };

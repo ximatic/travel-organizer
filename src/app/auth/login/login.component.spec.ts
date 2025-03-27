@@ -9,10 +9,10 @@ import { provideTranslateService } from '@ngx-translate/core';
 import { MessageService } from 'primeng/api';
 
 import {
-  DEFAULT_EMAIL_1,
-  DEFAULT_PASSWORD_1,
-  DEFAULT_INITIAL_AUTH_STATE,
-  DEFAULT_MOCK_AUTH_EVENT_LOGIN_LOADING,
+  MOCK_EMAIL_1,
+  MOCK_PASSWORD_1,
+  MOCK_INITIAL_AUTH_STATE,
+  MOCK_AUTH_EVENT_LOGIN_LOADING,
 } from '../../../../__mocks__/constants/auth.constants';
 
 import { DEFAULT_UX_DELAY } from '../../common/constants/common.constants';
@@ -43,7 +43,7 @@ describe('LoginComponent', () => {
         provideRouter([]),
         provideNoopAnimations(),
         provideTranslateService(),
-        provideMockStore({ initialState: DEFAULT_INITIAL_AUTH_STATE }),
+        provideMockStore({ initialState: MOCK_INITIAL_AUTH_STATE }),
         MessageService,
       ],
     }).compileComponents();
@@ -53,7 +53,7 @@ describe('LoginComponent', () => {
     store = TestBed.inject(MockStore);
     messageService = TestBed.inject(MessageService);
 
-    mockAuthEventSelector = store.overrideSelector(selectAuthEvent, DEFAULT_MOCK_AUTH_EVENT_LOGIN_LOADING);
+    mockAuthEventSelector = store.overrideSelector(selectAuthEvent, MOCK_AUTH_EVENT_LOGIN_LOADING);
   });
 
   beforeEach(() => {
@@ -80,7 +80,7 @@ describe('LoginComponent', () => {
 
     fixture.detectChanges();
 
-    component.loginForm.patchValue({ email: DEFAULT_EMAIL_1, password: DEFAULT_PASSWORD_1 });
+    component.loginForm.patchValue({ email: MOCK_EMAIL_1, password: MOCK_PASSWORD_1 });
 
     expect(component.loginForm.invalid).toBeFalsy();
     component.submitForm();
@@ -91,8 +91,8 @@ describe('LoginComponent', () => {
 
     expect(dispatchSpy).toHaveBeenCalledWith({
       type: AuthAction.Login,
-      email: DEFAULT_EMAIL_1,
-      password: DEFAULT_PASSWORD_1,
+      email: MOCK_EMAIL_1,
+      password: MOCK_PASSWORD_1,
     });
   }));
 

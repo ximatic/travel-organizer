@@ -11,11 +11,11 @@ import { MessageService } from 'primeng/api';
 
 import { DEFAULT_UX_DELAY } from '../../../common/constants/common.constants';
 import {
-  DEFAULT_INITIAL_TRIPS_STATE,
-  DEFAULT_TRIP_1,
-  DEFAULT_TRIP_2,
-  DEFAULT_TRIP_3,
-  DEFAULT_TRIP_4,
+  MOCK_INITIAL_TRIPS_STATE,
+  MOCK_TRIP_1,
+  MOCK_TRIP_2,
+  MOCK_TRIP_3,
+  MOCK_TRIP_4,
 } from '../../../../../__mocks__/constants/trips.constants';
 import { messageServiceMock } from '../../../../../__mocks__/services.mocks';
 
@@ -44,7 +44,7 @@ describe('TripFormComponent', () => {
           provideRouter([]),
           provideNoopAnimations(),
           provideTranslateService(),
-          provideMockStore({ initialState: DEFAULT_INITIAL_TRIPS_STATE }),
+          provideMockStore({ initialState: MOCK_INITIAL_TRIPS_STATE }),
           MessageService,
         ],
       }).compileComponents();
@@ -93,7 +93,7 @@ describe('TripFormComponent', () => {
       fixture.detectChanges();
 
       component.tripForm.patchValue({
-        ...DEFAULT_TRIP_1,
+        ...MOCK_TRIP_1,
       });
 
       expect(component.tripForm.invalid).toBeFalsy();
@@ -105,7 +105,7 @@ describe('TripFormComponent', () => {
 
       expect(dispatchSpy).toHaveBeenCalledWith({
         type: TripAction.CreateTrip,
-        trip: { name: DEFAULT_TRIP_1.name, location: '', description: '', startDate: undefined, endDate: undefined },
+        trip: { name: MOCK_TRIP_1.name, location: '', description: '', startDate: undefined, endDate: undefined },
       });
     }));
 
@@ -133,7 +133,7 @@ describe('TripFormComponent', () => {
         name: TripsEventName.Create,
         type: TripsEventType.Success,
         message: TripsEventMessage.CREATE_TRIP_SUCCESS,
-        trip: DEFAULT_TRIP_3,
+        trip: MOCK_TRIP_3,
       });
 
       store.refreshState();
@@ -146,7 +146,7 @@ describe('TripFormComponent', () => {
         key: 'toast',
         life: 3000,
       });
-      expect(navigateSpy).toHaveBeenCalledWith([`/trips/${DEFAULT_TRIP_3._id}`]);
+      expect(navigateSpy).toHaveBeenCalledWith([`/trips/${MOCK_TRIP_3._id}`]);
     });
 
     it('handling Trips Event with Create Error works', () => {
@@ -158,7 +158,7 @@ describe('TripFormComponent', () => {
         name: TripsEventName.Create,
         type: TripsEventType.Error,
         message: TripsEventMessage.CREATE_TRIP_ERROR,
-        trip: DEFAULT_TRIP_3,
+        trip: MOCK_TRIP_3,
       });
 
       store.refreshState();
@@ -182,11 +182,11 @@ describe('TripFormComponent', () => {
           provideRouter([]),
           provideNoopAnimations(),
           provideTranslateService(),
-          provideMockStore({ initialState: DEFAULT_INITIAL_TRIPS_STATE }),
+          provideMockStore({ initialState: MOCK_INITIAL_TRIPS_STATE }),
           {
             provide: ActivatedRoute,
             useValue: {
-              params: of({ id: DEFAULT_TRIP_1._id }),
+              params: of({ id: MOCK_TRIP_1._id }),
             },
           },
           MessageService,
@@ -198,7 +198,7 @@ describe('TripFormComponent', () => {
       store = TestBed.inject(MockStore);
       messageService = TestBed.inject(MessageService);
 
-      mockTripSelector = store.overrideSelector(selectTrip, DEFAULT_TRIP_1);
+      mockTripSelector = store.overrideSelector(selectTrip, MOCK_TRIP_1);
       mockTripsEventSelector = store.overrideSelector(selectTripsEvent, {
         name: TripsEventName.Load,
         type: TripsEventType.Loading,
@@ -219,22 +219,22 @@ describe('TripFormComponent', () => {
 
       fixture.detectChanges();
 
-      expect(dispatchSpy).toHaveBeenCalledWith({ type: TripAction.LoadTrip, id: DEFAULT_TRIP_1._id });
+      expect(dispatchSpy).toHaveBeenCalledWith({ type: TripAction.LoadTrip, id: MOCK_TRIP_1._id });
     });
 
     it('loading trip works', () => {
       fixture.detectChanges();
 
-      mockTripSelector.setResult(DEFAULT_TRIP_2);
+      mockTripSelector.setResult(MOCK_TRIP_2);
       mockTripsEventSelector.setResult({
         name: TripsEventName.Load,
         type: TripsEventType.Success,
-        trip: DEFAULT_TRIP_2,
+        trip: MOCK_TRIP_2,
       });
 
       store.refreshState();
 
-      expect(component.trip).toEqual(DEFAULT_TRIP_2);
+      expect(component.trip).toEqual(MOCK_TRIP_2);
       expect(component.isLoading()).toBeFalsy();
     });
 
@@ -243,9 +243,9 @@ describe('TripFormComponent', () => {
 
       fixture.detectChanges();
 
-      component.trip = DEFAULT_TRIP_1;
+      component.trip = MOCK_TRIP_1;
       component.tripForm.patchValue({
-        ...DEFAULT_TRIP_1,
+        ...MOCK_TRIP_1,
         location: 'Berlin',
       });
 
@@ -259,8 +259,8 @@ describe('TripFormComponent', () => {
       expect(dispatchSpy).toHaveBeenLastCalledWith({
         type: TripAction.UpdateTrip,
         trip: {
-          _id: DEFAULT_TRIP_1._id,
-          name: DEFAULT_TRIP_1.name,
+          _id: MOCK_TRIP_1._id,
+          name: MOCK_TRIP_1.name,
           location: 'Berlin',
           description: '',
           startDate: undefined,
@@ -291,7 +291,7 @@ describe('TripFormComponent', () => {
       mockTripsEventSelector.setResult({
         name: TripsEventName.Load,
         type: TripsEventType.Success,
-        trip: DEFAULT_TRIP_4,
+        trip: MOCK_TRIP_4,
       });
 
       store.refreshState();
@@ -333,7 +333,7 @@ describe('TripFormComponent', () => {
         name: TripsEventName.Update,
         type: TripsEventType.Success,
         message: TripsEventMessage.UPDATE_TRIP_SUCCESS,
-        trip: DEFAULT_TRIP_1,
+        trip: MOCK_TRIP_1,
       });
 
       store.refreshState();
@@ -346,7 +346,7 @@ describe('TripFormComponent', () => {
         key: 'toast',
         life: 3000,
       });
-      expect(navigateSpy).toHaveBeenCalledWith([`/trips/${DEFAULT_TRIP_1._id}`]);
+      expect(navigateSpy).toHaveBeenCalledWith([`/trips/${MOCK_TRIP_1._id}`]);
     });
 
     it('handling Trips Event with Update Error works', () => {
@@ -358,7 +358,7 @@ describe('TripFormComponent', () => {
         name: TripsEventName.Update,
         type: TripsEventType.Error,
         message: TripsEventMessage.UPDATE_TRIP_ERROR,
-        trip: DEFAULT_TRIP_1,
+        trip: MOCK_TRIP_1,
       });
 
       store.refreshState();
