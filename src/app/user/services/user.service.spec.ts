@@ -41,7 +41,7 @@ describe('UserService', () => {
         serviceResponse = userInfo;
       });
 
-      const req = httpMock.expectOne(`${environment.authApi}/user/info`);
+      const req = httpMock.expectOne(`${environment.userApi}/info`);
       req.flush(mockData);
 
       tick();
@@ -63,7 +63,7 @@ describe('UserService', () => {
         serviceResponse = userData;
       });
 
-      const req = httpMock.expectOne(`${environment.authApi}/user/data`);
+      const req = httpMock.expectOne(`${environment.userApi}/data`);
       req.flush(mockData);
 
       tick();
@@ -79,7 +79,7 @@ describe('UserService', () => {
     it('update user password works', fakeAsync(() => {
       service.updateUserPassword(MOCK_USER_PASSWORD_1).subscribe();
 
-      const req = httpMock.expectOne(`${environment.authApi}/user/password`);
+      const req = httpMock.expectOne(`${environment.userApi}/password`);
       req.flush({});
 
       tick();

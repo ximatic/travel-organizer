@@ -14,14 +14,14 @@ export class UserService {
   constructor(private httpClient: HttpClient) {}
 
   loadUserInfo(): Observable<UserInfo> {
-    return this.httpClient.get(`${environment.authApi}/user/info`).pipe(map((response: object) => response as UserInfo));
+    return this.httpClient.get(`${environment.userApi}/info`).pipe(map((response: object) => response as UserInfo));
   }
 
   updateUserData(request: UserData): Observable<UserData> {
-    return this.httpClient.put(`${environment.authApi}/user/data`, request).pipe(map((response: object) => response as UserData));
+    return this.httpClient.put(`${environment.userApi}/data`, request).pipe(map((response: object) => response as UserData));
   }
 
   updateUserPassword(request: UserPassword): Observable<object> {
-    return this.httpClient.put(`${environment.authApi}/user/password`, request);
+    return this.httpClient.put(`${environment.userApi}/password`, request);
   }
 }

@@ -14,12 +14,12 @@ export class ProfileService {
   constructor(private httpClient: HttpClient) {}
 
   loadProfile(): Observable<UserProfile> {
-    return this.httpClient.get(`${environment.authApi}/user/profile`).pipe(map((response: object) => response as UserProfile));
+    return this.httpClient.get(`${environment.userApi}/profile`).pipe(map((response: object) => response as UserProfile));
   }
 
   updateProfile(profile: UserProfile): Observable<UserProfile> {
     return this.httpClient
-      .put(`${environment.authApi}/user/profile`, profile)
+      .put(`${environment.userApi}/profile`, profile)
       .pipe(map((response: object) => response as UserProfile));
   }
 }

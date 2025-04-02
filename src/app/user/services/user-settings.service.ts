@@ -16,7 +16,7 @@ export class UserSettingsService {
   constructor(private httpClient: HttpClient) {}
 
   loadSettings(): Observable<UserSettings> {
-    return this.httpClient.get(`${environment.authApi}/user/settings`).pipe(
+    return this.httpClient.get(`${environment.userApi}/settings`).pipe(
       map((response: object) => response as UserSettings),
       catchError(() => of(DEFAULT_USER_SETTINGS)),
     );
@@ -24,7 +24,7 @@ export class UserSettingsService {
 
   updateSettings(settings: UserSettings): Observable<UserSettings> {
     return this.httpClient
-      .put(`${environment.authApi}/user/settings`, settings)
+      .put(`${environment.userApi}/settings`, settings)
       .pipe(map((response: object) => response as UserSettings));
   }
 }

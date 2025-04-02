@@ -41,7 +41,7 @@ describe('UserSettingsService', () => {
         serviceResponse = userSettings;
       });
 
-      const req = httpMock.expectOne(`${environment.authApi}/user/settings`);
+      const req = httpMock.expectOne(`${environment.userApi}/settings`);
       req.flush(mockData);
 
       tick();
@@ -65,7 +65,7 @@ describe('UserSettingsService', () => {
         serviceResponse = settings;
       });
 
-      const req = httpMock.expectOne(`${environment.authApi}/user/settings`);
+      const req = httpMock.expectOne(`${environment.userApi}/settings`);
       req.error(mockData);
 
       tick();
@@ -87,7 +87,7 @@ describe('UserSettingsService', () => {
         serviceResponse = settings;
       });
 
-      const req = httpMock.expectOne(`${environment.authApi}/user/settings`);
+      const req = httpMock.expectOne(`${environment.userApi}/settings`);
       req.flush(mockData);
 
       tick();

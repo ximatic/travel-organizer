@@ -40,7 +40,7 @@ describe('ProfileService', () => {
         serviceResponse = profile;
       });
 
-      const req = httpMock.expectOne(`${environment.authApi}/user/profile`);
+      const req = httpMock.expectOne(`${environment.userApi}/profile`);
       req.flush(mockData);
 
       tick();
@@ -62,7 +62,7 @@ describe('ProfileService', () => {
         serviceResponse = profile;
       });
 
-      const req = httpMock.expectOne(`${environment.authApi}/user/profile`);
+      const req = httpMock.expectOne(`${environment.userApi}/profile`);
       req.flush(mockData);
 
       tick();
