@@ -90,12 +90,12 @@ export class ProfileComponent implements OnInit, OnDestroy {
     return this.passwordForm.get('currentPassword');
   }
 
-  get newPasswordControl(): AbstractControl | null {
-    return this.passwordForm.get('newPassword');
+  get passwordControl(): AbstractControl | null {
+    return this.passwordForm.get('password');
   }
 
-  get newPasswordRepeatControl(): AbstractControl | null {
-    return this.passwordForm.get('newPasswordRepeat');
+  get passwordRepeatControl(): AbstractControl | null {
+    return this.passwordForm.get('passwordRepeat');
   }
 
   // trip
@@ -207,12 +207,12 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
   // TODO - update types
   private processPasswordFormValue(): UserPassword {
-    const { currentPassword, newPassword, newPasswordRepeat } = this.passwordForm.getRawValue();
+    const { currentPassword, password, passwordRepeat } = this.passwordForm.getRawValue();
 
     return {
       currentPassword,
-      newPassword,
-      newPasswordRepeat,
+      password,
+      passwordRepeat,
     } as UserPassword;
   }
 
@@ -225,8 +225,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
     this.passwordForm = this.formBuilder.group({
       currentPassword: ['', Validators.required],
-      newPassword: ['', Validators.required],
-      newPasswordRepeat: ['', Validators.required],
+      password: ['', Validators.required],
+      passwordRepeat: ['', Validators.required],
     });
   }
 

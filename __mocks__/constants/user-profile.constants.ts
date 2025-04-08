@@ -38,8 +38,8 @@ export const MOCK_USER_DATA_2: UserData = {
 
 export const MOCK_USER_PASSWORD_1: UserPassword = {
   currentPassword: 'test-current-password-1',
-  newPassword: 'test-new-password-1',
-  newPasswordRepeat: 'test-new-password-1',
+  password: 'test-new-password-1',
+  passwordRepeat: 'test-new-password-1',
 };
 
 // user events mock

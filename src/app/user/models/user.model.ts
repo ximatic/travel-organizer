@@ -29,8 +29,8 @@ export interface UserData {
 
 export interface UserPassword {
   currentPassword?: string;
-  newPassword?: string;
-  newPasswordRepeat?: string;
+  password?: string;
+  passwordRepeat?: string;
 }
 
 // TODO - remove

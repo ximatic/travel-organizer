@@ -110,16 +110,16 @@
       <div class="mb-3">
         <p-floatlabel variant="on">
           <p-password
-            id="newPassword"
+            id="password"
             type="text"
-            formControlName="newPassword"
+            formControlName="password"
             autocomplete="off"
             class="block w-full"
-            [ngClass]="{ 'ng-invalid': newPasswordControl?.invalid, 'ng-dirty': newPasswordControl?.dirty }"
+            [ngClass]="{ 'ng-invalid': passwordControl?.invalid, 'ng-dirty': passwordControl?.dirty }"
           />
-          <label for="newPassword">{{ 'PROFILE.PASSWORD.FORM.NEW_PASSWORD.LABEL' | translate }}</label>
+          <label for="password">{{ 'PROFILE.PASSWORD.FORM.NEW_PASSWORD.LABEL' | translate }}</label>
         </p-floatlabel>
-        @if (newPasswordControl?.invalid && newPasswordControl?.dirty) {
+        @if (passwordControl?.invalid && passwordControl?.dirty) {
           <small class="ml-1 text-error">
             {{ 'PROFILE.PASSWORD.FORM.NEW_PASSWORD.ERROR' | translate }}
           </small>
@@ -128,16 +128,16 @@
       <div class="mb-3">
         <p-floatlabel variant="on">
           <p-password
-            id="newPasswordRepeat"
+            id="passwordRepeat"
             type="text"
-            formControlName="newPasswordRepeat"
+            formControlName="passwordRepeat"
             autocomplete="off"
             class="block w-full"
-            [ngClass]="{ 'ng-invalid': newPasswordRepeatControl?.invalid, 'ng-dirty': newPasswordRepeatControl?.dirty }"
+            [ngClass]="{ 'ng-invalid': passwordRepeatControl?.invalid, 'ng-dirty': passwordRepeatControl?.dirty }"
           />
           <label for="passwordRepeat">{{ 'PROFILE.PASSWORD.FORM.NEW_PASSWORD_REPEAT.LABEL' | translate }}</label>
         </p-floatlabel>
-        @if (newPasswordRepeatControl?.invalid && newPasswordRepeatControl?.dirty) {
+        @if (passwordRepeatControl?.invalid && passwordRepeatControl?.dirty) {
           <small class="ml-1 text-error">
             {{ 'PROFILE.PASSWORD.FORM.NEW_PASSWORD_REPEAT.ERROR' | translate }}
           </small>
