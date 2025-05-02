@@ -50,9 +50,9 @@ export class MainComponent implements OnInit, OnDestroy {
   userEvent$!: Observable<UserEvent | undefined>;
 
   settings: UserSettings = DEFAULT_USER_SETTINGS;
-  darkMode = false;
-  sidebarVisible = false;
-  isLoggedIn = false;
+  darkMode = signal<boolean>(false);
+  sidebarVisible = signal<boolean>(false);
+  isLoggedIn = signal<boolean>(false);
 
   language = UserSettingsLanguage;
 
@@ -82,11 +82,11 @@ export class MainComponent implements OnInit, OnDestroy {
   // toolbar
 
   toggleSidebar(): void {
-    this.sidebarVisible = !this.sidebarVisible;
+    this.sidebarVisible.update((value: boolean) => !value);
   }
 
   toggleDarkMode(): void {
-    const userSettings = { ...this.settings, theme: this.darkMode ? UserSettingsTheme.Light : UserSettingsTheme.Dark };
+    const userSettings = { ...this.settings, theme: this.darkMode() ? UserSettingsTheme.Light : UserSettingsTheme.Dark };
     this.userStore.dispatch(userActions.updateUserSettings({ userSettings }));
   }
 
@@ -128,9 +128,9 @@ export class MainComponent implements OnInit, OnDestroy {
         }
         this.settings = { ...userSettings };
         this.translateService.use(this.settings.language);
-        this.darkMode = this.settings.theme === UserSettingsTheme.Dark;
+        this.darkMode.set(this.settings.theme === UserSettingsTheme.Dark);
         const htmlElement = document.querySelector('html');
-        if (this.darkMode) {
+        if (this.darkMode()) {
           htmlElement?.classList.add('dark-mode');
         } else {
           htmlElement?.classList.remove('dark-mode');
@@ -156,7 +156,7 @@ export class MainComponent implements OnInit, OnDestroy {
     this.authToken$ = this.authStore.select(selectAuthToken);
     this.subscription.add(
       this.authToken$.subscribe((authToken: AuthToken | null) => {
-        this.isLoggedIn = !!authToken;
+        this.isLoggedIn.set(!!authToken);
       }),
     );
 
@@ -164,10 +164,10 @@ export class MainComponent implements OnInit, OnDestroy {
     this.subscription.add(
       this.authEvent$.subscribe((authEvent: AuthEvent | undefined) => {
         if (authEvent?.name === AuthEventName.Logout && authEvent?.type === AuthEventType.Success) {
-          this.isLoggedIn = false;
+          this.isLoggedIn.set(false);
           this.router.navigate(['/auth/login']);
         } else if (authEvent?.name === AuthEventName.Login && authEvent?.type === AuthEventType.Success) {
-          this.isLoggedIn = true;
+          this.isLoggedIn.set(true);
           this.userStore.dispatch(userActions.loadUserInfo());
         }
       }),

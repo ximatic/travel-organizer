@@ -92,7 +92,7 @@ describe('MainComponent', () => {
 
     store.refreshState();
 
-    expect(component.darkMode).toEqual(false);
+    expect(component.darkMode()).toEqual(false);
     expect(component.settings).toEqual(MOCK_USER_SETTINGS_1);
     expect(document.querySelector('html')?.classList.contains('dark-mode')).toBeFalsy();
   });
@@ -104,7 +104,7 @@ describe('MainComponent', () => {
 
     store.refreshState();
 
-    expect(component.darkMode).toEqual(true);
+    expect(component.darkMode()).toEqual(true);
     expect(component.settings).toEqual(MOCK_USER_SETTINGS_2);
     expect(document.querySelector('html')?.classList.contains('dark-mode')).toBeTruthy();
   });
@@ -186,11 +186,11 @@ describe('MainComponent', () => {
   it('toggleSidebar works', () => {
     fixture.detectChanges();
 
-    expect(component.sidebarVisible).toBeFalsy();
+    expect(component.sidebarVisible()).toBeFalsy();
     component.toggleSidebar();
-    expect(component.sidebarVisible).toBeTruthy();
+    expect(component.sidebarVisible()).toBeTruthy();
     component.toggleSidebar();
-    expect(component.sidebarVisible).toBeFalsy();
+    expect(component.sidebarVisible()).toBeFalsy();
   });
 
   it('toggleDarkMode works with switch to Dark mode', () => {
@@ -214,7 +214,7 @@ describe('MainComponent', () => {
       ...component.settings,
       theme: UserSettingsTheme.Dark,
     };
-    component.darkMode = true;
+    component.darkMode.set(true);
     component.toggleDarkMode();
 
     expect(dispatchSpy).toHaveBeenLastCalledWith({
@@ -245,7 +245,7 @@ describe('MainComponent', () => {
 
     store.refreshState();
 
-    expect(component.isLoggedIn).toBe(false);
+    expect(component.isLoggedIn()).toBe(false);
   }));
 
   it('user is logged in when Auth Token is valid', fakeAsync(() => {
@@ -255,7 +255,7 @@ describe('MainComponent', () => {
 
     store.refreshState();
 
-    expect(component.isLoggedIn).toBe(true);
+    expect(component.isLoggedIn()).toBe(true);
   }));
 
   // auth events
@@ -272,7 +272,7 @@ describe('MainComponent', () => {
 
     store.refreshState();
 
-    expect(component.isLoggedIn).toBe(false);
+    expect(component.isLoggedIn()).toBe(false);
     expect(navigateSpy).toHaveBeenCalledWith([`/auth/login`]);
   }));
 
@@ -284,7 +284,7 @@ describe('MainComponent', () => {
 
     store.refreshState();
 
-    expect(component.isLoggedIn).toBe(true);
+    expect(component.isLoggedIn()).toBe(true);
     expect(dispatchSpy).toHaveBeenLastCalledWith({
       type: UserAction.LoadUserInfo,
     });
