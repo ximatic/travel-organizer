@@ -63,9 +63,6 @@ export class SettingsComponent implements OnInit, AfterViewInit, OnDestroy {
   userSettings$!: Observable<UserSettings | null>;
   userEvent$!: Observable<UserEvent | undefined>;
 
-  // settings
-  settings?: UserSettings;
-
   // form
   settingsForm!: FormGroup;
 
@@ -148,12 +145,11 @@ export class SettingsComponent implements OnInit, AfterViewInit, OnDestroy {
         if (!userSettings) {
           return;
         }
-        this.settings = { ...userSettings };
-        this.translateService.use(this.settings.language);
+        this.translateService.use(userSettings.language);
         this.translateService.get('APP.TITLE').subscribe(() => {
           this.initFormOptions();
         });
-        this.fillForm();
+        this.fillForm(userSettings);
         this.isSubmitInProgress.set(false);
       }),
     );
@@ -208,16 +204,14 @@ export class SettingsComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
-  private fillForm(): void {
-    if (this.settings) {
-      const { language, dateFormat, timeFormat, theme } = this.settings;
-      this.settingsForm.patchValue({
-        language,
-        dateFormat,
-        timeFormat,
-        theme,
-      });
-    }
+  private fillForm(settings: UserSettings): void {
+    const { language, dateFormat, timeFormat, theme } = settings;
+    this.settingsForm.patchValue({
+      language,
+      dateFormat,
+      timeFormat,
+      theme,
+    });
   }
 
   // toasts

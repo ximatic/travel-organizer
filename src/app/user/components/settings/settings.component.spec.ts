@@ -60,6 +60,10 @@ describe('SettingsComponent', () => {
     component = fixture.componentInstance;
   });
 
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
   it('should be created', () => {
     expect(component).toBeTruthy();
   });
@@ -94,24 +98,25 @@ describe('SettingsComponent', () => {
   }));
 
   it('receiving User Settings via selector works', () => {
-    const useSpy = jest.spyOn(translateService, 'use');
+    const spyUse = jest.spyOn(translateService, 'use');
 
     fixture.detectChanges();
 
     mockUserSettingsSelector.setResult(MOCK_USER_SETTINGS_2);
     store.refreshState();
 
-    expect(component.settings).toEqual(MOCK_USER_SETTINGS_2);
-    expect(useSpy).toHaveBeenLastCalledWith(MOCK_USER_SETTINGS_2.language);
+    expect(spyUse).toHaveBeenLastCalledWith(MOCK_USER_SETTINGS_2.language);
   });
 
   it('receiving null User Settings via selector does not change anything', () => {
+    const spyUse = jest.spyOn(translateService, 'use');
+
     fixture.detectChanges();
 
     mockUserSettingsSelector.setResult(null);
     store.refreshState();
 
-    expect(component.settings).toEqual(MOCK_USER_SETTINGS_1);
+    expect(spyUse).toHaveBeenLastCalledWith(MOCK_USER_SETTINGS_1.language);
   });
 
   // toast testing
