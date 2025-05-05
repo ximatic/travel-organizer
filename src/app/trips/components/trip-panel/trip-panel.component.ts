@@ -1,17 +1,18 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, OnDestroy, input } from '@angular/core';
+import { Component, OnInit, OnDestroy, input, signal } from '@angular/core';
 
 import { Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
 
 import { PanelModule } from 'primeng/panel';
 
+import { DEFAULT_USER_SETTINGS } from '../../../user/constants/settings.constants';
+
 import { Trip } from '../../models/trip.model';
 
 import { UserSettings } from '../../../user/models/user-settings.model';
 import { selectUserSettings } from '../../../user/store/user.selectors';
 import { UserState } from '../../../user/store/user.state';
-import { DEFAULT_USER_SETTINGS } from '../../../user/constants/settings.constants';
 
 @Component({
   selector: 'app-trip-panel',
@@ -26,7 +27,7 @@ export class TripPanelComponent implements OnInit, OnDestroy {
   userSettings$!: Observable<UserSettings | null>;
 
   // data
-  userSettings?: UserSettings;
+  userSettings = signal<UserSettings>(DEFAULT_USER_SETTINGS);
 
   // other
   private subscription = new Subscription();
@@ -53,7 +54,10 @@ export class TripPanelComponent implements OnInit, OnDestroy {
     this.userSettings$ = this.store.select(selectUserSettings);
     this.subscription.add(
       this.userSettings$.subscribe((userSettings: UserSettings | null) => {
-        this.userSettings = { ...(userSettings || DEFAULT_USER_SETTINGS) };
+        if (!userSettings) {
+          return;
+        }
+        this.userSettings.set(userSettings);
       }),
     );
   }

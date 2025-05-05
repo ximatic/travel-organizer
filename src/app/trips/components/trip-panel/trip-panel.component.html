@@ -14,7 +14,7 @@
     }
     @if (trip().startDate && trip().endDate) {
       <span>
-        {{ trip().startDate | date: userSettings?.dateFormat }} - {{ trip().endDate | date: userSettings?.dateFormat }}
+        {{ trip().startDate | date: userSettings().dateFormat }} - {{ trip().endDate | date: userSettings().dateFormat }}
       </span>
     }
   </p>

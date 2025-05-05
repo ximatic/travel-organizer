@@ -41,7 +41,7 @@ export class TripsComponent implements OnInit, AfterViewInit, OnDestroy {
   tripsEvent$!: Observable<TripsEvent | undefined>;
 
   // data
-  trips: Trip[] = [];
+  trips = signal<Trip[]>([]);
   isLoading = signal(true);
 
   // other
@@ -88,7 +88,7 @@ export class TripsComponent implements OnInit, AfterViewInit, OnDestroy {
     this.trips$ = this.storeTrips.select(selectTrips);
     this.subscription.add(
       this.trips$.pipe(skip(1)).subscribe((trips: Trip[]) => {
-        this.trips = trips;
+        this.trips.set(trips);
         this.isLoading.set(false);
       }),
     );

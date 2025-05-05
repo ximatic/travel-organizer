@@ -234,7 +234,7 @@ describe('TripFormComponent', () => {
 
       store.refreshState();
 
-      expect(component.trip).toEqual(MOCK_TRIP_2);
+      expect(component.trip()).toEqual(MOCK_TRIP_2);
       expect(component.isLoading()).toBeFalsy();
     });
 
@@ -243,7 +243,7 @@ describe('TripFormComponent', () => {
 
       fixture.detectChanges();
 
-      component.trip = MOCK_TRIP_1;
+      component.trip.set(MOCK_TRIP_1);
       component.tripForm.patchValue({
         ...MOCK_TRIP_1,
         location: 'Berlin',

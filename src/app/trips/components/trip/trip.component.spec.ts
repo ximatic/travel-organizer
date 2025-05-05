@@ -117,7 +117,7 @@ describe('TripComponent', () => {
     store.refreshState();
 
     expect(component.isLoading()).toBeFalsy();
-    expect(component.trip).toEqual(MOCK_TRIP_2);
+    expect(component.trip()).toEqual(MOCK_TRIP_2);
     expect(messageAddSpy).toHaveBeenCalledTimes(0);
   });
 

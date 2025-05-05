@@ -44,7 +44,7 @@ export class TripComponent implements OnInit, AfterViewInit, OnDestroy {
   tripsEvent$!: Observable<TripsEvent | undefined>;
 
   // trip
-  trip!: Trip | null;
+  trip = signal<Trip | null>(null);
 
   // state flags
   isLoading = signal(true);
@@ -108,7 +108,7 @@ export class TripComponent implements OnInit, AfterViewInit, OnDestroy {
         break;
       case TripsEventType.Success:
         if (event.trip) {
-          this.trip = event.trip;
+          this.trip.set(event.trip);
         }
         this.isLoading.set(false);
         break;

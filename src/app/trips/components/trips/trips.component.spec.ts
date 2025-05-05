@@ -77,7 +77,7 @@ describe('TripsComponent', () => {
 
     store.refreshState();
 
-    expect(component.trips).toEqual([MOCK_TRIP_1, MOCK_TRIP_2]);
+    expect(component.trips()).toEqual([MOCK_TRIP_1, MOCK_TRIP_2]);
     expect(component.isLoading()).toBeFalsy();
   });
 

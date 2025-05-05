@@ -47,7 +47,7 @@ export class TripFormComponent implements OnInit, OnDestroy {
   tripsEvent$!: Observable<TripsEvent | undefined>;
 
   // trip
-  trip?: Trip | null;
+  trip = signal<Trip | null>(null);
 
   // state flags
   isLoading = signal(true);
@@ -97,9 +97,9 @@ export class TripFormComponent implements OnInit, OnDestroy {
     of({})
       .pipe(delay(DEFAULT_UX_DELAY))
       .subscribe(() => {
-        if (this.trip) {
+        if (this.trip()) {
           const trip = {
-            ...this.trip,
+            ...this.trip(),
             ...this.processFormValue(),
           };
           this.store.dispatch(tripActions.updateTrip({ trip }));
@@ -154,7 +154,7 @@ export class TripFormComponent implements OnInit, OnDestroy {
         break;
       case TripsEventType.Success:
         if (event.trip) {
-          this.trip = event.trip;
+          this.trip.set(event.trip);
           this.fillForm();
         }
         this.isLoading.set(false);
@@ -221,8 +221,8 @@ export class TripFormComponent implements OnInit, OnDestroy {
   }
 
   private fillForm(): void {
-    if (this.trip) {
-      const { name, location, description, startDate, endDate } = this.trip;
+    if (this.trip()) {
+      const { name, location, description, startDate, endDate } = this.trip() as Trip;
       this.tripForm.patchValue({
         name,
         location,

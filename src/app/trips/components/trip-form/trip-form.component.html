@@ -76,7 +76,7 @@
           </span>
         </button>
       </div>
-      @if (trip) {
+      @if (trip(); as trip) {
         <div class="mt-2">
           <button pButton pRipple severity="secondary" class="block w-full" routerLink="/trips/{{ trip._id }}">
             <span pButtonLabel>{{ 'COMMON.BUTTON.BACK' | translate }}</span>

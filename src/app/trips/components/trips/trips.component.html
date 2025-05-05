@@ -5,9 +5,9 @@
     </div>
   } @else {
     <div>
-      @if (trips && trips.length > 0) {
+      @if (trips() && trips().length > 0) {
         <div class="grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
-          @for (trip of trips; track trip) {
+          @for (trip of trips(); track trip) {
             <app-trip-panel [trip]="trip" (click)="openTrip(trip)" class="full-height grow hover:cursor-pointer">
               <p-button icon="pi pi-trash" severity="secondary" text class="flex-none" (onClick)="removeTrip($event, trip)" />
             </app-trip-panel>

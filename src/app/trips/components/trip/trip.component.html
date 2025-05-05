@@ -4,7 +4,7 @@
       <p-progress-spinner />
     </div>
   } @else {
-    @if (trip) {
+    @if (trip(); as trip) {
       <div class="grid gap-4 grid-cols-1 md:grid-cols-2">
         <div>
           <app-trip-panel [trip]="trip">

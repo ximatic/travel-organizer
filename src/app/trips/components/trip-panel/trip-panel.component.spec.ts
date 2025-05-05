@@ -47,7 +47,7 @@ describe('TripPanelComponent', () => {
     mockUserSettingsSelector.setResult(MOCK_USER_SETTINGS_1);
     store.refreshState();
 
-    expect(component.userSettings).toEqual(MOCK_USER_SETTINGS_1);
+    expect(component.userSettings()).toEqual(MOCK_USER_SETTINGS_1);
   });
 
   it('receiving null User Settings via selector works', () => {
@@ -56,6 +56,6 @@ describe('TripPanelComponent', () => {
     mockUserSettingsSelector.setResult(null);
     store.refreshState();
 
-    expect(component.userSettings).toEqual(DEFAULT_USER_SETTINGS);
+    expect(component.userSettings()).toEqual(DEFAULT_USER_SETTINGS);
   });
 });
