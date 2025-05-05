@@ -49,7 +49,7 @@ export class MainComponent implements OnInit, OnDestroy {
   userSettings$!: Observable<UserSettings | null>;
   userEvent$!: Observable<UserEvent | undefined>;
 
-  settings: UserSettings = DEFAULT_USER_SETTINGS;
+  settings = signal<UserSettings>(DEFAULT_USER_SETTINGS);
   darkMode = signal<boolean>(false);
   sidebarVisible = signal<boolean>(false);
   isLoggedIn = signal<boolean>(false);
@@ -86,7 +86,7 @@ export class MainComponent implements OnInit, OnDestroy {
   }
 
   toggleDarkMode(): void {
-    const userSettings = { ...this.settings, theme: this.darkMode() ? UserSettingsTheme.Light : UserSettingsTheme.Dark };
+    const userSettings = { ...this.settings(), theme: this.darkMode() ? UserSettingsTheme.Light : UserSettingsTheme.Dark };
     this.userStore.dispatch(userActions.updateUserSettings({ userSettings }));
   }
 
@@ -97,16 +97,16 @@ export class MainComponent implements OnInit, OnDestroy {
   // language
 
   isLanguageEnglish(): boolean {
-    return this.settings.language === UserSettingsLanguage.English;
+    return this.settings().language === UserSettingsLanguage.English;
   }
 
   isLanguagePolish(): boolean {
-    return this.settings.language === UserSettingsLanguage.Polish;
+    return this.settings().language === UserSettingsLanguage.Polish;
   }
 
   switchLanguage(language: UserSettingsLanguage): void {
     const userSettings = {
-      ...this.settings,
+      ...this.settings(),
       language,
     };
     this.userStore.dispatch(userActions.updateUserSettings({ userSettings }));
@@ -126,9 +126,9 @@ export class MainComponent implements OnInit, OnDestroy {
         if (!userSettings) {
           return;
         }
-        this.settings = { ...userSettings };
-        this.translateService.use(this.settings.language);
-        this.darkMode.set(this.settings.theme === UserSettingsTheme.Dark);
+        this.settings.set(userSettings);
+        this.translateService.use(this.settings().language);
+        this.darkMode.set(this.settings().theme === UserSettingsTheme.Dark);
         const htmlElement = document.querySelector('html');
         if (this.darkMode()) {
           htmlElement?.classList.add('dark-mode');

@@ -25,7 +25,7 @@ import { DEFAULT_USER_SETTINGS } from '../user/constants/settings.constants';
 import { AuthAction } from '../auth/store/auth.actions';
 import { selectAuthEvent, selectAuthToken } from '../auth/store/auth.selectors';
 
-import { UserSettingsLanguage, UserSettingsTheme } from '../user/models/user-settings.model';
+import { UserSettings, UserSettingsLanguage, UserSettingsTheme } from '../user/models/user-settings.model';
 import { UserAction } from '../user/store/user.actions';
 import { selectUserEvent, selectUserSettings } from '../user/store/user.selectors';
 
@@ -72,7 +72,7 @@ describe('MainComponent', () => {
   // settings
 
   it('initial settings are default', () => {
-    expect(component.settings).toEqual(DEFAULT_USER_SETTINGS);
+    expect(component.settings()).toEqual(DEFAULT_USER_SETTINGS);
   });
 
   it('receiving null settings does not change current settings', () => {
@@ -82,7 +82,7 @@ describe('MainComponent', () => {
 
     store.refreshState();
 
-    expect(component.settings).toEqual(DEFAULT_USER_SETTINGS);
+    expect(component.settings()).toEqual(DEFAULT_USER_SETTINGS);
   });
 
   it('loading settings works for light theme', () => {
@@ -93,7 +93,7 @@ describe('MainComponent', () => {
     store.refreshState();
 
     expect(component.darkMode()).toEqual(false);
-    expect(component.settings).toEqual(MOCK_USER_SETTINGS_1);
+    expect(component.settings()).toEqual(MOCK_USER_SETTINGS_1);
     expect(document.querySelector('html')?.classList.contains('dark-mode')).toBeFalsy();
   });
 
@@ -105,7 +105,7 @@ describe('MainComponent', () => {
     store.refreshState();
 
     expect(component.darkMode()).toEqual(true);
-    expect(component.settings).toEqual(MOCK_USER_SETTINGS_2);
+    expect(component.settings()).toEqual(MOCK_USER_SETTINGS_2);
     expect(document.querySelector('html')?.classList.contains('dark-mode')).toBeTruthy();
   });
 
@@ -144,7 +144,9 @@ describe('MainComponent', () => {
   it('checking if language is English works', () => {
     fixture.detectChanges();
 
-    component.settings.language = UserSettingsLanguage.English;
+    component.settings.update((settings: UserSettings) => {
+      return { ...settings, language: UserSettingsLanguage.English };
+    });
     expect(component.isLanguageEnglish()).toBeTruthy();
     expect(component.isLanguagePolish()).toBeFalsy();
   });
@@ -152,7 +154,9 @@ describe('MainComponent', () => {
   it('checking if language is Polish works', () => {
     fixture.detectChanges();
 
-    component.settings.language = UserSettingsLanguage.Polish;
+    component.settings.update((settings: UserSettings) => {
+      return { ...settings, language: UserSettingsLanguage.Polish };
+    });
     expect(component.isLanguageEnglish()).toBeFalsy();
     expect(component.isLanguagePolish()).toBeTruthy();
   });
@@ -202,7 +206,7 @@ describe('MainComponent', () => {
 
     expect(dispatchSpy).toHaveBeenLastCalledWith({
       type: UserAction.UpdateUserSettings,
-      userSettings: { ...component.settings, theme: UserSettingsTheme.Dark },
+      userSettings: { ...component.settings(), theme: UserSettingsTheme.Dark },
     });
   });
 
@@ -210,16 +214,16 @@ describe('MainComponent', () => {
     const dispatchSpy = jest.spyOn(store, 'dispatch');
 
     fixture.detectChanges();
-    component.settings = {
-      ...component.settings,
-      theme: UserSettingsTheme.Dark,
-    };
+
+    component.settings.update((settings: UserSettings) => {
+      return { ...settings, theme: UserSettingsTheme.Dark };
+    });
     component.darkMode.set(true);
     component.toggleDarkMode();
 
     expect(dispatchSpy).toHaveBeenLastCalledWith({
       type: UserAction.UpdateUserSettings,
-      userSettings: { ...component.settings, theme: UserSettingsTheme.Light },
+      userSettings: { ...component.settings(), theme: UserSettingsTheme.Light },
     });
   });
 
