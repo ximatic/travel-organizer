@@ -1,5 +1,5 @@
-import { Trip, TripItem } from '../../src/app/trips/models/trip.model';
-import { TripsState } from '../../src/app/trips/store/trips.state';
+import { Trip, TripItem, TripsEventMessage } from '../../src/app/trips/models/trip.model';
+import { TripsEvent, TripsEventName, TripsEventType, TripsState } from '../../src/app/trips/store/trips.state';
 
 // trip mocks
 
@@ -58,4 +58,23 @@ export const MOCK_TRIP_ITEM_2: TripItem = {
 
 export const MOCK_INITIAL_TRIPS_STATE: TripsState = {
   trips: [],
+  event: null,
+};
+
+// store events
+
+export const MOCK_TRIP_EVENT_LOAD_ALL_LOADING: TripsEvent = {
+  name: TripsEventName.LoadAll,
+  type: TripsEventType.Loading,
+};
+
+export const MOCK_TRIP_EVENT_LOAD_ALL_SUCCESS: TripsEvent = {
+  name: TripsEventName.LoadAll,
+  type: TripsEventType.Success,
+};
+
+export const MOCK_TRIP_EVENT_LOAD_ALL_ERROR: TripsEvent = {
+  name: TripsEventName.LoadAll,
+  type: TripsEventType.Error,
+  message: TripsEventMessage.LOAD_TRIPS_ERROR,
 };

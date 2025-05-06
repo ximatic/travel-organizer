@@ -44,7 +44,7 @@ import { TripsEvent, TripsEventName, TripsEventType, TripsState } from '../../st
 })
 export class TripFormComponent implements OnInit, OnDestroy {
   // ngrx
-  tripsEvent$!: Observable<TripsEvent | undefined>;
+  tripsEvent$!: Observable<TripsEvent | null>;
 
   // trip
   trip = signal<Trip | null>(null);
@@ -126,10 +126,10 @@ export class TripFormComponent implements OnInit, OnDestroy {
 
   private initState(): void {
     this.tripsEvent$ = this.store.select(selectTripsEvent);
-    this.subscription.add(this.tripsEvent$.subscribe((event: TripsEvent | undefined) => this.handleTripsEvent(event)));
+    this.subscription.add(this.tripsEvent$.subscribe((event: TripsEvent | null) => this.handleTripsEvent(event)));
   }
 
-  private handleTripsEvent(event: TripsEvent | undefined): void {
+  private handleTripsEvent(event: TripsEvent | null): void {
     if (!event) {
       return;
     }

@@ -41,7 +41,7 @@ import { TripItemsComponent } from '../trip-items/trip-items.component';
 })
 export class TripComponent implements OnInit, AfterViewInit, OnDestroy {
   // ngrx
-  tripsEvent$!: Observable<TripsEvent | undefined>;
+  tripsEvent$!: Observable<TripsEvent | null>;
 
   // trip
   trip = signal<Trip | null>(null);
@@ -86,10 +86,10 @@ export class TripComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private initState(): void {
     this.tripsEvent$ = this.store.select(selectTripsEvent);
-    this.subscription.add(this.tripsEvent$.subscribe((event: TripsEvent | undefined) => this.handleTripsEvent(event)));
+    this.subscription.add(this.tripsEvent$.subscribe((event: TripsEvent | null) => this.handleTripsEvent(event)));
   }
 
-  private handleTripsEvent(event: TripsEvent | undefined): void {
+  private handleTripsEvent(event: TripsEvent | null): void {
     if (!event) {
       return;
     }
