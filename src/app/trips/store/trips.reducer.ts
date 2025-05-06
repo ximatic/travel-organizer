@@ -87,7 +87,7 @@ export const tripsReducer = createReducer(
     tripActions.createTripSuccess,
     (state: TripsState, { trip, message }): TripsState => ({
       ...state,
-      trips: [...state.trips, trip],
+      trips: [...(state.trips || []), trip],
       event: {
         name: TripsEventName.Create,
         type: TripsEventType.Success,
@@ -113,7 +113,7 @@ export const tripsReducer = createReducer(
     tripActions.updateTripSuccess,
     (state: TripsState, { trip, message }): TripsState => ({
       ...state,
-      trips: state.trips.map((t: Trip) => (trip._id === t._id ? trip : t)),
+      trips: (state.trips || []).map((t: Trip) => (trip._id === t._id ? trip : t)),
       event: {
         name: TripsEventName.Update,
         type: TripsEventType.Success,
@@ -139,7 +139,7 @@ export const tripsReducer = createReducer(
     tripActions.removeTripSuccess,
     (state: TripsState, { trip, message }): TripsState => ({
       ...state,
-      trips: state.trips.filter((t: Trip) => trip._id != t._id),
+      trips: (state.trips || []).filter((t: Trip) => trip._id != t._id) || [],
       event: {
         name: TripsEventName.Remove,
         type: TripsEventType.Success,
@@ -165,7 +165,7 @@ export const tripsReducer = createReducer(
     tripItemActions.createTripItemSuccess,
     (state: TripsState, { trip, message }): TripsState => ({
       ...state,
-      trips: state.trips.map((t: Trip) => (trip._id === t._id ? trip : t)),
+      trips: (state.trips || []).map((t: Trip) => (trip._id === t._id ? trip : t)),
       event: {
         name: TripsEventName.CreateItem,
         type: TripsEventType.Success,
@@ -190,7 +190,7 @@ export const tripsReducer = createReducer(
     tripItemActions.checkTripItemSuccess,
     (state: TripsState, { trip, message }): TripsState => ({
       ...state,
-      trips: state.trips.map((t: Trip) => (trip._id === t._id ? trip : t)),
+      trips: (state.trips || []).map((t: Trip) => (trip._id === t._id ? trip : t)),
       event: {
         name: TripsEventName.CheckItem,
         type: TripsEventType.Success,
@@ -215,7 +215,7 @@ export const tripsReducer = createReducer(
     tripItemActions.removeTripItemSuccess,
     (state: TripsState, { trip, message }): TripsState => ({
       ...state,
-      trips: state.trips.map((t: Trip) => (trip._id === t._id ? trip : t)),
+      trips: (state.trips || []).map((t: Trip) => (trip._id === t._id ? trip : t)),
       event: {
         name: TripsEventName.RemoveItem,
         type: TripsEventType.Success,

@@ -57,7 +57,7 @@ export const MOCK_TRIP_ITEM_2: TripItem = {
 // store mocks
 
 export const MOCK_INITIAL_TRIPS_STATE: TripsState = {
-  trips: [],
+  trips: null,
   event: null,
 };
 

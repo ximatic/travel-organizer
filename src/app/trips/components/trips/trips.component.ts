@@ -37,11 +37,11 @@ import { TripPanelComponent } from '../trip-panel/trip-panel.component';
 })
 export class TripsComponent implements OnInit, AfterViewInit, OnDestroy {
   // ngrx
-  trips$!: Observable<Trip[]>;
+  trips$!: Observable<Trip[] | null>;
   tripsEvent$!: Observable<TripsEvent | null>;
 
   // data
-  trips = signal<Trip[]>([]);
+  trips = signal<Trip[] | null>(null);
   isLoading = signal(true);
 
   // other
@@ -87,7 +87,7 @@ export class TripsComponent implements OnInit, AfterViewInit, OnDestroy {
   private initState(): void {
     this.trips$ = this.storeTrips.select(selectTrips);
     this.subscription.add(
-      this.trips$.pipe(skip(1)).subscribe((trips: Trip[]) => {
+      this.trips$.pipe(skip(1)).subscribe((trips: Trip[] | null) => {
         this.trips.set(trips);
         this.isLoading.set(false);
       }),

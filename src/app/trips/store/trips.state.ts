@@ -25,6 +25,6 @@ export interface TripsEvent {
 }
 
 export interface TripsState {
-  trips: Trip[];
+  trips: Trip[] | null;
   event: TripsEvent | null;
 }
