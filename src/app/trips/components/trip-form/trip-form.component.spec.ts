@@ -21,7 +21,7 @@ import { messageServiceMock } from '../../../../../__mocks__/services.mocks';
 
 import { TripsEventMessage } from '../../models/trip.model';
 import { TripAction } from '../../store/trips.actions';
-import { selectTrip, selectTripsEvent } from '../../store/trips.selectors';
+import { selectTripsEvent } from '../../store/trips.selectors';
 import { TripsEventName, TripsEventType } from '../../store/trips.state';
 
 import { TripFormComponent } from './trip-form.component';
@@ -33,7 +33,6 @@ describe('TripFormComponent', () => {
   let store: MockStore;
   let messageService: MessageService;
 
-  let mockTripSelector: any;
   let mockTripsEventSelector: any;
 
   describe('submiting new trip', () => {
@@ -198,7 +197,6 @@ describe('TripFormComponent', () => {
       store = TestBed.inject(MockStore);
       messageService = TestBed.inject(MessageService);
 
-      mockTripSelector = store.overrideSelector(selectTrip, MOCK_TRIP_1);
       mockTripsEventSelector = store.overrideSelector(selectTripsEvent, {
         name: TripsEventName.Load,
         type: TripsEventType.Loading,
@@ -225,7 +223,6 @@ describe('TripFormComponent', () => {
     it('loading trip works', () => {
       fixture.detectChanges();
 
-      mockTripSelector.setResult(MOCK_TRIP_2);
       mockTripsEventSelector.setResult({
         name: TripsEventName.Load,
         type: TripsEventType.Success,
