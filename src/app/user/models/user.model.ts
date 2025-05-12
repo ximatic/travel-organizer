@@ -32,15 +32,3 @@ export interface UserPassword {
   password?: string;
   passwordRepeat?: string;
 }
-
-// TODO - remove
-
-export interface User {
-  email: string;
-}
-
-export interface UserRequest {
-  email: string;
-  password?: string;
-  passwordRepeat?: string;
-}

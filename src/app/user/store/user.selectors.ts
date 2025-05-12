@@ -10,6 +10,8 @@ export const selectUserEvent = createSelector(selectUserState, (state: UserState
 
 export const selectUserEmail = createSelector(selectUserState, (state: UserState) => state.email);
 
+export const selectUserRole = createSelector(selectUserState, (state: UserState) => state.role);
+
 export const selectUserProfile = createSelector(selectUserState, (state: UserState) => state.profile);
 
 export const selectUserData = createSelector(selectUserState, (state: UserState) => {
@@ -24,12 +26,3 @@ export const selectUserData = createSelector(selectUserState, (state: UserState)
 });
 
 export const selectUserSettings = createSelector(selectUserState, (state: UserState) => state.settings);
-
-// TODO - use it or remove?
-export const UserSelectors = {
-  state: selectUserProfile,
-  email: selectUserEmail,
-  profile: selectUserProfile,
-  settings: selectUserSettings,
-  event: selectUserEvent,
-};

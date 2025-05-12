@@ -5,6 +5,7 @@ import { UserEventType, UserState, UserEventName } from './user.state';
 
 export const initialState: UserState = {
   email: null,
+  role: null,
   profile: null,
   settings: null,
 };

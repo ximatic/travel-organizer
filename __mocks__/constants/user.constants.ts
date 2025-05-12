@@ -23,12 +23,14 @@ export const MOCK_USER_INFO_2: UserInfo = {
 
 export const MOCK_INITIAL_USER_STATE: UserState = {
   email: null,
+  role: null,
   profile: null,
   settings: null,
 };
 
 export const MOCK_INITIAL_USER_STATE_1: UserState = {
   email: MOCK_EMAIL_1,
+  role: null,
   profile: MOCK_USER_PROFILE_1,
   settings: MOCK_USER_SETTINGS_1,
 };

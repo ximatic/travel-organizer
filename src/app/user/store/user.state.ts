@@ -1,5 +1,6 @@
 import { UserProfile } from '../models/user-profile.model';
 import { UserSettings } from '../models/user-settings.model';
+import { UserRole } from '../models/user.enum';
 
 export enum UserEventName {
   Reset = 'reset-user',
@@ -25,6 +26,7 @@ export interface UserEvent {
 
 export interface UserState {
   email: string | null;
+  role: UserRole | null;
   profile: UserProfile | null;
   settings: UserSettings | null;
   event?: UserEvent;
