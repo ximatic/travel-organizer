@@ -17,14 +17,22 @@ export const MOCK_LASTNAME_2 = 'Test Lastname #2';
 
 // auth token mocks
 
-export const MOCK_AUTH_TOKEN_1: AuthToken = {
+export const MOCK_AUTH_TOKEN_0: AuthToken = {
+  // AuthToken without role
   accessToken:
     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Nzg3OWMxM2ZjZDgzNDQ4MzY0MDMzOGYiLCJlbWFpbCI6ImVtYWlsQHRlc3QuY29tIiwiaWF0IjoxNzM3MDMyNTU1LCJleHAiOjE3MzcxMTg5NTV9.hFSb21wA_QnULC3iuYA9iS2z5PcPDBsVp0pLXfUl36M',
 };
 
-export const MOCK_AUTH_TOKEN_2: AuthToken = {
+export const MOCK_AUTH_TOKEN_1: AuthToken = {
+  // AuthToken with User role
   accessToken:
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Nzg4MmQ1MWI3YTdmYzE0NzU3ZTdmNWYiLCJlbWFpbCI6ImVtYWlsLTJAdGVzdC5jb20iLCJpYXQiOjE3MzY5Nzc3NDUsImV4cCI6MTczNzA2NDE0NX0.WTq4UCitLUftCAin35gUAtjH4t36B5R4VbTvwtfxFy0',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Nzk3NWYyOWU0OTVmNDllYmU3N2Y0YTQiLCJlbWFpbCI6ImVtYWlsQHRlc3QuY29tIiwicm9sZSI6InVzZXIiLCJpYXQiOjE3NDY3MjY5NTQsImV4cCI6MTc0NjgxMzM1NH0.H_iZoiExVm8XOCSVp7p8t5xJc3glV9FegmRciNUVC-w',
+};
+
+export const MOCK_AUTH_TOKEN_2: AuthToken = {
+  // AuthToken with Admin role
+  accessToken:
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2N2Y5Mjc5ZTc4NDA1YmRlMGUyYmJhNDUiLCJlbWFpbCI6ImVtYWlsMkB0ZXN0LmNvbSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc0NjcyOTEwMSwiZXhwIjoxNzQ2ODE1NTAxfQ.pt_dS0_IuNZv3yU1K21VBjOu9TT9ZgTA-CYLURXaidY',
 };
 
 // state
