@@ -3,6 +3,8 @@ import { Routes } from '@angular/router';
 import { provideEffects } from '@ngrx/effects';
 
 import { AuthGuard } from './auth/utils/auth.guard';
+import { AuthRoleGuard } from './auth/utils/auth-role.guard';
+
 import { AuthEffects } from './auth/store/auth.effects';
 import { AuthService } from './auth/services/auth.service';
 
@@ -37,6 +39,11 @@ export const routes: Routes = [
     canActivate: [AuthGuard],
     loadChildren: () => import('./trips/trips.routes').then((m) => m.tripsRoutes),
     providers: [provideEffects([TripsEffects]), TripsService],
+  },
+  {
+    path: 'admin',
+    canActivate: [AuthGuard, AuthRoleGuard],
+    loadChildren: () => import('./admin/admin.routes').then((m) => m.adminRoutes),
   },
   {
     path: '**',

@@ -170,6 +170,22 @@
       }
     }
   },
+  "ADMIN": {
+    "USERS": {
+      "TITLE": "Użytkownicy",
+      "LIST": {
+        "EMAIL": "Email",
+        "ROLE": "Rola"
+      },
+      "NO_USERS": {
+        "TITLE": "Brak użytkowników",
+        "SUBTITLE": "Użyj przycisku <strong>Nowy Użytkownik</strong> aby dodać nowego użytkownika."
+      },
+      "BUTTON": {
+        "NEW_USER": "Nowy Użytkownik"
+      }
+    }
+  },
   "EVENT": {
     "TYPE": {
       "SUCCESS": "Sukces",

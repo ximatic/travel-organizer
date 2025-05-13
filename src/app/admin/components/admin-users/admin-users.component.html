@@ -1,0 +1,75 @@
+<div class="admin-users h-full">
+  @if (isLoading()) {
+    <div class="grid place-items-center h-full w-full">
+      <p-progress-spinner />
+    </div>
+  } @else {
+    @if (store.users(); as users) {
+      <p-panel>
+        <ng-template pTemplate="header">
+          <div class="flex grid justify-items-center w-full">
+            <span class="grow font-bold">{{ 'ADMIN.USERS.TITLE' | translate }}</span>
+          </div>
+        </ng-template>
+        <p-table [value]="users" stripedRows>
+          <ng-template #header>
+            <tr>
+              <th>#</th>
+              <th>{{ 'ADMIN.USERS.LIST.EMAIL' | translate }}</th>
+              <th>{{ 'ADMIN.USERS.LIST.ROLE' | translate }}</th>
+              <th></th>
+            </tr>
+          </ng-template>
+          <ng-template #body let-user let-rowIndex="rowIndex">
+            <tr>
+              <td>{{ rowIndex }}</td>
+              <td>{{ user.email }}</td>
+              <td>
+                <p-tag [value]="user.role.toUpperCase()" [severity]="getRoleSeverity(user.role)" />
+              </td>
+              <td>
+                <div class="flex">
+                  <p-button
+                    icon="pi pi-file-edit"
+                    size="small"
+                    severity="secondary"
+                    text
+                    routerLink="/admin/users/{{ user.id }}"
+                  />
+                  <p-button icon="pi pi-trash" size="small" severity="danger" text (onClick)="deleteAdminUser($event, user)" />
+                </div>
+              </td>
+            </tr>
+          </ng-template>
+          <ng-template #emptymessage>
+            <tr>
+              <td colspan="3">{{ 'ADMIN.USERS.NO_USERS.TITLE' | translate }}</td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </p-panel>
+    } @else {
+      <ng-container *ngTemplateOutlet="noAdminUsers"></ng-container>
+    }
+
+    <div class="mt-4">
+      <button pButton pRipple severity="primary" size="large" class="block w-full" routerLink="/admin/user/add">
+        <span pButtonLabel>{{ 'ADMIN.USERS.BUTTON.NEW_USER' | translate }}</span>
+      </button>
+    </div>
+  }
+
+  <p-toast position="bottom-center" key="toast" />
+</div>
+
+<ng-template #noAdminUsers>
+  <p-panel>
+    <div class="grid place-items-center">
+      <p>
+        <span class="pi pi-user admin-users__logo"></span>
+      </p>
+      <p class="mt-2">{{ 'ADMIN.USERS.NO_USERS.TITLE' | translate }}</p>
+      <p class="mt-2" [innerHTML]="'ADMIN.USERS.NO_USERS.SUBTITLE' | translate"></p>
+    </div>
+  </p-panel>
+</ng-template>
