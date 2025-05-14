@@ -36,13 +36,25 @@ export const MOCK_ADMIN_EVENT_LOAD_ALL_PROCESSING: AdminEvent = {
   type: AdminEventType.Processing,
 };
 
-export const MOCK_ADMIN__EVENT_LOAD_ALL_SUCCESS: AdminEvent = {
+export const MOCK_ADMIN_EVENT_LOAD_ALL_SUCCESS: AdminEvent = {
   name: AdminEventName.LoadAll,
   type: AdminEventType.Success,
 };
 
-export const MOCK_ADMIN__EVENT_LOAD_ALL_ERROR: AdminEvent = {
+export const MOCK_ADMIN_EVENT_LOAD_ALL_ERROR: AdminEvent = {
   name: AdminEventName.LoadAll,
   type: AdminEventType.Error,
   message: AdminEventMessage.LOAD_USERS_ERROR,
+};
+
+export const MOCK_ADMIN_EVENT_DELETE_USER_SUCCESS: AdminEvent = {
+  name: AdminEventName.Delete,
+  type: AdminEventType.Success,
+  message: AdminEventMessage.DELETE_USER_SUCCESS,
+};
+
+export const MOCK_ADMIN_EVENT_DELETE_USER_ERROR: AdminEvent = {
+  name: AdminEventName.Delete,
+  type: AdminEventType.Error,
+  message: AdminEventMessage.DELETE_USER_ERROR,
 };

@@ -7,8 +7,8 @@ import { unprotected } from '@ngrx/signals/testing';
 import { of } from 'rxjs';
 
 import {
-  MOCK_ADMIN__EVENT_LOAD_ALL_ERROR,
-  MOCK_ADMIN__EVENT_LOAD_ALL_SUCCESS,
+  MOCK_ADMIN_EVENT_LOAD_ALL_ERROR,
+  MOCK_ADMIN_EVENT_LOAD_ALL_SUCCESS,
   MOCK_ADMIN_USER_1,
   MOCK_ADMIN_USER_2,
 } from '../../../../__mocks__/constants/admin.constants';
@@ -64,7 +64,7 @@ describe('AdminStore', () => {
     store.loadUsers();
 
     expect(store.users()).toEqual([MOCK_ADMIN_USER_1, MOCK_ADMIN_USER_2]);
-    expect(store.event()).toEqual(MOCK_ADMIN__EVENT_LOAD_ALL_SUCCESS);
+    expect(store.event()).toEqual(MOCK_ADMIN_EVENT_LOAD_ALL_SUCCESS);
 
     expect(store.usersCount()).toEqual(2);
 
@@ -79,7 +79,7 @@ describe('AdminStore', () => {
     store.loadUsers();
 
     expect(store.users()).toEqual(null);
-    expect(store.event()).toEqual(MOCK_ADMIN__EVENT_LOAD_ALL_ERROR);
+    expect(store.event()).toEqual(MOCK_ADMIN_EVENT_LOAD_ALL_ERROR);
 
     expect(store.usersCount()).toEqual(0);
 
