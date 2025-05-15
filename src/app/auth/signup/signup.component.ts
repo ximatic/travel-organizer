@@ -24,6 +24,8 @@ import { authActions } from '../store/auth.actions';
 import { selectAuthEvent } from '../store/auth.selectors';
 import { AuthEvent, AuthEventName, AuthEventType, AuthState } from '../store/auth.state';
 
+import { ToastHandlerComponent } from '../../common/components/toast-handler/toast-handler.component';
+
 @Component({
   selector: 'app-signup',
   templateUrl: './signup.component.html',
@@ -43,7 +45,7 @@ import { AuthEvent, AuthEventName, AuthEventType, AuthState } from '../store/aut
   ],
   providers: [TranslateService, MessageService],
 })
-export class SignupComponent implements OnInit, OnDestroy {
+export class SignupComponent extends ToastHandlerComponent implements OnInit, OnDestroy {
   // ngrx
   authEvent$!: Observable<AuthEvent | undefined>;
 
@@ -59,10 +61,10 @@ export class SignupComponent implements OnInit, OnDestroy {
   constructor(
     private router: Router,
     private formBuilder: FormBuilder,
-    private translateService: TranslateService,
-    private messageService: MessageService,
     private store: Store<AuthState>,
-  ) {}
+  ) {
+    super();
+  }
 
   // lifecycle methods
 
@@ -177,19 +179,5 @@ export class SignupComponent implements OnInit, OnDestroy {
       firstname: ['', Validators.required],
       lastname: ['', Validators.required],
     });
-  }
-
-  // toasts
-
-  private showToastError(detail?: string, detailsParams?: InterpolationParameters) {
-    this.showToast(
-      'error',
-      this.translateService.instant('EVENT.TYPE.ERROR'),
-      this.translateService.instant(`EVENT.MESSAGE.${detail}`, detailsParams),
-    );
-  }
-
-  private showToast(severity: string, summary: string, detail?: string) {
-    this.messageService.add({ severity, summary, detail, key: 'toast', life: 3000 });
   }
 }
