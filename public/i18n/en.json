@@ -209,7 +209,15 @@
       "CHECK_TRIP_ITEM_ERROR": "Can't toggle trip item. Please try again later.",
       "REMOVE_TRIP_ITEM_SUCCESS": "Trip item removed",
       "REMOVE_TRIP_ITEM_ERROR": "Can't remove trip item. Please try again later.",
-      "LOGIN_ERROR": "Provided email and password are incorrect. Please provide valid values or try again later."
+      "LOGIN_ERROR": "Provided email and password are incorrect. Please provide valid values or try again later.",
+      "LOAD_USERS_ERROR": "Can't load users. Please try again later.",
+      "LOAD_USER_ERROR": "Can't load user. Please try again later.",
+      "CREATE_USER_SUCCESS": "User ({{user}}) added",
+      "CREATE_USER_ERROR": "Can't create user ({{user}}). Please try again later.",
+      "UPDATE_USER_SUCCESS": "User ({{user}}) updated",
+      "UPDATE_USER_ERROR": "Can't update user ({{user}}). Please try again later.",
+      "DELETE_USER_SUCCESS": "User ({{user}}) removed",
+      "DELETE_USER_ERROR": "Can't remove user ({{user}}). Please try again later."
     }
   }
 }
