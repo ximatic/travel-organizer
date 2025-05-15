@@ -23,6 +23,8 @@ import { tripActions } from '../../store/trips.actions';
 import { selectTripsEvent } from '../../store/trips.selectors';
 import { TripsEvent, TripsEventName, TripsEventType, TripsState } from '../../store/trips.state';
 
+import { ToastHandlerComponent } from '../../../common/components/toast-handler/toast-handler.component';
+
 @Component({
   selector: 'app-trip-form',
   templateUrl: './trip-form.component.html',
@@ -42,7 +44,7 @@ import { TripsEvent, TripsEventName, TripsEventType, TripsState } from '../../st
   ],
   providers: [TranslateService, MessageService],
 })
-export class TripFormComponent implements OnInit, OnDestroy {
+export class TripFormComponent extends ToastHandlerComponent implements OnInit, OnDestroy {
   // ngrx
   tripsEvent$!: Observable<TripsEvent | null>;
 
@@ -63,10 +65,10 @@ export class TripFormComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     private formBuilder: FormBuilder,
-    private translateService: TranslateService,
-    private messageService: MessageService,
     private store: Store<TripsState>,
-  ) {}
+  ) {
+    super();
+  }
 
   // lifecycle methods
 
@@ -230,27 +232,5 @@ export class TripFormComponent implements OnInit, OnDestroy {
         date: startDate && endDate ? [new Date(startDate), new Date(endDate)] : [],
       });
     }
-  }
-
-  // toasts
-
-  private showToastSuccess(detail?: string, detailsParams?: InterpolationParameters) {
-    this.showToast(
-      'success',
-      this.translateService.instant('EVENT.TYPE.SUCCESS'),
-      this.translateService.instant(`EVENT.MESSAGE.${detail}`, detailsParams),
-    );
-  }
-
-  private showToastError(detail?: string, detailsParams?: InterpolationParameters) {
-    this.showToast(
-      'error',
-      this.translateService.instant('EVENT.TYPE.ERROR'),
-      this.translateService.instant(`EVENT.MESSAGE.${detail}`, detailsParams),
-    );
-  }
-
-  private showToast(severity: string, summary: string, detail?: string) {
-    this.messageService.add({ severity, summary, detail, key: 'toast', life: 3000 });
   }
 }

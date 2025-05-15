@@ -18,6 +18,8 @@ import { tripActions } from '../../store/trips.actions';
 import { selectTripsEvent } from '../../store/trips.selectors';
 import { TripsEvent, TripsEventName, TripsEventType, TripsState } from '../../store/trips.state';
 
+import { ToastHandlerComponent } from '../../../common/components/toast-handler/toast-handler.component';
+
 import { TripPanelComponent } from '../trip-panel/trip-panel.component';
 import { TripItemsComponent } from '../trip-items/trip-items.component';
 
@@ -39,7 +41,7 @@ import { TripItemsComponent } from '../trip-items/trip-items.component';
   ],
   providers: [TranslateService, MessageService],
 })
-export class TripComponent implements OnInit, AfterViewInit, OnDestroy {
+export class TripComponent extends ToastHandlerComponent implements OnInit, AfterViewInit, OnDestroy {
   // ngrx
   tripsEvent$!: Observable<TripsEvent | null>;
 
@@ -53,10 +55,10 @@ export class TripComponent implements OnInit, AfterViewInit, OnDestroy {
 
   constructor(
     private route: ActivatedRoute,
-    private translateService: TranslateService,
-    private messageService: MessageService,
     private store: Store<TripsState>,
-  ) {}
+  ) {
+    super();
+  }
 
   // lifecycle methods
 
@@ -117,19 +119,5 @@ export class TripComponent implements OnInit, AfterViewInit, OnDestroy {
         this.showToastError(event?.message);
         break;
     }
-  }
-
-  // toast
-
-  private showToastError(detail?: string, detailsParams?: InterpolationParameters) {
-    this.showToast(
-      'error',
-      this.translateService.instant('EVENT.TYPE.ERROR'),
-      this.translateService.instant(`EVENT.MESSAGE.${detail}`, detailsParams),
-    );
-  }
-
-  private showToast(severity: string, summary: string, detail?: string) {
-    this.messageService.add({ severity, summary, detail, key: 'toast', life: 3000 });
   }
 }

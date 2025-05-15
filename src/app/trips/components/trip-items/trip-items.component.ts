@@ -23,6 +23,8 @@ import { tripItemActions } from '../../store/trips.actions';
 import { selectTripsEvent } from '../../store/trips.selectors';
 import { TripsEvent, TripsEventName, TripsEventType, TripsState } from '../../store/trips.state';
 
+import { ToastHandlerComponent } from '../../../common/components/toast-handler/toast-handler.component';
+
 @Component({
   selector: 'app-trip-items',
   templateUrl: './trip-items.component.html',
@@ -42,7 +44,7 @@ import { TripsEvent, TripsEventName, TripsEventType, TripsState } from '../../st
   ],
   providers: [TranslateService, MessageService],
 })
-export class TripItemsComponent implements OnInit, AfterViewInit, OnDestroy {
+export class TripItemsComponent extends ToastHandlerComponent implements OnInit, AfterViewInit, OnDestroy {
   // ngrx
   tripsEvent$!: Observable<TripsEvent | null>;
 
@@ -59,10 +61,10 @@ export class TripItemsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   constructor(
     private formBuilder: FormBuilder,
-    private translateService: TranslateService,
-    private messageService: MessageService,
     private store: Store<TripsState>,
-  ) {}
+  ) {
+    super();
+  }
 
   // lifecycle methods
 
@@ -194,19 +196,5 @@ export class TripItemsComponent implements OnInit, AfterViewInit, OnDestroy {
     this.tripItemForm = this.formBuilder.group({
       name: ['', Validators.required],
     });
-  }
-
-  // toast
-
-  private showToastError(detail?: string, detailsParams?: InterpolationParameters) {
-    this.showToast(
-      'error',
-      this.translateService.instant('EVENT.TYPE.ERROR'),
-      this.translateService.instant(`EVENT.MESSAGE.${detail}`, detailsParams),
-    );
-  }
-
-  private showToast(severity: string, summary: string, detail?: string) {
-    this.messageService.add({ severity, summary, detail, key: 'toast', life: 3000 });
   }
 }
