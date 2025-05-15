@@ -23,6 +23,8 @@ import { UserEvent, UserEventName, UserEventType, UserState } from '../../store/
 import { UserProfile } from '../../models/user-profile.model';
 import { UserData, UserPassword } from '../../models/user.model';
 
+import { ToastHandlerComponent } from '../../../common/components/toast-handler/toast-handler.component';
+
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
@@ -40,7 +42,7 @@ import { UserData, UserPassword } from '../../models/user.model';
   ],
   providers: [TranslateService, MessageService],
 })
-export class ProfileComponent implements OnInit, OnDestroy {
+export class ProfileComponent extends ToastHandlerComponent implements OnInit, OnDestroy {
   // ngrx
   userData$!: Observable<UserData | null>;
   userEvent$!: Observable<UserEvent | undefined>;
@@ -57,10 +59,10 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
   constructor(
     private formBuilder: FormBuilder,
-    private translateService: TranslateService,
-    private messageService: MessageService,
     private store: Store<UserState>,
-  ) {}
+  ) {
+    super();
+  }
 
   // lifecycle methods
 
@@ -237,27 +239,5 @@ export class ProfileComponent implements OnInit, OnDestroy {
       firstname: profile?.firstname,
       lastname: profile?.lastname,
     });
-  }
-
-  // toasts
-
-  private showToastSuccess(detail?: string) {
-    this.showToast(
-      'success',
-      this.translateService.instant('EVENT.TYPE.SUCCESS'),
-      this.translateService.instant(`EVENT.MESSAGE.${detail}`),
-    );
-  }
-
-  private showToastError(detail?: string, detailsParams?: InterpolationParameters) {
-    this.showToast(
-      'error',
-      this.translateService.instant('EVENT.TYPE.ERROR'),
-      this.translateService.instant(`EVENT.MESSAGE.${detail}`, detailsParams),
-    );
-  }
-
-  private showToast(severity: string, summary: string, detail?: string) {
-    this.messageService.add({ severity, summary, detail, key: 'toast', life: 3000 });
   }
 }

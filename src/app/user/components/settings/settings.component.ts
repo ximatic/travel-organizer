@@ -34,6 +34,8 @@ import { userActions } from '../../store/user.actions';
 import { selectUserEvent, selectUserSettings } from '../../store/user.selectors';
 import { UserEvent, UserEventName, UserEventType, UserState } from '../../store/user.state';
 
+import { ToastHandlerComponent } from '../../../common/components/toast-handler/toast-handler.component';
+
 export interface SettingsFormOption {
   name: string;
   code: string;
@@ -58,7 +60,7 @@ export interface SettingsFormOption {
   ],
   providers: [TranslateService, MessageService],
 })
-export class SettingsComponent implements OnInit, AfterViewInit, OnDestroy {
+export class SettingsComponent extends ToastHandlerComponent implements OnInit, AfterViewInit, OnDestroy {
   // ngrx
   userSettings$!: Observable<UserSettings | null>;
   userEvent$!: Observable<UserEvent | undefined>;
@@ -80,10 +82,9 @@ export class SettingsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   constructor(
     private formBuilder: FormBuilder,
-    private translateService: TranslateService,
-    private messageService: MessageService,
     private userStore: Store<UserState>,
   ) {
+    super();
     this.initFormOptions();
   }
 
@@ -212,27 +213,5 @@ export class SettingsComponent implements OnInit, AfterViewInit, OnDestroy {
       timeFormat,
       theme,
     });
-  }
-
-  // toasts
-
-  private showToastSuccess(detail?: string) {
-    this.showToast(
-      'success',
-      this.translateService.instant('EVENT.TYPE.SUCCESS'),
-      this.translateService.instant(`EVENT.MESSAGE.${detail}`),
-    );
-  }
-
-  private showToastError(detail?: string) {
-    this.showToast(
-      'error',
-      this.translateService.instant('EVENT.TYPE.ERROR'),
-      this.translateService.instant(`EVENT.MESSAGE.${detail}`),
-    );
-  }
-
-  private showToast(severity: string, summary: string, detail?: string) {
-    this.messageService.add({ severity, summary, detail, key: 'toast', life: 3000 });
   }
 }
