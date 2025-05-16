@@ -21,11 +21,11 @@ import { AdminStoreMock } from '../../../../../__mocks__/stores/admin.store.mock
 
 import { AdminEventMessage, AdminStore } from '../../store/admin.store';
 
-import { AdminUserComponent } from './admin-users.component';
+import { AdminUsersComponent } from './admin-users.component';
 
-describe('AdminUserComponent', () => {
-  let component: AdminUserComponent;
-  let fixture: ComponentFixture<AdminUserComponent>;
+describe('AdminUsersComponent', () => {
+  let component: AdminUsersComponent;
+  let fixture: ComponentFixture<AdminUsersComponent>;
 
   let router: Router;
   let messageService: MessageService;
@@ -33,7 +33,7 @@ describe('AdminUserComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AdminUserComponent],
+      imports: [AdminUsersComponent],
       providers: [provideRouter([]), provideNoopAnimations(), provideTranslateService(), MessageService, AdminStore],
     }).compileComponents();
     TestBed.overrideProvider(MessageService, { useValue: messageServiceMock });
@@ -45,7 +45,7 @@ describe('AdminUserComponent', () => {
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AdminUserComponent);
+    fixture = TestBed.createComponent(AdminUsersComponent);
     component = fixture.componentInstance;
   });
 

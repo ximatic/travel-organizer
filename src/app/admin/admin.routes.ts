@@ -1,7 +1,6 @@
 import { Routes } from '@angular/router';
 
-import { AdminUserComponent } from './components/admin-users/admin-users.component';
-
+import { AdminUsersComponent } from './components/admin-users/admin-users.component';
 export const adminRoutes: Routes = [
   {
     path: '',
@@ -10,6 +9,6 @@ export const adminRoutes: Routes = [
   },
   {
     path: 'user',
-    component: AdminUserComponent,
+    component: AdminUsersComponent,
   },
 ];

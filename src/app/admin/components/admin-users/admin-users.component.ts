@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit, signal, inject, effect } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { InterpolationParameters, TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
@@ -16,6 +16,8 @@ import { AdminEvent, AdminEventName, AdminEventType, AdminStore } from '../../st
 
 import { AdminUser } from '../../models/admin-user.model';
 import { UserRole } from '../../../user/models/user.enum';
+
+import { ToastHandlerComponent } from '../../../common/components/toast-handler/toast-handler.component';
 
 @Component({
   selector: 'app-admin-users',
@@ -36,16 +38,15 @@ import { UserRole } from '../../../user/models/user.enum';
   ],
   providers: [TranslateService, MessageService],
 })
-export class AdminUserComponent implements OnInit {
+export class AdminUsersComponent extends ToastHandlerComponent implements OnInit {
   // di
-  private translateService = inject(TranslateService);
-  private messageService = inject(MessageService);
   store = inject(AdminStore);
 
   // state flags
   isLoading = signal(true);
 
   constructor() {
+    super();
     effect(() => {
       this.initState();
     });
@@ -85,11 +86,7 @@ export class AdminUserComponent implements OnInit {
     }
   }
 
-  private handleAdminEvent(event: AdminEvent | null): void {
-    if (!event) {
-      return;
-    }
-
+  private handleAdminEvent(event: AdminEvent): void {
     switch (event.name) {
       case AdminEventName.LoadAll:
         this.handleAdminEventLoadAll(event);
@@ -118,33 +115,11 @@ export class AdminUserComponent implements OnInit {
   private handleAdminEventDelete(event: AdminEvent): void {
     switch (event.type) {
       case AdminEventType.Success:
-        this.showToastSuccess(event?.message, { trip: event.user?.email });
+        this.showToastSuccess(event?.message, { user: event.user?.email });
         break;
       case AdminEventType.Error:
-        this.showToastError(event?.message, { trip: event.user?.email });
+        this.showToastError(event?.message, { user: event.user?.email });
         break;
     }
-  }
-
-  // toast
-
-  private showToastSuccess(detail?: string, detailsParams?: InterpolationParameters) {
-    this.showToast(
-      'success',
-      this.translateService.instant('EVENT.TYPE.SUCCESS'),
-      this.translateService.instant(`EVENT.MESSAGE.${detail}`, detailsParams),
-    );
-  }
-
-  private showToastError(detail?: string, detailsParams?: InterpolationParameters) {
-    this.showToast(
-      'error',
-      this.translateService.instant('EVENT.TYPE.ERROR'),
-      this.translateService.instant(`EVENT.MESSAGE.${detail}`, detailsParams),
-    );
-  }
-
-  private showToast(severity: string, summary: string, detail?: string) {
-    this.messageService.add({ severity, summary, detail, key: 'toast', life: 3000 });
   }
 }
