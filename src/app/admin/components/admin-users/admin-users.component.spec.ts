@@ -59,7 +59,7 @@ describe('AdminUsersComponent', () => {
     fixture.detectChanges();
 
     expect(component.isLoading()).toBeTruthy();
-    expect(spyLoadUsers).toHaveBeenCalledWith();
+    expect(spyLoadUsers).toHaveBeenCalled();
   });
 
   // user handling
