@@ -13,4 +13,8 @@ export const AdminStoreMock = {
   usersCount: signal<number>(1),
   // methods
   loadUsers: jest.fn(),
+  loadUser: jest.fn(),
+  createUser: jest.fn(),
+  updateUser: jest.fn(),
+  deleteUser: jest.fn(),
 };

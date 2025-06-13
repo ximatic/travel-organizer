@@ -4,8 +4,10 @@ import { signalStore, withState, withMethods, patchState, withComputed } from '@
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 
 import { pipe, switchMap, tap } from 'rxjs';
-import { AdminUser } from '../models/admin-user.model';
+
 import { AdminService } from '../services/admin.service';
+
+import { AdminUser } from '../models/admin-user.model';
 
 export enum AdminEventMessage {
   LOAD_USERS_ERROR = 'LOAD_USERS_ERROR',
@@ -82,6 +84,37 @@ export const AdminStore = signalStore(
                 name: AdminEventName.LoadAll,
                 type: AdminEventType.Error,
                 message: AdminEventMessage.LOAD_USERS_ERROR,
+              },
+            }),
+        }),
+      ),
+    ),
+    loadUser: rxMethod<string>(
+      pipe(
+        tap(() =>
+          patchState(store, {
+            event: {
+              name: AdminEventName.Load,
+              type: AdminEventType.Processing,
+            },
+          }),
+        ),
+        switchMap((id: string) => tripsService.loadUser(id)),
+        tap({
+          next: (user: AdminUser) =>
+            patchState(store, {
+              event: {
+                name: AdminEventName.Load,
+                type: AdminEventType.Success,
+                user,
+              },
+            }),
+          error: () =>
+            patchState(store, {
+              event: {
+                name: AdminEventName.Load,
+                type: AdminEventType.Error,
+                message: AdminEventMessage.LOAD_USER_ERROR,
               },
             }),
         }),

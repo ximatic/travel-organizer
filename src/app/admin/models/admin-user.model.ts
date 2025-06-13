@@ -3,9 +3,9 @@ import { UserRole } from '../../user/models/user.enum';
 export interface AdminUser {
   _id?: string;
   email: string;
+  role: UserRole;
   firstname: string;
   lastname: string;
-  role: UserRole;
 }
 
 // request payload

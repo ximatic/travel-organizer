@@ -1,0 +1,172 @@
+<div class="admin-user">
+  @if (isLoading()) {
+    <div class="grid place-items-center h-full w-full">
+      <p-progress-spinner />
+    </div>
+  } @else {
+    <p-panel class="trip__panel">
+      <ng-template pTemplate="header">
+        <div class="flex grid justify-items-center w-full">
+          <span class="grow font-bold">
+            @if (!user()) {
+              {{ 'ADMIN.USER.FORM.TITLE.CREATE' | translate }}
+            } @else {
+              {{ 'ADMIN.USER.FORM.TITLE.UPDATE' | translate }}
+            }
+          </span>
+        </div>
+      </ng-template>
+
+      <form [formGroup]="userForm">
+        <div class="mb-3">
+          <p-floatlabel variant="on">
+            <input
+              pInputText
+              id="email"
+              type="text"
+              formControlName="email"
+              class="w-full"
+              [ngClass]="{ 'ng-invalid': emailControl?.invalid, 'ng-dirty': emailControl?.dirty }"
+            />
+            <label for="email">{{ 'ADMIN.USER.FORM.EMAIL.LABEL' | translate }}</label>
+          </p-floatlabel>
+          @if (emailControl?.invalid && emailControl?.dirty) {
+            <small class="ml-1 text-error">{{ 'ADMIN.USER.FORM.ERROR.EMAIL' | translate }}</small>
+          }
+        </div>
+        <div class="mb-3">
+          <p-floatlabel variant="on">
+            <input
+              pInputText
+              id="firstname"
+              type="text"
+              formControlName="firstname"
+              class="block w-full"
+              [ngClass]="{ 'ng-invalid': firstnameControl?.invalid, 'ng-dirty': firstnameControl?.dirty }"
+            />
+            <label for="firstname">{{ 'ADMIN.USER.FORM.FIRSTNAME.LABEL' | translate }}</label>
+          </p-floatlabel>
+          @if (firstnameControl?.invalid && firstnameControl?.dirty) {
+            <small class="ml-1 text-error">
+              {{ 'ADMIN.USER.FORM.FIRSTNAME.ERROR' | translate }}
+            </small>
+          }
+        </div>
+        <div class="mb-3">
+          <p-floatlabel variant="on">
+            <input
+              pInputText
+              id="lastname"
+              type="text"
+              formControlName="lastname"
+              class="block w-full"
+              [ngClass]="{ 'ng-invalid': lastnameControl?.invalid, 'ng-dirty': lastnameControl?.dirty }"
+            />
+            <label for="lastname">{{ 'ADMIN.USER.FORM.LASTNAME.LABEL' | translate }}</label>
+          </p-floatlabel>
+          @if (lastnameControl?.invalid && lastnameControl?.dirty) {
+            <small class="ml-1 text-error">
+              {{ 'ADMIN.USER.FORM.LASTNAME.ERROR' | translate }}
+            </small>
+          }
+        </div>
+        <div class="mb-3">
+          <p-floatlabel variant="on">
+            <p-select
+              formControlName="role"
+              [options]="roles()"
+              id="role"
+              class="w-full"
+              [ngClass]="{ 'ng-invalid': roleControl?.invalid, 'ng-dirty': roleControl?.dirty }"
+            />
+            <label for="role">{{ 'ADMIN.USER.FORM.ROLE.LABEL' | translate }}</label>
+          </p-floatlabel>
+          @if (roleControl?.invalid && roleControl?.dirty) {
+            <small class="ml-1 text-error">
+              {{ 'ADMIN.USER.FORM.ROLE.ERROR' | translate }}
+            </small>
+          }
+        </div>
+        <div class="mb-3">
+          <p-floatlabel variant="on">
+            <p-password
+              id="password"
+              type="text"
+              formControlName="password"
+              autocomplete="off"
+              class="block w-full"
+              [ngClass]="{
+                'ng-invalid': passwordControl?.dirty && passwordControl?.invalid,
+                'ng-dirty': passwordControl?.dirty,
+              }"
+              (onBlur)="validateForm()"
+            />
+            <label for="password">{{ 'ADMIN.USER.FORM.PASSWORD.LABEL' | translate }}</label>
+          </p-floatlabel>
+          @if (passwordControl?.invalid && passwordControl?.dirty && passwordControl?.hasError('required')) {
+            <small class="ml-1 text-error">
+              {{ 'ADMIN.USER.FORM.PASSWORD.ERROR' | translate }}
+            </small>
+          }
+        </div>
+        <div class="mb-3">
+          <p-floatlabel variant="on">
+            <p-password
+              id="passwordRepeat"
+              type="text"
+              formControlName="passwordRepeat"
+              autocomplete="off"
+              class="block w-full"
+              [ngClass]="{
+                'ng-invalid': passwordRepeatControl?.dirty && passwordRepeatControl?.invalid,
+                'ng-dirty': passwordRepeatControl?.dirty,
+              }"
+              (onBlur)="validateForm()"
+            />
+            <label for="passwordRepeat">{{ 'ADMIN.USER.FORM.PASSWORD_REPEAT.LABEL' | translate }}</label>
+          </p-floatlabel>
+          @if (passwordRepeatControl?.invalid && passwordRepeatControl?.dirty) {
+            <small class="block ml-1 text-error">
+              @if (passwordRepeatControl?.hasError('required')) {
+                {{ 'ADMIN.USER.FORM.PASSWORD_REPEAT.ERROR' | translate }}
+              }
+              @if (passwordRepeatControl?.hasError('valueMatch')) {
+                {{ 'ADMIN.USER.FORM.PASSWORDS_NO_MATCH.ERROR' | translate }}
+              }
+            </small>
+          }
+        </div>
+
+        <div class="mt-4">
+          <button
+            pButton
+            pRipple
+            severity="primary"
+            [disabled]="userForm.invalid || isSubmitInProgress()"
+            class="block w-full"
+            (click)="submitUser()"
+          >
+            @if (isSubmitInProgress()) {
+              <i class="pi pi-spin pi-spinner mr-1"></i>
+            }
+            <span pButtonLabel>
+              @if (!user()) {
+                {{ 'COMMON.BUTTON.ADD' | translate }}
+              } @else {
+                {{ 'COMMON.BUTTON.UPDATE' | translate }}
+              }
+            </span>
+          </button>
+        </div>
+      </form>
+    </p-panel>
+
+    <div class="mt-4">
+      <button pButton pRipple severity="secondary" size="large" class="block w-full" routerLink="/admin/users">
+        <span pButtonLabel>{{ 'ADMIN.COMMON.BUTTON.ALL_USERS' | translate }}</span>
+      </button>
+    </div>
+  }
+
+  <p-toast position="bottom-center" key="toast" />
+</div>

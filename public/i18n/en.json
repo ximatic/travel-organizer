@@ -171,6 +171,11 @@
     }
   },
   "ADMIN": {
+    "COMMON": {
+      "BUTTON": {
+        "ALL_USERS": "All users"
+      }
+    },
     "USERS": {
       "TITLE": "Users",
       "LIST": {
@@ -183,6 +188,45 @@
       },
       "BUTTON": {
         "NEW_USER": "New User"
+      }
+    },
+    "USER": {
+      "FORM": {
+        "TITLE": {
+          "CREATE": "Create user",
+          "UPDATE": "Update user"
+        },
+        "EMAIL": {
+          "LABEL": "Email",
+          "ERROR": "Please provide valid email."
+        },
+        "FIRSTNAME": {
+          "LABEL": "Name",
+          "ERROR": "Name can't be empty."
+        },
+        "LASTNAME": {
+          "LABEL": "Surname",
+          "ERROR": "Surname can't be empty."
+        },
+        "ROLE": {
+          "LABEL": "Role",
+          "ERROR": "Role can't be empty.",
+          "OPTION": {
+            "ADMIN": "Admin",
+            "USER": "User"
+          }
+        },
+        "PASSWORD": {
+          "LABEL": "Password",
+          "ERROR": "Password can't be empty."
+        },
+        "PASSWORD_REPEAT": {
+          "LABEL": "Repeat password",
+          "ERROR": "Repeat password can't be empty."
+        },
+        "PASSWORDS_NO_MATCH": {
+          "ERROR": "Passwords values have to be the same."
+        }
       }
     }
   },

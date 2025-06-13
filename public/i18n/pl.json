@@ -171,6 +171,11 @@
     }
   },
   "ADMIN": {
+    "COMMON": {
+      "BUTTON": {
+        "ALL_USERS": "Wszyscy użytkownicy"
+      }
+    },
     "USERS": {
       "TITLE": "Użytkownicy",
       "LIST": {
@@ -183,6 +188,45 @@
       },
       "BUTTON": {
         "NEW_USER": "Nowy Użytkownik"
+      }
+    },
+    "USER": {
+      "FORM": {
+        "TITLE": {
+          "CREATE": "Stwórz uzytkownika",
+          "UPDATE": "Edytuj użytkownika"
+        },
+        "EMAIL": {
+          "LABEL": "Email",
+          "ERROR": "Podaj poprawny adres email."
+        },
+        "FIRSTNAME": {
+          "LABEL": "Imię",
+          "ERROR": "Imię nie może być puste."
+        },
+        "LASTNAME": {
+          "LABEL": "Nazwisko",
+          "ERROR": "Nazwisko nie może być puste."
+        },
+        "ROLE": {
+          "LABEL": "Rola",
+          "ERROR": "Rola nie może być pusta",
+          "OPTION": {
+            "ADMIN": "Administrator",
+            "USER": "Użytkownik"
+          }
+        },
+        "PASSWORD": {
+          "LABEL": "Hasło",
+          "ERROR": "Hasło nie może być puste."
+        },
+        "PASSWORD_REPEAT": {
+          "LABEL": "Powtórz hasło",
+          "ERROR": "Hasło nie może być puste."
+        },
+        "PASSWORDS_NO_MATCH": {
+          "ERROR": "Hasła muszą być takie same."
+        }
       }
     }
   },
