@@ -80,11 +80,11 @@ describe('AdminService', () => {
       const expectedResponse: AdminUser = MOCK_ADMIN_USER_1;
       let serviceResponse!: AdminUser;
 
-      service.loadUser(MOCK_ADMIN_USER_1._id as string).subscribe((result: AdminUser) => {
+      service.loadUser(MOCK_ADMIN_USER_1.id as string).subscribe((result: AdminUser) => {
         serviceResponse = result;
       });
 
-      const req = httpMock.expectOne(`${environment.userAdminApi}/${MOCK_ADMIN_USER_1._id}`);
+      const req = httpMock.expectOne(`${environment.userAdminApi}/${MOCK_ADMIN_USER_1.id}`);
       req.flush(mockData);
 
       tick();
@@ -139,7 +139,7 @@ describe('AdminService', () => {
         serviceResponse = result;
       });
 
-      const req = httpMock.expectOne(`${environment.userAdminApi}/${MOCK_ADMIN_USER_1._id}`);
+      const req = httpMock.expectOne(`${environment.userAdminApi}/${MOCK_ADMIN_USER_1.id}`);
       req.flush(mockData);
 
       tick();

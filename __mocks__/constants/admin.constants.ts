@@ -14,7 +14,7 @@ import { MOCK_USER_ID_1, MOCK_USER_ID_2, MOCK_USER_ROLE_1, MOCK_USER_ROLE_2 } fr
 // admin user
 
 export const MOCK_ADMIN_USER_1: AdminUser = {
-  _id: MOCK_USER_ID_1,
+  id: MOCK_USER_ID_1,
   email: MOCK_EMAIL_1,
   firstname: MOCK_FIRSTNAME_1,
   lastname: MOCK_LASTNAME_1,
@@ -22,7 +22,7 @@ export const MOCK_ADMIN_USER_1: AdminUser = {
 };
 
 export const MOCK_ADMIN_USER_2: AdminUser = {
-  _id: MOCK_USER_ID_2,
+  id: MOCK_USER_ID_2,
   email: MOCK_EMAIL_2,
   firstname: MOCK_FIRSTNAME_2,
   lastname: MOCK_LASTNAME_2,

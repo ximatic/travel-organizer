@@ -1,7 +1,7 @@
 import { UserRole } from '../../user/models/user.enum';
 
 export interface AdminUser {
-  _id?: string;
+  id?: string;
   email: string;
   role: UserRole;
   firstname: string;

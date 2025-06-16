@@ -40,7 +40,7 @@ describe('AdminUserComponent', () => {
         {
           provide: ActivatedRoute,
           useValue: {
-            params: of({ id: MOCK_ADMIN_USER_1._id }),
+            params: of({ id: MOCK_ADMIN_USER_1.id }),
           },
         },
         MessageService,
@@ -70,7 +70,7 @@ describe('AdminUserComponent', () => {
     fixture.detectChanges();
 
     expect(component.isLoading()).toBeTruthy();
-    expect(spyLoadUser).toHaveBeenCalledWith(MOCK_ADMIN_USER_1._id);
+    expect(spyLoadUser).toHaveBeenCalledWith(MOCK_ADMIN_USER_1.id);
   });
 
   it('validating form works', () => {
