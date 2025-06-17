@@ -81,7 +81,7 @@ export class AdminUsersComponent extends ToastHandlerComponent implements OnInit
   }
 
   private initState(): void {
-    if (!!this.store.event()) {
+    if (this.store.event()) {
       this.handleAdminEvent(this.store.event() as AdminEvent);
     }
   }
