@@ -3,7 +3,7 @@ import { AfterViewInit, Component, OnDestroy, OnInit, signal } from '@angular/co
 import { ActivatedRoute, Params, RouterModule } from '@angular/router';
 
 import { Store } from '@ngrx/store';
-import { InterpolationParameters, TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { Observable, Subscription } from 'rxjs';
 
 import { MessageService } from 'primeng/api';

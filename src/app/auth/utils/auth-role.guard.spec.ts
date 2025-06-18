@@ -4,8 +4,6 @@ import { provideRouter, Router } from '@angular/router';
 
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 
-import { jwtDecode } from 'jwt-decode';
-
 import {
   MOCK_AUTH_TOKEN_0,
   MOCK_AUTH_TOKEN_1,

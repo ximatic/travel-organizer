@@ -29,7 +29,7 @@ describe('AdminUsersComponent', () => {
 
   let router: Router;
   let messageService: MessageService;
-  let store: any; // AdminStore>;
+  let store: any;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({

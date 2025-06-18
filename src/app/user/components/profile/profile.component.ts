@@ -3,7 +3,7 @@ import { Component, OnDestroy, OnInit, signal } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { Store } from '@ngrx/store';
-import { InterpolationParameters, TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { delay, Observable, of, Subscription } from 'rxjs';
 
 import { MessageService } from 'primeng/api';
