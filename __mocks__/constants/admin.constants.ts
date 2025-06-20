@@ -64,6 +64,11 @@ export const MOCK_ADMIN_EVENT_LOAD_USER_ERROR: AdminEvent = {
   message: AdminEventMessage.LOAD_USER_ERROR,
 };
 
+export const MOCK_ADMIN_EVENT_CREATE_USER_PROCESSING: AdminEvent = {
+  name: AdminEventName.Create,
+  type: AdminEventType.Processing,
+};
+
 export const MOCK_ADMIN_EVENT_CREATE_USER_SUCCESS: AdminEvent = {
   name: AdminEventName.Create,
   type: AdminEventType.Success,

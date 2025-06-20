@@ -240,6 +240,7 @@ export class AdminUserComponent extends ToastHandlerComponent implements OnInit,
       );
     });
   }
+
   private fillForm(): void {
     if (this.user()) {
       const { email, firstname, lastname, role } = this.user() as AdminUser;
