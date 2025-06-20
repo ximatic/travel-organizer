@@ -134,11 +134,10 @@ export class AdminUserComponent extends ToastHandlerComponent implements OnInit,
             ...this.processFormValue(),
           };
           // TODO - uncomment when ready
-          // this.store.createUser(payload);
+          // this.store.updateUser(payload);
         } else {
           const payload = this.processFormValue();
-          // TODO - uncomment when ready
-          // this.store.updateUser(payload);
+          this.store.createUser(payload);
         }
       });
   }
@@ -177,6 +176,9 @@ export class AdminUserComponent extends ToastHandlerComponent implements OnInit,
       case AdminEventName.Load:
         this.handleAdminEventLoad(event);
         break;
+      case AdminEventName.Create:
+        this.handleAdminEventCreate(event);
+        break;
     }
   }
 
@@ -195,6 +197,22 @@ export class AdminUserComponent extends ToastHandlerComponent implements OnInit,
       case AdminEventType.Error:
         this.isLoading.set(false);
         this.showToastError(event?.message);
+        break;
+    }
+  }
+
+  private handleAdminEventCreate(event: AdminEvent): void {
+    switch (event.type) {
+      case AdminEventType.Processing:
+        this.isSubmitInProgress.set(true);
+        break;
+      case AdminEventType.Success:
+        this.isSubmitInProgress.set(false);
+        this.showToastSuccess(event.message, { user: event.user?.email });
+        break;
+      case AdminEventType.Error:
+        this.isSubmitInProgress.set(false);
+        this.showToastError(event.message);
         break;
     }
   }

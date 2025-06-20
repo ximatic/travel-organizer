@@ -1,13 +1,14 @@
 import { computed, inject } from '@angular/core';
 
+import { tapResponse } from '@ngrx/operators';
 import { signalStore, withState, withMethods, patchState, withComputed } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 
-import { pipe, switchMap, tap } from 'rxjs';
+import { catchError, EMPTY, of, pipe, switchMap, tap } from 'rxjs';
 
 import { AdminService } from '../services/admin.service';
 
-import { AdminUser } from '../models/admin-user.model';
+import { AdminUser, CreateAdminUserPayload } from '../models/admin-user.model';
 
 export enum AdminEventMessage {
   LOAD_USERS_ERROR = 'LOAD_USERS_ERROR',
@@ -57,7 +58,7 @@ export const AdminStore = signalStore(
   withComputed(({ users }) => ({
     usersCount: computed(() => (users() || []).length),
   })),
-  withMethods((store, tripsService = inject(AdminService)) => ({
+  withMethods((store, adminService = inject(AdminService)) => ({
     loadUsers: rxMethod<void>(
       pipe(
         tap(() =>
@@ -68,7 +69,7 @@ export const AdminStore = signalStore(
             },
           }),
         ),
-        switchMap(() => tripsService.loadUsers()),
+        switchMap(() => adminService.loadUsers()),
         tap({
           next: (users: AdminUser[]) =>
             patchState(store, {
@@ -99,7 +100,7 @@ export const AdminStore = signalStore(
             },
           }),
         ),
-        switchMap((id: string) => tripsService.loadUser(id)),
+        switchMap((id: string) => adminService.loadUser(id)),
         tap({
           next: (user: AdminUser) =>
             patchState(store, {
@@ -118,6 +119,43 @@ export const AdminStore = signalStore(
               },
             }),
         }),
+      ),
+    ),
+    createUser: rxMethod<CreateAdminUserPayload>(
+      pipe(
+        tap(() => {
+          patchState(store, {
+            event: {
+              name: AdminEventName.Create,
+              type: AdminEventType.Processing,
+            },
+          });
+        }),
+        switchMap((payload: CreateAdminUserPayload) =>
+          adminService.createUser(payload).pipe(
+            tapResponse({
+              next: (user: AdminUser) =>
+                patchState(store, {
+                  users: [...(store.users() || []), user],
+                  event: {
+                    name: AdminEventName.Create,
+                    type: AdminEventType.Success,
+                    message: AdminEventMessage.CREATE_USER_SUCCESS,
+                    user,
+                  },
+                }),
+              error: () =>
+                patchState(store, {
+                  event: {
+                    name: AdminEventName.Create,
+                    type: AdminEventType.Error,
+                    message: AdminEventMessage.CREATE_USER_ERROR,
+                  },
+                }),
+            }),
+            catchError((error) => of(error)),
+          ),
+        ),
       ),
     ),
   })),
