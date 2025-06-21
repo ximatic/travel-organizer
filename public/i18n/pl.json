@@ -259,7 +259,7 @@
       "CREATE_USER_SUCCESS": "Nowy użytkownik ({{user}}) został dodany",
       "CREATE_USER_ERROR": "Nie można dodać nowego użytkownika. Spróbuj ponownie póżniej.",
       "UPDATE_USER_SUCCESS": "Użytkownik ({{user}}) zaktualizowany",
-      "UPDATE_USER_ERROR": "Nie można zaktualizować użytkownika ({{user}}). Spróbuj ponownie póżniej.",
+      "UPDATE_USER_ERROR": "Nie można zaktualizować użytkownika. Spróbuj ponownie póżniej.",
       "REMOVE_USER_SUCCESS": "Użytkownik ({{user}}) usunięty",
       "REMOVE_USER_ERROR": "Nie można usunąć użytkownika ({{user}}). Spróbuj ponownie póżniej."
     }
