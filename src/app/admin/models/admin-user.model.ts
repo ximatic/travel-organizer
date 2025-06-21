@@ -20,5 +20,5 @@ export interface CreateAdminUserPayload {
 }
 
 export interface UpdateAdminUserPayload extends Partial<CreateAdminUserPayload> {
-  _id: string;
+  id: string;
 }

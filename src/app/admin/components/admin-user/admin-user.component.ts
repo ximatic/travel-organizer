@@ -128,13 +128,14 @@ export class AdminUserComponent extends ToastHandlerComponent implements OnInit,
     of({})
       .pipe(delay(DEFAULT_UX_DELAY))
       .subscribe(() => {
-        if (this.user()) {
+        const user = this.user();
+        if (user && user.id) {
           const payload = {
-            ...this.user(),
+            ...user,
             ...this.processFormValue(),
+            id: user.id,
           };
-          // TODO - uncomment when ready
-          // this.store.updateUser(payload);
+          this.store.updateUser({ id: user.id, payload });
         } else {
           const payload = this.processFormValue();
           this.store.createUser(payload);
@@ -158,6 +159,9 @@ export class AdminUserComponent extends ToastHandlerComponent implements OnInit,
       this.route.params.subscribe((params: Params) => {
         if (params['id']) {
           this.store.loadUser(params['id']);
+
+          this.passwordControl?.clearValidators();
+          this.passwordRepeatControl?.clearValidators();
         } else {
           this.isLoading.set(false);
         }
@@ -178,6 +182,9 @@ export class AdminUserComponent extends ToastHandlerComponent implements OnInit,
         break;
       case AdminEventName.Create:
         this.handleAdminEventCreate(event);
+        break;
+      case AdminEventName.Update:
+        this.handleAdminEventUpdate(event);
         break;
     }
   }
@@ -202,6 +209,22 @@ export class AdminUserComponent extends ToastHandlerComponent implements OnInit,
   }
 
   private handleAdminEventCreate(event: AdminEvent): void {
+    switch (event.type) {
+      case AdminEventType.Processing:
+        this.isSubmitInProgress.set(true);
+        break;
+      case AdminEventType.Success:
+        this.isSubmitInProgress.set(false);
+        this.showToastSuccess(event.message, { user: event.user?.email });
+        break;
+      case AdminEventType.Error:
+        this.isSubmitInProgress.set(false);
+        this.showToastError(event.message);
+        break;
+    }
+  }
+
+  private handleAdminEventUpdate(event: AdminEvent): void {
     switch (event.type) {
       case AdminEventType.Processing:
         this.isSubmitInProgress.set(true);

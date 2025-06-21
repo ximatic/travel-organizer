@@ -82,6 +82,24 @@ export const MOCK_ADMIN_EVENT_CREATE_USER_ERROR: AdminEvent = {
   message: AdminEventMessage.CREATE_USER_ERROR,
 };
 
+export const MOCK_ADMIN_EVENT_UPDATE_USER_PROCESSING: AdminEvent = {
+  name: AdminEventName.Update,
+  type: AdminEventType.Processing,
+};
+
+export const MOCK_ADMIN_EVENT_UPDATE_USER_SUCCESS: AdminEvent = {
+  name: AdminEventName.Update,
+  type: AdminEventType.Success,
+  message: AdminEventMessage.UPDATE_USER_SUCCESS,
+  user: MOCK_ADMIN_USER_1,
+};
+
+export const MOCK_ADMIN_EVENT_UPDATE_USER_ERROR: AdminEvent = {
+  name: AdminEventName.Update,
+  type: AdminEventType.Error,
+  message: AdminEventMessage.UPDATE_USER_ERROR,
+};
+
 export const MOCK_ADMIN_EVENT_DELETE_USER_SUCCESS: AdminEvent = {
   name: AdminEventName.Delete,
   type: AdminEventType.Success,

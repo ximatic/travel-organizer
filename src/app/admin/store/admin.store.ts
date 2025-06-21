@@ -8,7 +8,7 @@ import { catchError, EMPTY, of, pipe, switchMap, tap } from 'rxjs';
 
 import { AdminService } from '../services/admin.service';
 
-import { AdminUser, CreateAdminUserPayload } from '../models/admin-user.model';
+import { AdminUser, CreateAdminUserPayload, UpdateAdminUserPayload } from '../models/admin-user.model';
 
 export enum AdminEventMessage {
   LOAD_USERS_ERROR = 'LOAD_USERS_ERROR',
@@ -45,6 +45,11 @@ export interface AdminEvent {
 export interface AdminState {
   users: AdminUser[] | null;
   event: AdminEvent | null;
+}
+
+export interface AdminUserUpdateProps {
+  id: string;
+  payload: UpdateAdminUserPayload;
 }
 
 export const initialState: AdminState = {
@@ -150,6 +155,43 @@ export const AdminStore = signalStore(
                     name: AdminEventName.Create,
                     type: AdminEventType.Error,
                     message: AdminEventMessage.CREATE_USER_ERROR,
+                  },
+                }),
+            }),
+            catchError((error) => of(error)),
+          ),
+        ),
+      ),
+    ),
+    updateUser: rxMethod<AdminUserUpdateProps>(
+      pipe(
+        tap(() => {
+          patchState(store, {
+            event: {
+              name: AdminEventName.Update,
+              type: AdminEventType.Processing,
+            },
+          });
+        }),
+        switchMap((props: AdminUserUpdateProps) =>
+          adminService.updateUser(props.id, props.payload).pipe(
+            tapResponse({
+              next: (user: AdminUser) =>
+                patchState(store, {
+                  users: (store.users() || []).map((u: AdminUser) => (user.id === u.id ? user : u)),
+                  event: {
+                    name: AdminEventName.Update,
+                    type: AdminEventType.Success,
+                    message: AdminEventMessage.UPDATE_USER_SUCCESS,
+                    user,
+                  },
+                }),
+              error: () =>
+                patchState(store, {
+                  event: {
+                    name: AdminEventName.Update,
+                    type: AdminEventType.Error,
+                    message: AdminEventMessage.UPDATE_USER_ERROR,
                   },
                 }),
             }),
