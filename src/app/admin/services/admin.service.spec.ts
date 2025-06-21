@@ -131,7 +131,7 @@ describe('AdminService', () => {
       let serviceResponse!: AdminUser;
 
       const payload: UpdateAdminUserPayload = {
-        _id: MOCK_USER_ID_1,
+        id: MOCK_USER_ID_1,
         ...MOCK_ADMIN_USER_1,
       };
 

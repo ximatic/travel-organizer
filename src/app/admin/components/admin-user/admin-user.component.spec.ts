@@ -16,6 +16,9 @@ import {
   MOCK_ADMIN_EVENT_LOAD_USER_ERROR,
   MOCK_ADMIN_EVENT_LOAD_USER_PROCESSING,
   MOCK_ADMIN_EVENT_LOAD_USER_SUCCESS,
+  MOCK_ADMIN_EVENT_UPDATE_USER_ERROR,
+  MOCK_ADMIN_EVENT_UPDATE_USER_PROCESSING,
+  MOCK_ADMIN_EVENT_UPDATE_USER_SUCCESS,
   MOCK_ADMIN_USER_1,
 } from '../../../../../__mocks__/constants/admin.constants';
 import { MOCK_USER_PASSWORD_1 } from '../../../../../__mocks__/constants/user-profile.constants';
@@ -87,15 +90,36 @@ describe('AdminUserComponent', () => {
       expect(spyFormValidation).toHaveBeenCalled();
     });
 
-    it("submitForm doesn't work for an empty form", () => {
+    // creating user
+
+    it('submitUser does not work with empty form', () => {
       const spyUpdateUser = jest.spyOn(store, 'updateUser');
 
       fixture.detectChanges();
 
       expect(component.userForm.invalid).toBeTruthy();
       expect(component.submitUser()).toBeUndefined();
+      expect(component.isSubmitInProgress()).toBeFalsy();
+
       expect(spyUpdateUser).toHaveBeenCalledTimes(0);
     });
+
+    it('submitUser works', fakeAsync(() => {
+      const spyUpdateUser = jest.spyOn(store, 'updateUser');
+
+      store.event.set(MOCK_ADMIN_EVENT_LOAD_USER_SUCCESS);
+
+      fixture.detectChanges();
+
+      expect(component.userForm.invalid).toBeFalsy();
+      component.submitUser();
+      expect(component.isSubmitInProgress()).toBeTruthy();
+
+      // artificial delay as in component
+      tick(DEFAULT_UX_DELAY);
+
+      expect(spyUpdateUser).toHaveBeenCalled();
+    }));
 
     // admin event
 
@@ -145,6 +169,51 @@ describe('AdminUserComponent', () => {
         severity: 'error',
         summary: 'EVENT.TYPE.ERROR',
         detail: `EVENT.MESSAGE.${AdminEventMessage.LOAD_USER_ERROR}`,
+        key: 'toast',
+        life: 3000,
+      });
+    });
+
+    it('handling Admin Event (Update User - Processing) works', () => {
+      const messageAddSpy = jest.spyOn(messageService, 'add');
+
+      store.event.set(MOCK_ADMIN_EVENT_UPDATE_USER_PROCESSING);
+
+      fixture.detectChanges();
+
+      expect(component.isSubmitInProgress()).toBeTruthy();
+      expect(messageAddSpy).toHaveBeenCalledTimes(0);
+    });
+
+    it('handling Admin Event (Update User - Success) works', () => {
+      const messageAddSpy = jest.spyOn(messageService, 'add');
+
+      store.event.set(MOCK_ADMIN_EVENT_UPDATE_USER_SUCCESS);
+
+      fixture.detectChanges();
+
+      expect(component.isSubmitInProgress()).toBeFalsy();
+      expect(messageAddSpy).toHaveBeenCalledWith({
+        severity: 'success',
+        summary: 'EVENT.TYPE.SUCCESS',
+        detail: `EVENT.MESSAGE.${AdminEventMessage.UPDATE_USER_SUCCESS}`,
+        key: 'toast',
+        life: 3000,
+      });
+    });
+
+    it('handling Admin Event (Update User - Error) works', () => {
+      const messageAddSpy = jest.spyOn(messageService, 'add');
+
+      store.event.set(MOCK_ADMIN_EVENT_UPDATE_USER_ERROR);
+
+      fixture.detectChanges();
+
+      expect(component.isSubmitInProgress()).toBeFalsy();
+      expect(messageAddSpy).toHaveBeenCalledWith({
+        severity: 'error',
+        summary: 'EVENT.TYPE.ERROR',
+        detail: `EVENT.MESSAGE.${AdminEventMessage.UPDATE_USER_ERROR}`,
         key: 'toast',
         life: 3000,
       });

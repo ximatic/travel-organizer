@@ -13,16 +13,19 @@ import {
   MOCK_ADMIN_EVENT_LOAD_ALL_SUCCESS,
   MOCK_ADMIN_EVENT_LOAD_USER_ERROR,
   MOCK_ADMIN_EVENT_LOAD_USER_SUCCESS,
+  MOCK_ADMIN_EVENT_UPDATE_USER_ERROR,
+  MOCK_ADMIN_EVENT_UPDATE_USER_SUCCESS,
   MOCK_ADMIN_USER_1,
   MOCK_ADMIN_USER_2,
 } from '../../../../__mocks__/constants/admin.constants';
+import { MOCK_USER_ID_1 } from '../../../../__mocks__/constants/common.constants';
 
 import { MOCK_PASSWORD_1 } from '../../../../__mocks__/constants/auth.constants';
 import { AdminServiceMock } from '../../../../__mocks__/services/admin.service.mocks';
 
 import { AdminService } from '../services/admin.service';
 
-import { CreateAdminUserPayload } from '../models/admin-user.model';
+import { CreateAdminUserPayload, UpdateAdminUserPayload } from '../models/admin-user.model';
 
 import { AdminStore } from './admin.store';
 
@@ -159,5 +162,81 @@ describe('AdminStore', () => {
     expect(store.usersCount()).toEqual(0);
 
     expect(spyCreateUser).toHaveBeenCalled();
+  });
+
+  // update user
+
+  it('should be able to update user', () => {
+    const updatedUser = { ...MOCK_ADMIN_USER_1, firstname: MOCK_ADMIN_USER_2.firstname };
+    const spyUpdateUser = jest.spyOn(service, 'updateUser').mockReturnValueOnce(of(updatedUser));
+    patchState(unprotected(store), { users: [MOCK_ADMIN_USER_1] });
+
+    const payload: UpdateAdminUserPayload = {
+      id: MOCK_USER_ID_1,
+      firstname: MOCK_ADMIN_USER_2.firstname,
+    };
+    store.updateUser(payload);
+
+    expect(store.users()).toEqual([updatedUser]);
+    expect(store.event()).toEqual({ ...MOCK_ADMIN_EVENT_UPDATE_USER_SUCCESS, user: updatedUser });
+
+    expect(store.usersCount()).toEqual(1);
+
+    expect(spyUpdateUser).toHaveBeenCalled();
+  });
+
+  it('should be able to handle update user error', () => {
+    const spyUpdateUser = jest.spyOn(service, 'updateUser').mockReturnValueOnce(
+      throwError(() => {
+        new Error();
+      }),
+    );
+
+    const payload: UpdateAdminUserPayload = {
+      id: MOCK_USER_ID_1,
+      firstname: MOCK_ADMIN_USER_1.firstname,
+    };
+    store.updateUser(payload);
+
+    expect(store.users()).toEqual(null);
+    expect(store.event()).toEqual(MOCK_ADMIN_EVENT_UPDATE_USER_ERROR);
+
+    expect(store.usersCount()).toEqual(0);
+
+    expect(spyUpdateUser).toHaveBeenCalled();
+  });
+
+  it('should not be able to update user when users list is empty', () => {
+    const spyUpdateUser = jest.spyOn(service, 'updateUser').mockReturnValueOnce(of(MOCK_ADMIN_USER_1));
+    //patchState(unprotected(store), { users: null });
+
+    const payload: UpdateAdminUserPayload = {
+      id: MOCK_USER_ID_1,
+    };
+    store.updateUser(payload);
+
+    expect(store.users()).toEqual([]);
+    expect(store.event()).toEqual(MOCK_ADMIN_EVENT_UPDATE_USER_SUCCESS);
+
+    expect(store.usersCount()).toEqual(0);
+
+    expect(spyUpdateUser).toHaveBeenCalled();
+  });
+
+  it('should not be able to update user when user is not on the users list', () => {
+    const spyUpdateUser = jest.spyOn(service, 'updateUser').mockReturnValueOnce(of(MOCK_ADMIN_USER_1));
+    patchState(unprotected(store), { users: [MOCK_ADMIN_USER_2] });
+
+    const payload: UpdateAdminUserPayload = {
+      id: MOCK_USER_ID_1,
+    };
+    store.updateUser(payload);
+
+    expect(store.users()).toEqual([MOCK_ADMIN_USER_2]);
+    expect(store.event()).toEqual(MOCK_ADMIN_EVENT_UPDATE_USER_SUCCESS);
+
+    expect(store.usersCount()).toEqual(1);
+
+    expect(spyUpdateUser).toHaveBeenCalled();
   });
 });
