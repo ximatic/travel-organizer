@@ -2,11 +2,12 @@ import { Injectable } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
 
 import { Store } from '@ngrx/store';
-import { jwtDecode } from 'jwt-decode';
 import { map, Observable, take } from 'rxjs';
 
 import { selectAuthToken } from '../store/auth.selectors';
 import { AuthState } from '../store/auth.state';
+
+import { TokenHelper } from '../../common/utils/token.helper';
 
 import { AuthToken } from '../model/auth.model';
 import { UserRole } from '../../user/models/user.enum';
@@ -29,7 +30,7 @@ export class AuthRoleGuard implements CanActivate {
           return false;
         }
 
-        const authRole: UserRole = jwtDecode<{ role: UserRole }>(authToken.accessToken).role;
+        const authRole: UserRole = TokenHelper.getTokenRole(authToken); // jwtDecode<{ role: UserRole }>(authToken.accessToken).role;
         if (!authRole) {
           this.router.navigate(['/auth/login']);
           return false;

@@ -74,6 +74,19 @@
                   [label]="'MENU.SETTINGS' | translate"
                 />
               </div>
+              @if (isAdmin()) {
+                <p-divider layout="vertical" type="dashed" />
+                <div class="flex justify-end">
+                  <p-button
+                    icon="pi pi-users"
+                    text
+                    severity="secondary"
+                    [link]="true"
+                    routerLink="/admin/users"
+                    [label]="'MENU.ADMIN.USERS' | translate"
+                  />
+                </div>
+              }
             </div>
           </div>
         }
@@ -129,6 +142,20 @@
               (onClick)="toggleSidebar()"
             />
           </div>
+          @if (isAdmin()) {
+            <p-divider />
+            <div>
+              <p-button
+                icon="pi pi-users"
+                text
+                severity="secondary"
+                [link]="true"
+                routerLink="/admin/users"
+                [label]="'MENU.ADMIN.USERS' | translate"
+                (onClick)="toggleSidebar()"
+              />
+            </div>
+          }
 
           <ng-template #footer>
             <p-divider />

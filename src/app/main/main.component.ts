@@ -24,6 +24,8 @@ import { userActions } from '../user/store/user.actions';
 import { selectUserEvent, selectUserSettings } from '../user/store/user.selectors';
 import { UserEvent, UserEventName, UserState } from '../user/store/user.state';
 
+import { TokenHelper } from '../common/utils/token.helper';
+
 import { UserSettings, UserSettingsLanguage, UserSettingsTheme } from '../user/models/user-settings.model';
 
 @Component({
@@ -53,6 +55,7 @@ export class MainComponent implements OnInit, OnDestroy {
   darkMode = signal<boolean>(false);
   sidebarVisible = signal<boolean>(false);
   isLoggedIn = signal<boolean>(false);
+  isAdmin = signal<boolean>(false);
 
   language = UserSettingsLanguage;
 
@@ -157,6 +160,9 @@ export class MainComponent implements OnInit, OnDestroy {
     this.subscription.add(
       this.authToken$.subscribe((authToken: AuthToken | null) => {
         this.isLoggedIn.set(!!authToken);
+        if (authToken) {
+          this.isAdmin.set(TokenHelper.isAdminToken(authToken));
+        }
       }),
     );
 

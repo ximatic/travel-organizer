@@ -10,6 +10,7 @@ import {
   MOCK_AUTH_EVENT_LOGIN_SUCCESS,
   MOCK_AUTH_EVENT_LOGOUT_LOADING,
   MOCK_AUTH_EVENT_LOGOUT_SUCCESS,
+  MOCK_AUTH_TOKEN_2,
 } from '../../../__mocks__/constants/auth.constants';
 import { MOCK_INITIAL_USER_STATE, MOCK_USER_EVENT_LOAD_USER_INFO_SUCCESS } from '../../../__mocks__/constants/user.constants';
 import {
@@ -250,16 +251,29 @@ describe('MainComponent', () => {
     store.refreshState();
 
     expect(component.isLoggedIn()).toBe(false);
+    expect(component.isAdmin()).toBe(false);
   }));
 
-  it('user is logged in when Auth Token is valid', fakeAsync(() => {
+  it('user (user role) is logged in when Auth Token is valid', fakeAsync(() => {
     fixture.detectChanges();
 
-    mockAuthTokenSelector.setResult(MOCK_AUTH_TOKEN_1.accessToken);
+    mockAuthTokenSelector.setResult(MOCK_AUTH_TOKEN_1);
 
     store.refreshState();
 
     expect(component.isLoggedIn()).toBe(true);
+    expect(component.isAdmin()).toBe(false);
+  }));
+
+  it('user (admin role) is logged in when Auth Token is valid', fakeAsync(() => {
+    fixture.detectChanges();
+
+    mockAuthTokenSelector.setResult(MOCK_AUTH_TOKEN_2);
+
+    store.refreshState();
+
+    expect(component.isLoggedIn()).toBe(true);
+    expect(component.isAdmin()).toBe(true);
   }));
 
   // auth events
