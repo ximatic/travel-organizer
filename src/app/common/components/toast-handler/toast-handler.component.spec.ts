@@ -13,16 +13,12 @@ describe('ToastHandlerComponent', () => {
   let component: ToastHandlerComponent;
   let fixture: ComponentFixture<ToastHandlerComponent>;
 
-  let messageService: MessageService;
-
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [ToastHandlerComponent],
       providers: [provideNoopAnimations(), provideTranslateService(), MessageService],
     }).compileComponents();
     TestBed.overrideProvider(MessageService, { useValue: messageServiceMock });
-
-    messageService = TestBed.inject(MessageService);
   });
 
   beforeEach(() => {

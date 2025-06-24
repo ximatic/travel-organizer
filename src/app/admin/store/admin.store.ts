@@ -4,7 +4,7 @@ import { tapResponse } from '@ngrx/operators';
 import { signalStore, withState, withMethods, patchState, withComputed } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 
-import { catchError, EMPTY, of, pipe, switchMap, tap } from 'rxjs';
+import { catchError, of, pipe, switchMap, tap } from 'rxjs';
 
 import { AdminService } from '../services/admin.service';
 
