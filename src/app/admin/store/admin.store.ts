@@ -200,5 +200,60 @@ export const AdminStore = signalStore(
         ),
       ),
     ),
+    deleteUser: rxMethod<string>(
+      pipe(
+        tap(() =>
+          patchState(store, {
+            event: {
+              name: AdminEventName.Delete,
+              type: AdminEventType.Processing,
+            },
+          }),
+        ),
+        switchMap((id: string) =>
+          adminService.deleteUser(id).pipe(
+            tapResponse({
+              next: () =>
+                patchState(store, {
+                  users: (store.users() || []).filter((u: AdminUser) => u.id != id),
+                  event: {
+                    name: AdminEventName.Delete,
+                    type: AdminEventType.Success,
+                    message: AdminEventMessage.DELETE_USER_SUCCESS,
+                  },
+                }),
+              error: () =>
+                patchState(store, {
+                  event: {
+                    name: AdminEventName.Delete,
+                    type: AdminEventType.Error,
+                    message: AdminEventMessage.DELETE_USER_ERROR,
+                  },
+                }),
+            }),
+            catchError((error) => of(error)),
+          ),
+        ),
+        // tap({
+        //   next: () =>
+        //     patchState(store, {
+        //       users: (store.users() || []).filter((u: AdminUser) => u.id != id),
+        //       event: {
+        //         name: AdminEventName.Delete,
+        //         type: AdminEventType.Success,
+        //         message: AdminEventMessage.DELETE_USER_SUCCESS,
+        //       },
+        //     }),
+        //   error: () =>
+        //     patchState(store, {
+        //       event: {
+        //         name: AdminEventName.Delete,
+        //         type: AdminEventType.Error,
+        //         message: AdminEventMessage.DELETE_USER_ERROR,
+        //       },
+        //     }),
+        // }),
+      ),
+    ),
   })),
 );

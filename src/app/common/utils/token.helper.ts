@@ -8,6 +8,10 @@ export class TokenHelper {
     return jwtDecode<{ role: UserRole }>(authToken.accessToken).role;
   }
 
+  static getTokenId(authToken: AuthToken): string {
+    return jwtDecode<{ sub: string }>(authToken.accessToken).sub;
+  }
+
   static isAdminToken(authToken: AuthToken): boolean {
     return TokenHelper.getTokenRole(authToken) === UserRole.Admin;
   }

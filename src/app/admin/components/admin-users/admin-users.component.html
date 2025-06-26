@@ -4,7 +4,7 @@
       <p-progress-spinner />
     </div>
   } @else {
-    @if (store.users(); as users) {
+    @if (adminStore.users(); as users) {
       <p-panel>
         <ng-template pTemplate="header">
           <div class="flex grid justify-items-center w-full">
@@ -36,7 +36,9 @@
                     text
                     routerLink="/admin/user/edit/{{ user.id }}"
                   />
-                  <p-button icon="pi pi-trash" size="small" severity="danger" text (onClick)="deleteAdminUser($event, user)" />
+                  @if (userId() !== user.id) {
+                    <p-button icon="pi pi-trash" size="small" severity="danger" text (onClick)="deleteAdminUser($event, user)" />
+                  }
                 </div>
               </td>
             </tr>
