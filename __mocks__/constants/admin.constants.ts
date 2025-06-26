@@ -104,12 +104,10 @@ export const MOCK_ADMIN_EVENT_DELETE_USER_SUCCESS: AdminEvent = {
   name: AdminEventName.Delete,
   type: AdminEventType.Success,
   message: AdminEventMessage.DELETE_USER_SUCCESS,
-  user: MOCK_ADMIN_USER_1,
 };
 
 export const MOCK_ADMIN_EVENT_DELETE_USER_ERROR: AdminEvent = {
   name: AdminEventName.Delete,
   type: AdminEventType.Error,
   message: AdminEventMessage.DELETE_USER_ERROR,
-  user: MOCK_ADMIN_USER_1,
 };

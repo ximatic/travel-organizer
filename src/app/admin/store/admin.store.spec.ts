@@ -9,6 +9,8 @@ import { of, throwError } from 'rxjs';
 import {
   MOCK_ADMIN_EVENT_CREATE_USER_ERROR,
   MOCK_ADMIN_EVENT_CREATE_USER_SUCCESS,
+  MOCK_ADMIN_EVENT_DELETE_USER_ERROR,
+  MOCK_ADMIN_EVENT_DELETE_USER_SUCCESS,
   MOCK_ADMIN_EVENT_LOAD_ALL_ERROR,
   MOCK_ADMIN_EVENT_LOAD_ALL_SUCCESS,
   MOCK_ADMIN_EVENT_LOAD_USER_ERROR,
@@ -208,7 +210,6 @@ describe('AdminStore', () => {
 
   it('should not be able to update user when users list is empty', () => {
     const spyUpdateUser = jest.spyOn(service, 'updateUser').mockReturnValueOnce(of(MOCK_ADMIN_USER_1));
-    //patchState(unprotected(store), { users: null });
 
     const payload: UpdateAdminUserPayload = {
       id: MOCK_USER_ID_1,
@@ -236,6 +237,66 @@ describe('AdminStore', () => {
     expect(store.event()).toEqual(MOCK_ADMIN_EVENT_UPDATE_USER_SUCCESS);
 
     expect(store.usersCount()).toEqual(1);
+
+    expect(spyUpdateUser).toHaveBeenCalled();
+  });
+
+  // delete user
+
+  it('should be able to delete user', () => {
+    const spyUpdateUser = jest.spyOn(service, 'deleteUser').mockReturnValueOnce(of({}));
+    patchState(unprotected(store), { users: [MOCK_ADMIN_USER_1] });
+
+    store.deleteUser(MOCK_ADMIN_USER_1.id);
+
+    expect(store.users()).toEqual([]);
+    expect(store.event()).toEqual(MOCK_ADMIN_EVENT_DELETE_USER_SUCCESS);
+
+    expect(store.usersCount()).toEqual(0);
+
+    expect(spyUpdateUser).toHaveBeenCalled();
+  });
+
+  it('should be able to handle delete user error', () => {
+    const spyUpdateUser = jest.spyOn(service, 'deleteUser').mockReturnValueOnce(
+      throwError(() => {
+        new Error();
+      }),
+    );
+
+    store.deleteUser(MOCK_ADMIN_USER_1.id);
+
+    expect(store.users()).toEqual(null);
+    expect(store.event()).toEqual(MOCK_ADMIN_EVENT_DELETE_USER_ERROR);
+
+    expect(store.usersCount()).toEqual(0);
+
+    expect(spyUpdateUser).toHaveBeenCalled();
+  });
+
+  it('should not be able to delete user which is not on the list', () => {
+    const spyUpdateUser = jest.spyOn(service, 'deleteUser').mockReturnValueOnce(of({}));
+    patchState(unprotected(store), { users: [MOCK_ADMIN_USER_2] });
+
+    store.deleteUser(MOCK_ADMIN_USER_1.id);
+
+    expect(store.users()).toEqual([MOCK_ADMIN_USER_2]);
+    expect(store.event()).toEqual(MOCK_ADMIN_EVENT_DELETE_USER_SUCCESS);
+
+    expect(store.usersCount()).toEqual(1);
+
+    expect(spyUpdateUser).toHaveBeenCalled();
+  });
+
+  it('should not be able to delete user when list is empty', () => {
+    const spyUpdateUser = jest.spyOn(service, 'deleteUser').mockReturnValueOnce(of({}));
+
+    store.deleteUser(MOCK_ADMIN_USER_1.id);
+
+    expect(store.users()).toEqual([]);
+    expect(store.event()).toEqual(MOCK_ADMIN_EVENT_DELETE_USER_SUCCESS);
+
+    expect(store.usersCount()).toEqual(0);
 
     expect(spyUpdateUser).toHaveBeenCalled();
   });
