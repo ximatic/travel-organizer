@@ -35,7 +35,7 @@ export const routes: Routes = [
     loadChildren: () => import('./user/user.routes').then((m) => m.userRoutes),
   },
   {
-    path: 'trips',
+    path: 'trip',
     canActivate: [AuthGuard],
     loadChildren: () => import('./trips/trips.routes').then((m) => m.tripsRoutes),
     providers: [provideEffects([TripsEffects]), TripsService],

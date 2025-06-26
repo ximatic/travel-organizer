@@ -145,7 +145,7 @@ describe('TripFormComponent', () => {
         key: 'toast',
         life: 3000,
       });
-      expect(navigateSpy).toHaveBeenCalledWith([`/trips/${MOCK_TRIP_3._id}`]);
+      expect(navigateSpy).toHaveBeenCalledWith([`/trip/${MOCK_TRIP_3._id}`]);
     });
 
     it('handling Trips Event with Create Error works', () => {
@@ -343,7 +343,7 @@ describe('TripFormComponent', () => {
         key: 'toast',
         life: 3000,
       });
-      expect(navigateSpy).toHaveBeenCalledWith([`/trips/${MOCK_TRIP_1._id}`]);
+      expect(navigateSpy).toHaveBeenCalledWith([`/trip/${MOCK_TRIP_1._id}`]);
     });
 
     it('handling Trips Event with Update Error works', () => {

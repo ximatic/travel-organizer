@@ -72,7 +72,7 @@ export class TripsComponent extends ToastHandlerComponent implements OnInit, Aft
   // trip handling
 
   openTrip(trip: Trip): void {
-    this.router.navigate([`/trips/${trip._id}`]);
+    this.router.navigate([`/trip/${trip._id}`]);
   }
 
   removeTrip(event: Event, trip: Trip): void {

@@ -78,7 +78,7 @@
       </div>
       @if (trip(); as trip) {
         <div class="mt-2">
-          <button pButton pRipple severity="secondary" class="block w-full" routerLink="/trips/{{ trip._id }}">
+          <button pButton pRipple severity="secondary" class="block w-full" routerLink="/trip/{{ trip._id }}">
             <span pButtonLabel>{{ 'COMMON.BUTTON.BACK' | translate }}</span>
           </button>
         </div>
@@ -87,7 +87,7 @@
   </p-panel>
 
   <div class="mt-4">
-    <button pButton pRipple severity="secondary" size="large" class="block w-full" routerLink="/trips">
+    <button pButton pRipple severity="secondary" size="large" class="block w-full" routerLink="/trip">
       <span pButtonLabel>{{ 'COMMON.BUTTON.ALL_TRIPS' | translate }}</span>
     </button>
   </div>

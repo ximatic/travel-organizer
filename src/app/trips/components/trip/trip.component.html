@@ -13,7 +13,7 @@
               severity="secondary"
               text
               class="flex-none"
-              routerLink="/trips/update/{{ trip._id }}"
+              routerLink="/trip/update/{{ trip._id }}"
             />
           </app-trip-panel>
         </div>
@@ -36,7 +36,7 @@
     }
 
     <div class="mt-4">
-      <button pButton pRipple severity="secondary" size="large" class="block w-full" routerLink="/trips">
+      <button pButton pRipple severity="secondary" size="large" class="block w-full" routerLink="/trip">
         <span pButtonLabel>{{ 'COMMON.BUTTON.ALL_TRIPS' | translate }}</span>
       </button>
     </div>

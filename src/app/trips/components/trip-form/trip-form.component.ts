@@ -173,7 +173,7 @@ export class TripFormComponent extends ToastHandlerComponent implements OnInit, 
       case TripsEventType.Success:
         this.showToastSuccess(event?.message, { trip: event.trip?.name });
         if (event.trip) {
-          this.router.navigate([`/trips/${event.trip._id}`]);
+          this.router.navigate([`/trip/${event.trip._id}`]);
         }
         break;
       case TripsEventType.Error:
@@ -188,7 +188,7 @@ export class TripFormComponent extends ToastHandlerComponent implements OnInit, 
       case TripsEventType.Success:
         this.showToastSuccess(event?.message, { trip: event.trip?.name });
         if (event.trip) {
-          this.router.navigate([`/trips/${event.trip._id}`]);
+          this.router.navigate([`/trip/${event.trip._id}`]);
         }
         break;
       case TripsEventType.Error:
