@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
-import { provideRouter, Router } from '@angular/router';
+import { provideRouter } from '@angular/router';
 
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { provideTranslateService } from '@ngx-translate/core';
@@ -32,7 +32,6 @@ describe('AdminUsersComponent', () => {
   let component: AdminUsersComponent;
   let fixture: ComponentFixture<AdminUsersComponent>;
 
-  let router: Router;
   let messageService: MessageService;
   let adminStore: any;
   let authStore: MockStore;
@@ -54,7 +53,6 @@ describe('AdminUsersComponent', () => {
     TestBed.overrideProvider(MessageService, { useValue: messageServiceMock });
     TestBed.overrideProvider(AdminStore, { useValue: AdminStoreMock });
 
-    router = TestBed.inject(Router);
     messageService = TestBed.inject(MessageService);
     adminStore = TestBed.inject(AdminStore);
     authStore = TestBed.inject(MockStore);

@@ -4,7 +4,7 @@ import { RouterModule } from '@angular/router';
 
 import { Store } from '@ngrx/store';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
-import { Subscription, take } from 'rxjs';
+import { Subscription } from 'rxjs';
 
 import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';

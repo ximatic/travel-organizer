@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
-import { ActivatedRoute, provideRouter, Router } from '@angular/router';
+import { ActivatedRoute, provideRouter } from '@angular/router';
 
 import { provideTranslateService } from '@ngx-translate/core';
 import { of } from 'rxjs';
@@ -33,7 +33,6 @@ describe('AdminUserComponent', () => {
   let component: AdminUserComponent;
   let fixture: ComponentFixture<AdminUserComponent>;
 
-  let router: Router;
   let messageService: MessageService;
   let store: any;
 
@@ -58,7 +57,6 @@ describe('AdminUserComponent', () => {
       TestBed.overrideProvider(MessageService, { useValue: messageServiceMock });
       TestBed.overrideProvider(AdminStore, { useValue: AdminStoreMock });
 
-      router = TestBed.inject(Router);
       messageService = TestBed.inject(MessageService);
       store = TestBed.inject(AdminStore);
     });
@@ -229,7 +227,6 @@ describe('AdminUserComponent', () => {
       TestBed.overrideProvider(MessageService, { useValue: messageServiceMock });
       TestBed.overrideProvider(AdminStore, { useValue: AdminStoreMock });
 
-      router = TestBed.inject(Router);
       messageService = TestBed.inject(MessageService);
       store = TestBed.inject(AdminStore);
     });
