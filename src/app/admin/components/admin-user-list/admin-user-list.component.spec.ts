@@ -26,11 +26,11 @@ import { AdminEventMessage, AdminStore } from '../../store/admin.store';
 
 import { selectAuthToken } from '../../../auth/store/auth.selectors';
 
-import { AdminUsersComponent } from './admin-users.component';
+import { AdminUserListComponent } from './admin-user-list.component';
 
-describe('AdminUsersComponent', () => {
-  let component: AdminUsersComponent;
-  let fixture: ComponentFixture<AdminUsersComponent>;
+describe('AdminUserListComponent', () => {
+  let component: AdminUserListComponent;
+  let fixture: ComponentFixture<AdminUserListComponent>;
 
   let messageService: MessageService;
   let adminStore: any;
@@ -40,7 +40,7 @@ describe('AdminUsersComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AdminUsersComponent],
+      imports: [AdminUserListComponent],
       providers: [
         provideRouter([]),
         provideNoopAnimations(),
@@ -61,7 +61,7 @@ describe('AdminUsersComponent', () => {
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AdminUsersComponent);
+    fixture = TestBed.createComponent(AdminUserListComponent);
     component = fixture.componentInstance;
   });
 

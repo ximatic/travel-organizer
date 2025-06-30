@@ -28,9 +28,9 @@ import { UserRole } from '../../../user/models/user.enum';
 import { ToastHandlerComponent } from '../../../common/components/toast-handler/toast-handler.component';
 
 @Component({
-  selector: 'app-admin-users',
-  templateUrl: './admin-users.component.html',
-  styleUrl: './admin-users.component.scss',
+  selector: 'app-admin-user-list',
+  templateUrl: './admin-user-list.component.html',
+  styleUrl: './admin-user-list.component.scss',
   imports: [
     // Angular imports
     CommonModule,
@@ -46,7 +46,7 @@ import { ToastHandlerComponent } from '../../../common/components/toast-handler/
   ],
   providers: [TranslateService, MessageService],
 })
-export class AdminUsersComponent extends ToastHandlerComponent implements OnInit, OnDestroy {
+export class AdminUserListComponent extends ToastHandlerComponent implements OnInit, OnDestroy {
   // di
   adminStore = inject(AdminStore);
   authStore = inject(Store<AuthState>);
