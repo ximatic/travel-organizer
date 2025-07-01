@@ -21,7 +21,7 @@ import { TripsEvent, TripsEventName, TripsEventType, TripsState } from '../../st
 import { ToastHandlerComponent } from '../../../common/components/toast-handler/toast-handler.component';
 
 import { TripPanelComponent } from '../trip-panel/trip-panel.component';
-import { TripItemsComponent } from '../trip-items/trip-items.component';
+import { TripItemListComponent } from '../trip-item-list/trip-item-list.component';
 
 @Component({
   selector: 'app-trip',
@@ -36,7 +36,7 @@ import { TripItemsComponent } from '../trip-items/trip-items.component';
     PanelModule,
     ProgressSpinnerModule,
     ToastModule,
-    TripItemsComponent,
+    TripItemListComponent,
     TripPanelComponent,
   ],
   providers: [TranslateService, MessageService],

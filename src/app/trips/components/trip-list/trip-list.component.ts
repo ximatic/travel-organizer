@@ -22,9 +22,9 @@ import { ToastHandlerComponent } from '../../../common/components/toast-handler/
 import { TripPanelComponent } from '../trip-panel/trip-panel.component';
 
 @Component({
-  selector: 'app-trips',
-  templateUrl: './trips.component.html',
-  styleUrl: './trips.component.scss',
+  selector: 'app-trip-list',
+  templateUrl: './trip-list.component.html',
+  styleUrl: './trip-list.component.scss',
   imports: [
     CommonModule,
     RouterModule,
@@ -37,7 +37,7 @@ import { TripPanelComponent } from '../trip-panel/trip-panel.component';
   ],
   providers: [TranslateService, MessageService],
 })
-export class TripsComponent extends ToastHandlerComponent implements OnInit, AfterViewInit, OnDestroy {
+export class TripListComponent extends ToastHandlerComponent implements OnInit, AfterViewInit, OnDestroy {
   // ngrx
   trips$!: Observable<Trip[] | null>;
   tripsEvent$!: Observable<TripsEvent | null>;

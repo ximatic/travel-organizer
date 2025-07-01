@@ -26,9 +26,9 @@ import { TripsEvent, TripsEventName, TripsEventType, TripsState } from '../../st
 import { ToastHandlerComponent } from '../../../common/components/toast-handler/toast-handler.component';
 
 @Component({
-  selector: 'app-trip-items',
-  templateUrl: './trip-items.component.html',
-  styleUrl: './trip-items.component.scss',
+  selector: 'app-trip-item-list',
+  templateUrl: './trip-item-list.component.html',
+  styleUrl: './trip-item-list.component.scss',
   imports: [
     CommonModule,
     RouterModule,
@@ -44,7 +44,7 @@ import { ToastHandlerComponent } from '../../../common/components/toast-handler/
   ],
   providers: [TranslateService, MessageService],
 })
-export class TripItemsComponent extends ToastHandlerComponent implements OnInit, AfterViewInit, OnDestroy {
+export class TripItemListComponent extends ToastHandlerComponent implements OnInit, AfterViewInit, OnDestroy {
   // ngrx
   tripsEvent$!: Observable<TripsEvent | null>;
 

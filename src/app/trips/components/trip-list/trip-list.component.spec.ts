@@ -16,11 +16,11 @@ import { TripAction } from '../../store/trips.actions';
 import { selectTrips, selectTripsEvent } from '../../store/trips.selectors';
 import { TripsEventName, TripsEventType } from '../../store/trips.state';
 
-import { TripsComponent } from './trips.component';
+import { TripListComponent } from './trip-list.component';
 
-describe('TripsComponent', () => {
-  let component: TripsComponent;
-  let fixture: ComponentFixture<TripsComponent>;
+describe('TripListComponent', () => {
+  let component: TripListComponent;
+  let fixture: ComponentFixture<TripListComponent>;
   let router: Router;
   let store: MockStore;
   let messageService: MessageService;
@@ -30,7 +30,7 @@ describe('TripsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TripsComponent],
+      imports: [TripListComponent],
       providers: [
         provideRouter([]),
         provideNoopAnimations(),
@@ -53,7 +53,7 @@ describe('TripsComponent', () => {
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(TripsComponent);
+    fixture = TestBed.createComponent(TripListComponent);
     component = fixture.componentInstance;
   });
 
