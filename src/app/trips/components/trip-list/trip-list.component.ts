@@ -6,11 +6,9 @@ import { Store } from '@ngrx/store';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { Observable, skip, Subscription } from 'rxjs';
 
-import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { PanelModule } from 'primeng/panel';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
-import { ToastModule } from 'primeng/toast';
 
 import { Trip } from '../../models/trip.model';
 import { tripActions } from '../../store/trips.actions';
@@ -25,17 +23,8 @@ import { TripPanelComponent } from '../trip-panel/trip-panel.component';
   selector: 'app-trip-list',
   templateUrl: './trip-list.component.html',
   styleUrl: './trip-list.component.scss',
-  imports: [
-    CommonModule,
-    RouterModule,
-    TranslatePipe,
-    ButtonModule,
-    PanelModule,
-    ProgressSpinnerModule,
-    ToastModule,
-    TripPanelComponent,
-  ],
-  providers: [TranslateService, MessageService],
+  imports: [CommonModule, RouterModule, TranslatePipe, ButtonModule, PanelModule, ProgressSpinnerModule, TripPanelComponent],
+  providers: [TranslateService],
 })
 export class TripListComponent extends ToastHandlerComponent implements OnInit, AfterViewInit, OnDestroy {
   // ngrx

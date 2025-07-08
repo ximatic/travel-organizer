@@ -7,14 +7,12 @@ import { Store } from '@ngrx/store';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { delay, Observable, of, Subscription } from 'rxjs';
 
-import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { DatePickerModule } from 'primeng/datepicker';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
 import { PanelModule } from 'primeng/panel';
 import { TextareaModule } from 'primeng/textarea';
-import { ToastModule } from 'primeng/toast';
 
 import { DEFAULT_UX_DELAY } from '../../../common/constants/common.constants';
 
@@ -40,9 +38,8 @@ import { ToastHandlerComponent } from '../../../common/components/toast-handler/
     InputTextModule,
     PanelModule,
     TextareaModule,
-    ToastModule,
   ],
-  providers: [TranslateService, MessageService],
+  providers: [TranslateService],
 })
 export class TripFormComponent extends ToastHandlerComponent implements OnInit, OnDestroy {
   // ngrx
