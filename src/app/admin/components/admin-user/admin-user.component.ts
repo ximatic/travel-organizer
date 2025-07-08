@@ -6,7 +6,7 @@ import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 import { delay, of, Subscription } from 'rxjs';
 
-import { MessageService, SelectItem } from 'primeng/api';
+import { SelectItem } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
@@ -16,7 +16,6 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { SelectModule } from 'primeng/select';
 import { TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
-import { ToastModule } from 'primeng/toast';
 
 import { AdminEvent, AdminEventName, AdminEventType, AdminStore } from '../../store/admin.store';
 
@@ -48,9 +47,8 @@ import { valueMatchValidator } from '../../../common/utils/custom-form.validator
     SelectModule,
     TableModule,
     TagModule,
-    ToastModule,
   ],
-  providers: [TranslateService, MessageService],
+  providers: [TranslateService],
 })
 export class AdminUserComponent extends ToastHandlerComponent implements OnInit, OnDestroy {
   // di

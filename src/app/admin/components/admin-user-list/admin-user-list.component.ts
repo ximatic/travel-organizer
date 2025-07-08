@@ -6,13 +6,11 @@ import { Store } from '@ngrx/store';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 
-import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { PanelModule } from 'primeng/panel';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
-import { ToastModule } from 'primeng/toast';
 
 import { AdminEvent, AdminEventName, AdminEventType, AdminStore } from '../../store/admin.store';
 
@@ -42,9 +40,8 @@ import { ToastHandlerComponent } from '../../../common/components/toast-handler/
     ProgressSpinnerModule,
     TableModule,
     TagModule,
-    ToastModule,
   ],
-  providers: [TranslateService, MessageService],
+  providers: [TranslateService],
 })
 export class AdminUserListComponent extends ToastHandlerComponent implements OnInit, OnDestroy {
   // di
