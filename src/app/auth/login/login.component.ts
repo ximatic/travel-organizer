@@ -7,13 +7,11 @@ import { Store } from '@ngrx/store';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { delay, Observable, of, Subscription } from 'rxjs';
 
-import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
 import { PanelModule } from 'primeng/panel';
 import { PasswordModule } from 'primeng/password';
-import { ToastModule } from 'primeng/toast';
 
 import { DEFAULT_UX_DELAY } from '../../common/constants/common.constants';
 
@@ -40,9 +38,8 @@ import { ToastHandlerComponent } from '../../common/components/toast-handler/toa
     InputTextModule,
     PanelModule,
     PasswordModule,
-    ToastModule,
   ],
-  providers: [TranslateService, MessageService],
+  providers: [TranslateService],
 })
 export class LoginComponent extends ToastHandlerComponent implements OnInit, OnDestroy {
   // ngrx
