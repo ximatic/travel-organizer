@@ -12,6 +12,7 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { forkJoin, Subject, take, takeUntil, tap } from 'rxjs';
 
 import Aura from '@primeng/themes/aura';
+import { MessageService } from 'primeng/api';
 import { providePrimeNG } from 'primeng/config';
 
 import { DEFAULT_USER_LANGUAGE, DEFAULT_USER_SETTINGS } from './user/constants/settings.constants';
@@ -132,5 +133,6 @@ export const appConfig: ApplicationConfig = {
     }),
     // other
     AuthService,
+    MessageService,
   ],
 };

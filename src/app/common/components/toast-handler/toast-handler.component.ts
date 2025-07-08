@@ -3,13 +3,11 @@ import { Component, inject } from '@angular/core';
 import { InterpolationParameters, TranslateService } from '@ngx-translate/core';
 
 import { MessageService } from 'primeng/api';
-import { ToastModule } from 'primeng/toast';
 
 @Component({
   selector: 'app-toast-handler',
   template: '',
-  imports: [ToastModule],
-  providers: [TranslateService, MessageService],
+  providers: [TranslateService],
 })
 export class ToastHandlerComponent {
   // di

@@ -10,6 +10,7 @@ import { ButtonModule } from 'primeng/button';
 import { DividerModule } from 'primeng/divider';
 import { DrawerModule } from 'primeng/drawer';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
 
 import { DEFAULT_UX_DELAY } from '../common/constants/common.constants';
@@ -40,6 +41,7 @@ import { UserSettings, UserSettingsLanguage, UserSettingsTheme } from '../user/m
     DividerModule,
     DrawerModule,
     ProgressSpinnerModule,
+    ToastModule,
     ToolbarModule,
   ],
   providers: [TranslateService],
