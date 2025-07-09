@@ -142,7 +142,7 @@ describe('TripFormComponent', () => {
         severity: 'success',
         summary: 'EVENT.TYPE.SUCCESS',
         detail: `EVENT.MESSAGE.${TripsEventMessage.CREATE_TRIP_SUCCESS}`,
-        key: 'toast',
+        key: 'main-toast',
         life: 3000,
       });
       expect(navigateSpy).toHaveBeenCalledWith([`/trip/${MOCK_TRIP_3._id}`]);
@@ -167,7 +167,7 @@ describe('TripFormComponent', () => {
         severity: 'error',
         summary: 'EVENT.TYPE.ERROR',
         detail: `EVENT.MESSAGE.${TripsEventMessage.CREATE_TRIP_ERROR}`,
-        key: 'toast',
+        key: 'main-toast',
         life: 3000,
       });
     });
@@ -315,7 +315,7 @@ describe('TripFormComponent', () => {
         severity: 'error',
         summary: 'EVENT.TYPE.ERROR',
         detail: `EVENT.MESSAGE.${TripsEventMessage.LOAD_TRIP_ERROR}`,
-        key: 'toast',
+        key: 'main-toast',
         life: 3000,
       });
     });
@@ -340,7 +340,7 @@ describe('TripFormComponent', () => {
         severity: 'success',
         summary: 'EVENT.TYPE.SUCCESS',
         detail: `EVENT.MESSAGE.${TripsEventMessage.UPDATE_TRIP_SUCCESS}`,
-        key: 'toast',
+        key: 'main-toast',
         life: 3000,
       });
       expect(navigateSpy).toHaveBeenCalledWith([`/trip/${MOCK_TRIP_1._id}`]);
@@ -365,7 +365,7 @@ describe('TripFormComponent', () => {
         severity: 'error',
         summary: 'EVENT.TYPE.ERROR',
         detail: `EVENT.MESSAGE.${TripsEventMessage.UPDATE_TRIP_ERROR}`,
-        key: 'toast',
+        key: 'main-toast',
         life: 3000,
       });
     });

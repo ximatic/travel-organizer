@@ -165,7 +165,7 @@ describe('SignupComponent', () => {
       severity: 'error',
       summary: 'EVENT.TYPE.ERROR',
       detail: `EVENT.MESSAGE.${AuthEventMessage.SIGNUP_ERROR}`,
-      key: 'toast',
+      key: 'main-toast',
       life: 3000,
     });
   });

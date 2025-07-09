@@ -184,7 +184,7 @@ describe('ProfileComponent', () => {
       severity: 'error',
       summary: 'EVENT.TYPE.ERROR',
       detail: `EVENT.MESSAGE.${UserEventMessage.UPDATE_USER_DATA_ERROR}`,
-      key: 'toast',
+      key: 'main-toast',
       life: 3000,
     });
   });
@@ -206,7 +206,7 @@ describe('ProfileComponent', () => {
       severity: 'success',
       summary: 'EVENT.TYPE.SUCCESS',
       detail: `EVENT.MESSAGE.${UserEventMessage.UPDATE_USER_DATA_SUCCESS}`,
-      key: 'toast',
+      key: 'main-toast',
       life: 3000,
     });
   });
@@ -228,7 +228,7 @@ describe('ProfileComponent', () => {
       severity: 'error',
       summary: 'EVENT.TYPE.ERROR',
       detail: `EVENT.MESSAGE.${UserEventMessage.UPDATE_USER_PASSWORD_ERROR}`,
-      key: 'toast',
+      key: 'main-toast',
       life: 3000,
     });
   });
@@ -250,7 +250,7 @@ describe('ProfileComponent', () => {
       severity: 'success',
       summary: 'EVENT.TYPE.SUCCESS',
       detail: `EVENT.MESSAGE.${UserEventMessage.UPDATE_USER_PASSWORD_SUCCESS}`,
-      key: 'toast',
+      key: 'main-toast',
       life: 3000,
     });
   });

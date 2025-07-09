@@ -173,7 +173,7 @@ describe('AdminUserListComponent', () => {
       severity: 'error',
       summary: 'EVENT.TYPE.ERROR',
       detail: `EVENT.MESSAGE.${AdminEventMessage.LOAD_USERS_ERROR}`,
-      key: 'toast',
+      key: 'main-toast',
       life: 3000,
     });
   });
@@ -189,7 +189,7 @@ describe('AdminUserListComponent', () => {
       severity: 'success',
       summary: 'EVENT.TYPE.SUCCESS',
       detail: `EVENT.MESSAGE.${AdminEventMessage.DELETE_USER_SUCCESS}`,
-      key: 'toast',
+      key: 'main-toast',
       life: 3000,
     });
   });
@@ -205,7 +205,7 @@ describe('AdminUserListComponent', () => {
       severity: 'error',
       summary: 'EVENT.TYPE.ERROR',
       detail: `EVENT.MESSAGE.${AdminEventMessage.DELETE_USER_ERROR}`,
-      key: 'toast',
+      key: 'main-toast',
       life: 3000,
     });
   });

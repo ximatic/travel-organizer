@@ -167,7 +167,7 @@ describe('AdminUserComponent', () => {
         severity: 'error',
         summary: 'EVENT.TYPE.ERROR',
         detail: `EVENT.MESSAGE.${AdminEventMessage.LOAD_USER_ERROR}`,
-        key: 'toast',
+        key: 'main-toast',
         life: 3000,
       });
     });
@@ -195,7 +195,7 @@ describe('AdminUserComponent', () => {
         severity: 'success',
         summary: 'EVENT.TYPE.SUCCESS',
         detail: `EVENT.MESSAGE.${AdminEventMessage.UPDATE_USER_SUCCESS}`,
-        key: 'toast',
+        key: 'main-toast',
         life: 3000,
       });
     });
@@ -212,7 +212,7 @@ describe('AdminUserComponent', () => {
         severity: 'error',
         summary: 'EVENT.TYPE.ERROR',
         detail: `EVENT.MESSAGE.${AdminEventMessage.UPDATE_USER_ERROR}`,
-        key: 'toast',
+        key: 'main-toast',
         life: 3000,
       });
     });
@@ -309,7 +309,7 @@ describe('AdminUserComponent', () => {
         severity: 'success',
         summary: 'EVENT.TYPE.SUCCESS',
         detail: `EVENT.MESSAGE.${AdminEventMessage.CREATE_USER_SUCCESS}`,
-        key: 'toast',
+        key: 'main-toast',
         life: 3000,
       });
     });
@@ -326,7 +326,7 @@ describe('AdminUserComponent', () => {
         severity: 'error',
         summary: 'EVENT.TYPE.ERROR',
         detail: `EVENT.MESSAGE.${AdminEventMessage.CREATE_USER_ERROR}`,
-        key: 'toast',
+        key: 'main-toast',
         life: 3000,
       });
     });

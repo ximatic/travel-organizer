@@ -146,7 +146,7 @@ describe('LoginComponent', () => {
       severity: 'error',
       summary: 'EVENT.TYPE.ERROR',
       detail: `EVENT.MESSAGE.${AuthEventMessage.LOGIN_ERROR}`,
-      key: 'toast',
+      key: 'main-toast',
       life: 3000,
     });
   });

@@ -140,7 +140,7 @@ describe('TripComponent', () => {
       severity: 'error',
       summary: 'EVENT.TYPE.ERROR',
       detail: `EVENT.MESSAGE.${TripsEventMessage.LOAD_TRIP_ERROR}`,
-      key: 'toast',
+      key: 'main-toast',
       life: 3000,
     });
   });

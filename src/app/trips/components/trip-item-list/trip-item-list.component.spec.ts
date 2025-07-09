@@ -184,7 +184,7 @@ describe('TripItemListComponent', () => {
       severity: 'error',
       summary: 'EVENT.TYPE.ERROR',
       detail: `EVENT.MESSAGE.${TripsEventMessage.CREATE_TRIP_ITEM_ERROR}`,
-      key: 'toast',
+      key: 'main-toast',
       life: 3000,
     });
   });
@@ -223,7 +223,7 @@ describe('TripItemListComponent', () => {
       severity: 'error',
       summary: 'EVENT.TYPE.ERROR',
       detail: `EVENT.MESSAGE.${TripsEventMessage.CHECK_TRIP_ITEM_ERROR}`,
-      key: 'toast',
+      key: 'main-toast',
       life: 3000,
     });
   });
@@ -262,7 +262,7 @@ describe('TripItemListComponent', () => {
       severity: 'error',
       summary: 'EVENT.TYPE.ERROR',
       detail: `EVENT.MESSAGE.${TripsEventMessage.REMOVE_TRIP_ITEM_ERROR}`,
-      key: 'toast',
+      key: 'main-toast',
       life: 3000,
     });
   });

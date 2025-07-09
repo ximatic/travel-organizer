@@ -150,7 +150,7 @@ describe('SettingsComponent', () => {
       severity: 'error',
       summary: 'EVENT.TYPE.ERROR',
       detail: `EVENT.MESSAGE.${UserEventMessage.UPDATE_USER_SETTINGS_ERROR}`,
-      key: 'toast',
+      key: 'main-toast',
       life: 3000,
     });
   });
@@ -172,7 +172,7 @@ describe('SettingsComponent', () => {
       severity: 'success',
       summary: 'EVENT.TYPE.SUCCESS',
       detail: `EVENT.MESSAGE.${UserEventMessage.UPDATE_USER_SETTINGS_SUCCESS}`,
-      key: 'toast',
+      key: 'main-toast',
       life: 3000,
     });
   });
