@@ -33,6 +33,6 @@ export class ToastHandlerComponent {
   }
 
   protected showToast(severity: string, summary: string, detail?: string) {
-    this.messageService.add({ severity, summary, detail, key: 'toast', life: 3000 });
+    this.messageService.add({ severity, summary, detail, key: 'main-toast', life: 3000 });
   }
 }
